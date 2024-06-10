@@ -1,4 +1,7 @@
-﻿using System;
+﻿#pragma warning disable IDE0049
+#pragma warning disable CS8618
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,22 +24,26 @@ namespace VNLauncher.Controls
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(MarqueeCloseButton), new FrameworkPropertyMetadata(typeof(MarqueeCloseButton)));
         }
+        private Line l1;
+        private Line l2;
         public MarqueeCloseButton()
         {
             MouseEnter += (sender, e) =>
             {
-                Line l1 = (Template.FindName("crossLine1",this) as Line)!;
-                Line l2 = (Template.FindName("crossLine2", this) as Line)!;
-                l1.StrokeThickness = 2;
-                l2.StrokeThickness = 2;
+                l1!.StrokeThickness = 2;
+                l2!.StrokeThickness = 2;
             };
             MouseLeave += (sender, e) =>
             {
-                Line l1 = (Template.FindName("crossLine1", this) as Line)!;
-                Line l2 = (Template.FindName("crossLine2", this) as Line)!;
-                l1.StrokeThickness = 1.5;
-                l2.StrokeThickness = 1.5;
+                l1!.StrokeThickness = 1.5;
+                l2!.StrokeThickness = 1.5;
             };
+        }
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+            l1 = (Template.FindName("crossLine1", this) as Line)!;
+            l2 = (Template.FindName("crossLine2", this) as Line)!;
         }
     }
 }

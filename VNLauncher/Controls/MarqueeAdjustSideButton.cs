@@ -1,4 +1,7 @@
-﻿using FontAwesome.WPF;
+﻿#pragma warning disable IDE0049
+#pragma warning disable CS8618
+
+using FontAwesome.WPF;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +31,8 @@ namespace VNLauncher.Controls
         private LocalColorAcquirer resource;
         private AdjustSide side;
         public AdjustSide Side => side;
+        private TextBlock mainTextBlock;
+
         static MarqueeAdjustSideButton()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(MarqueeAdjustSideButton), new FrameworkPropertyMetadata(typeof(MarqueeAdjustSideButton)));
@@ -38,32 +43,32 @@ namespace VNLauncher.Controls
             side = AdjustSide.LeftUp;
             MouseEnter += (sender, e) =>
             {
-                TextBlock textBox = (Template.FindName("mainTextBlock", this) as TextBlock)!;
-                textBox.Foreground = resource.GetColor("marqueeTranslateButtonColor_MouseEnter") as Brush;
-
+                mainTextBlock!.Foreground = resource.GetColor("marqueeTranslateButtonColor_MouseEnter") as Brush;
             };
             MouseLeave += (sender, e) =>
             {
-                TextBlock textBox = (Template.FindName("mainTextBlock", this) as TextBlock)!;
-                textBox.Foreground = resource.GetColor("marqueeTranslateButtonColor") as Brush;
+                mainTextBlock!.Foreground = resource.GetColor("marqueeTranslateButtonColor") as Brush;
             };
             PreviewMouseUp += (sender, e) =>
             {
                 Turn();
             };
         }
-
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+            mainTextBlock = (Template.FindName("mainTextBlock", this) as TextBlock)!;
+        }
         public void Turn()
         {
-            TextBlock font = (Template.FindName("mainTextBlock", this) as TextBlock)!;
-            if (font.Text == "↖")
+            if (mainTextBlock.Text == "↖")
             {
-                font.Text = "↘";
+                mainTextBlock.Text = "↘";
                 side = AdjustSide.RightDown;
             }
             else
             {
-                font.Text = "↖";
+                mainTextBlock.Text = "↖";
                 side = AdjustSide.LeftUp;
             }
         }

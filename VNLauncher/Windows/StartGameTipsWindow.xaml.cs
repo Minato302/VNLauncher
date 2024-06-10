@@ -1,5 +1,6 @@
 ﻿#pragma warning disable IDE0049
 
+using System.Diagnostics;
 using System.Reflection.Metadata;
 using System.Windows;
 using VNLauncher.FuntionalClasses;
@@ -12,6 +13,8 @@ namespace VNLauncher
     {
         private System.Timers.Timer timer;
         private Game game;
+        private Process gameProcess;
+        public Process GameProcess => gameProcess;
         public StartGameTipsWindow(Game game)
         {
             InitializeComponent();
@@ -27,7 +30,7 @@ namespace VNLauncher
             {
                 mainFrame.Navigate(new StartGameTipsPage_ManualStart(this));
             }
-            game.StartGame();
+            gameProcess = game.StartGame();
             timer.Enabled = true;
         }
         private void OnTimedEvent(Object? sender, System.Timers.ElapsedEventArgs e)

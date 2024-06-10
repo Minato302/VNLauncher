@@ -1,4 +1,5 @@
 ﻿#pragma warning disable IDE0049
+#pragma warning disable CS8618
 
 using FontAwesome.WPF;
 using System;
@@ -22,6 +23,7 @@ namespace VNLauncher.Controls
     public class TextButton : Button
     {
         private LocalColorAcquirer resource;
+        private TextBlock mainTextBlock;
         static TextButton()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(TextButton), new FrameworkPropertyMetadata(typeof(TextButton)));
@@ -39,14 +41,17 @@ namespace VNLauncher.Controls
             resource = new LocalColorAcquirer();
             MouseEnter += (sender, e) =>
             {
-                TextBlock border = (Template.FindName("mainTextBlock", this) as TextBlock)!;
-                border.Foreground = resource.GetColor("signColor") as Brush;
+                mainTextBlock!.Foreground = resource.GetColor("signColor") as Brush;
             };
             MouseLeave += (sender, e) =>
             {
-                TextBlock border = (Template.FindName("mainTextBlock", this) as TextBlock)!;
-                border.Foreground = resource.GetColor("iconColor") as Brush;
+                mainTextBlock!.Foreground = resource.GetColor("iconColor") as Brush;
             };
+        }
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+            mainTextBlock = (Template.FindName("mainTextBlock", this) as TextBlock)!;
         }
     }
 }

@@ -17,6 +17,10 @@ namespace VNLauncher.Controls
         }
         private LocalColorAcquirer resource;
         private AdjustSide side;
+
+        private Border mainBorder_LeftUp;
+        private Border mainBorder_RightDown;
+        private TextBlock adjustSideTextBlock;
         static GuidancePageAdjustSideButton()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(GuidancePageAdjustSideButton), new FrameworkPropertyMetadata(typeof(GuidancePageAdjustSideButton)));
@@ -30,46 +34,47 @@ namespace VNLauncher.Controls
             MouseEnter += (e, sender) =>
             {
                 Cursor = Cursors.Hand;
-                Border border = (Template.FindName("mainBorder_LeftUp", this) as Border)!;
-                border.Background = resource.GetColor("itemButtonColor_MouseEnter") as Brush;
+                mainBorder_LeftUp!.Background = resource.GetColor("itemButtonColor_MouseEnter") as Brush;
             };
             MouseLeave += (e, sender) =>
             {
                 Cursor = Cursors.Arrow;
-                Border border = (Template.FindName("mainBorder_LeftUp", this) as Border)!;
-                border.Background = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
+                mainBorder_LeftUp!.Background = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
             };
 
             PreviewMouseLeftButtonUp += ChangeAdjustSide;
+        }
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+            mainBorder_LeftUp = (Template.FindName("mainBorder_LeftUp", this) as Border)!;
+            mainBorder_RightDown = (Template.FindName("mainBorder_RightDown", this) as Border)!;
+            adjustSideTextBlock = (Template.FindName("adjustSideTextBlock", this) as TextBlock)!;
         }
         public void ChangeAdjustSide(Object sender, MouseButtonEventArgs e)
         {
             if (side == AdjustSide.LeftUp)
             {
                 side = AdjustSide.RightDown;
-                Border border = (Template.FindName("mainBorder_LeftUp", this) as Border)!;
-                border.BorderThickness = new Thickness(1, 1, 0, 0);
-                border.BorderBrush = resource.GetColor("iconColor") as Brush;
-                border = (Template.FindName("mainBorder_RightDown", this) as Border)!;
-                border.BorderThickness = new Thickness(0, 0, 3.5, 3.5);
-                border.BorderBrush = resource.GetColor("signColor") as Brush;
+                mainBorder_LeftUp.BorderThickness = new Thickness(1, 1, 0, 0);
+                mainBorder_LeftUp.BorderBrush = resource.GetColor("iconColor") as Brush;
 
-                TextBlock textBlock = (Template.FindName("adjustSideTextBlock", this) as TextBlock)!;
-                textBlock.Text = "右下";
+                mainBorder_RightDown.BorderThickness = new Thickness(0, 0, 3.5, 3.5);
+                mainBorder_RightDown.BorderBrush = resource.GetColor("signColor") as Brush;
+
+                adjustSideTextBlock.Text = "右下";
             }
             else
             {
                 side = AdjustSide.LeftUp;
-                Border border = (Template.FindName("mainBorder_RightDown", this) as Border)!;
-                border.BorderThickness = new Thickness(0, 0, 1, 1);
-                border.BorderBrush = resource.GetColor("iconColor") as Brush;
 
-                border = (Template.FindName("mainBorder_LeftUp", this) as Border)!;
-                border.BorderThickness = new Thickness(3.5, 3.5, 0, 0);
-                border.BorderBrush = resource.GetColor("signColor") as Brush;
+                mainBorder_RightDown.BorderThickness = new Thickness(0, 0, 1, 1);
+                mainBorder_RightDown.BorderBrush = resource.GetColor("iconColor") as Brush;
 
-                TextBlock textBlock = (Template.FindName("adjustSideTextBlock", this) as TextBlock)!;
-                textBlock.Text = "左上";
+                mainBorder_LeftUp.BorderThickness = new Thickness(3.5, 3.5, 0, 0);
+                mainBorder_LeftUp.BorderBrush = resource.GetColor("signColor") as Brush;
+
+                adjustSideTextBlock.Text = "左上";
             }
         }
     }

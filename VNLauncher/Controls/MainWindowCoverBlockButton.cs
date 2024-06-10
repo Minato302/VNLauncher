@@ -1,4 +1,5 @@
 ﻿#pragma warning disable IDE0049
+#pragma warning disable CS8618
 
 using FontAwesome.WPF;
 using System;
@@ -25,7 +26,6 @@ namespace VNLauncher.Controls
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(MainWindowCoverBlockButton), new FrameworkPropertyMetadata(typeof(MainWindowCoverBlockButton)));
         }
-        private LocalColorAcquirer resource;
 
         public static readonly DependencyProperty MainWindowCoverBlockButtonTextProperty =
          DependencyProperty.Register("MainWindowCoverBlockButtonText", typeof(String), typeof(MainWindowCoverBlockButton));
@@ -41,27 +41,30 @@ namespace VNLauncher.Controls
                 SetValue(MainWindowCoverBlockButtonTextProperty, value);
             }
         }
+        private LocalColorAcquirer resource;
+        private TextBlock itemTextBlock;
+        private Border mainBorder;
         public MainWindowCoverBlockButton()
         {
             resource = new LocalColorAcquirer();
             MouseEnter += (sender, e) =>
             {
                 Cursor = Cursors.Hand;
-                Border border = (Template.FindName("mainBorder", this) as Border)!;
-                border.Background = resource.GetColor("mainWindowCoverBlockColor_ButtonMouseEnter") as Brush;
-
-                TextBlock textblock = (Template.FindName("itemTextBlock", this) as TextBlock)!;
-                textblock.Foreground = resource.GetColor("iconColor") as Brush;
+                mainBorder!.Background = resource.GetColor("mainWindowCoverBlockColor_ButtonMouseEnter") as Brush;
+                itemTextBlock!.Foreground = resource.GetColor("iconColor") as Brush;
             };
             MouseLeave += (sender, e) =>
             {
                 Cursor = Cursors.Arrow;
-                Border border = (Template.FindName("mainBorder", this) as Border)!;
-                border.Background = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
-
-                TextBlock textblock = (Template.FindName("itemTextBlock", this) as TextBlock)!;
-                textblock.Foreground = resource.GetColor("mainWindowCoverBlockColor_ButtonText") as Brush;
+                mainBorder!.Background = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
+                itemTextBlock!.Foreground = resource.GetColor("mainWindowCoverBlockColor_ButtonText") as Brush;
             };
+        }
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+            itemTextBlock = (Template.FindName("itemTextBlock", this) as TextBlock)!;
+            mainBorder = (Template.FindName("mainBorder", this) as Border)!;
         }
     }
 }

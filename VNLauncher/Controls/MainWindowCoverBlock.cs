@@ -1,4 +1,5 @@
 ﻿#pragma warning disable IDE0049
+#pragma warning disable CS8618
 
 using FontAwesome.WPF;
 using System;
@@ -30,6 +31,7 @@ namespace VNLauncher.Controls
                   DependencyProperty.Register("MainWindowCoverBlockImage", typeof(ImageSource), typeof(MainWindowCoverBlock));
         public static readonly DependencyProperty MainWindowCoverBlockImageCountProperty =
           DependencyProperty.Register("MainWindowCoverBlockImageCount", typeof(String), typeof(MainWindowCoverBlock));
+        public TextBlock imageCountTextBlock;
         public ImageSource MainWindowCoverBlockImage
         {
             get
@@ -54,20 +56,23 @@ namespace VNLauncher.Controls
         }
         public void SetImageCount(Int32 count)
         {
-            TextBlock textBlock = (Template.FindName("imageCountTextBlock", this) as TextBlock)!;
             if(count==0)
             {
-                textBlock.Text = "";
+                imageCountTextBlock.Text = "";
             }
             else
             {
-                textBlock.Text = "+" + count.ToString();
+                imageCountTextBlock.Text = "+" + count.ToString();
             }
         }
         public MainWindowCoverBlock()
         {
 
         }
-
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+            imageCountTextBlock = (Template.FindName("imageCountTextBlock", this) as TextBlock)!;
+        }
     }
 }

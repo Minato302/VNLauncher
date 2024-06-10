@@ -1,4 +1,5 @@
 ﻿#pragma warning disable IDE0049
+#pragma warning disable CS8618
 
 using FontAwesome.WPF;
 using System;
@@ -28,6 +29,7 @@ namespace VNLauncher.Controls
         public static readonly DependencyProperty MainWindowControlBarButtonIconProperty =
             DependencyProperty.Register("MainWindowControlBarButtonIcon", typeof(FontAwesomeIcon), typeof(MainWindowControlBarButton));
         private LocalColorAcquirer resource;
+        private Border mainBorder;
 
         public FontAwesomeIcon MainWindowControlBarButtonIcon
         {
@@ -46,25 +48,26 @@ namespace VNLauncher.Controls
             MouseEnter += (sender, e) =>
             {
                 Cursor = Cursors.Hand;
-                Border border = (Template.FindName("mainBorder", this) as Border)!;
-                border.Background = resource.GetColor("mainWindowControlBarButtonColor_MouseEnter") as Brush;
+                mainBorder!.Background = resource.GetColor("mainWindowControlBarButtonColor_MouseEnter") as Brush;
             };
             MouseLeave += (sender, e) =>
             {
                 Cursor = Cursors.Arrow;
-                Border border = (Template.FindName("mainBorder", this) as Border)!;
-                border.Background = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
+                mainBorder!.Background = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
             };
             PreviewMouseLeftButtonDown += (sender, e) =>
             {
-                Border border = (Template.FindName("mainBorder", this) as Border)!;
-                border.Background = resource.GetColor("signColor") as Brush;
+                mainBorder!.Background = resource.GetColor("signColor") as Brush;
             };
             PreviewMouseLeftButtonUp += (sender, e) =>
             {
-                Border border = (Template.FindName("mainBorder", this) as Border)!;
-                border.Background = resource.GetColor("mainWindowControlBarButtonColor_MouseEnter") as Brush;
+                mainBorder!.Background = resource.GetColor("mainWindowControlBarButtonColor_MouseEnter") as Brush;
             };
+        }
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+            mainBorder = (Template.FindName("mainBorder", this) as Border)!;
         }
     }
 }

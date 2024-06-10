@@ -1,4 +1,5 @@
 ﻿#pragma warning disable IDE0049
+#pragma warning disable CS8618
 
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,7 @@ namespace VNLauncher.Controls
     public class MarqueeButton : Control
     {
         private LocalColorAcquirer resource;
+        private Border mainBorer;
         static MarqueeButton()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(MarqueeButton), new FrameworkPropertyMetadata(typeof(MarqueeButton)));
@@ -45,26 +47,27 @@ namespace VNLauncher.Controls
             MouseEnter += (sender, e) =>
             {
                 Cursor = Cursors.Hand;
-                Border border = (Template.FindName("mainBorder", this) as Border)!;
-                border.BorderThickness = new Thickness(1);
+                mainBorer!.BorderThickness = new Thickness(1);
 
             };
             MouseLeave += (sender, e) =>
             {
                 Cursor = Cursors.Arrow;
-                Border border = (Template.FindName("mainBorder", this) as Border)!;
-                border.BorderThickness = new Thickness(0);
+                mainBorer!.BorderThickness = new Thickness(0);
             };
             PreviewMouseLeftButtonDown += (sender, e) =>
             {
-                Border border = (Template.FindName("mainBorder", this) as Border)!;
-                border.Background = resource.GetColor("marqueeButtonColor_MouseDown") as Brush;
+                mainBorer!.Background = resource.GetColor("marqueeButtonColor_MouseDown") as Brush;
             };
             PreviewMouseLeftButtonUp += (sender, e) =>
             {
-                Border border = (Template.FindName("mainBorder", this) as Border)!;
-                border.Background = resource.GetColor("marqueeButtonColor") as Brush;
+                mainBorer!.Background = resource.GetColor("marqueeButtonColor") as Brush;
             };
+        }
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+            mainBorer = (Template.FindName("mainBorder", this) as Border)!;
         }
     }
 }

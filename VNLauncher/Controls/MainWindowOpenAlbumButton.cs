@@ -1,4 +1,7 @@
-﻿using System;
+﻿#pragma warning disable IDE0049
+#pragma warning disable CS8618
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,21 +26,25 @@ namespace VNLauncher.Controls
             DefaultStyleKeyProperty.OverrideMetadata(typeof(MainWindowOpenAlbumButton), new FrameworkPropertyMetadata(typeof(MainWindowOpenAlbumButton)));
         }
         private LocalColorAcquirer resource;
+        private Border mainBorder;
         public  MainWindowOpenAlbumButton()
         {
             resource = new LocalColorAcquirer();
             MouseEnter += (sender, e) =>
             {
                 Cursor = Cursors.Hand;
-                Border border = (Template.FindName("mainBorder", this) as Border)!;
-                border.Background = resource.GetColor("mainWindowOpenAlbumButtonColor_MouseEnter") as Brush;
+                mainBorder!.Background = resource.GetColor("mainWindowOpenAlbumButtonColor_MouseEnter") as Brush;
             };
             MouseLeave += (sender, e) =>
             {
                 Cursor = Cursors.Arrow;
-                Border border = (Template.FindName("mainBorder", this) as Border)!;
-                border.Background = resource.GetColor("mainWindowOpenAlbumButtonColor") as Brush;
+                mainBorder!.Background = resource.GetColor("mainWindowOpenAlbumButtonColor") as Brush;
             };
+        }
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+            mainBorder = (Template.FindName("mainBorder", this) as Border)!;
         }
     }
 }

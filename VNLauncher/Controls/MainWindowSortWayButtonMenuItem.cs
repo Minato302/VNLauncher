@@ -1,4 +1,5 @@
 ﻿#pragma warning disable IDE0049
+#pragma warning disable CS8618
 
 using System.Windows;
 using System.Windows.Controls;
@@ -30,24 +31,29 @@ namespace VNLauncher.Controls
         }
 
         private LocalColorAcquirer resource;
+        private Border mainBorder;
         public MainWindowSortWayButtonMenuItem()
         {
             resource = new LocalColorAcquirer();
             MouseEnter += (sender, e) =>
             {
 
-                Border border = (Template.FindName("mainBorder", this) as Border)!;
-                border.Background = resource.GetColor("signColor") as Brush;
+                mainBorder!.Background = resource.GetColor("signColor") as Brush;
 
 
             };
             MouseLeave += (sender, e) =>
             {
-                Border border = (Template.FindName("mainBorder", this) as Border)!;
-                border.Background = resource.GetColor("mainWindowSortWayButtonMenuColor") as Brush;
+                mainBorder!.Background = resource.GetColor("mainWindowSortWayButtonMenuColor") as Brush;
             };
 
         }
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+            mainBorder = (Template.FindName("mainBorder", this) as Border)!;
+        }
+
     }
 
 }

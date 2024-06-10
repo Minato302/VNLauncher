@@ -180,17 +180,19 @@ namespace VNLauncher.FuntionalClasses
             gameData["gameCaptionLocation"] = captionLoaction;
             File.WriteAllText(gameDatePath, gameData.ToString());
         }
-        public void StartGame()
+        public Process StartGame()
         {
-            if(isAutoStart)
+            Process p = null;
+            if (isAutoStart)
             {
                 ProcessStartInfo startInfo = new ProcessStartInfo();
                 startInfo.FileName = exePath;
                 startInfo.WindowStyle = ProcessWindowStyle.Normal;
-                Process.Start(startInfo);
+                p = Process.Start(startInfo);
             }
             lastStartTime = DateTime.Now;
             timer.Enabled = true;
+            return p;
         }
         public void EndGame()
         {

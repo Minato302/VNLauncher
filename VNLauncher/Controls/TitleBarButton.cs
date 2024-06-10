@@ -1,4 +1,5 @@
 ﻿#pragma warning disable IDE0049
+#pragma warning disable CS8618
 
 using FontAwesome.WPF;
 using System;
@@ -35,29 +36,31 @@ namespace VNLauncher.Controls
             get { return (FontAwesomeIcon)GetValue(TitleBarButtonIconProperty); }
             set { SetValue(TitleBarButtonIconProperty, value); }
         }
+        private Border mainBorder;
         public TitleBarButton()
         {
             resource = new LocalColorAcquirer();
             MouseEnter += (sender, e) =>
             {
-                Border border = (Template.FindName("mainBorder", this) as Border)!;
-                border.Background = resource.GetColor("mainWindowTitleBarButtonColor_MouseEnter") as Brush;
+                mainBorder!.Background = resource.GetColor("mainWindowTitleBarButtonColor_MouseEnter") as Brush;
             };
             MouseLeave += (sender, e) =>
             {
-                Border border = (Template.FindName("mainBorder", this) as Border)!;
-                border.Background = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
+                mainBorder!.Background = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
             };
             PreviewMouseLeftButtonDown += (sender, e) =>
             {
-                Border border = (Template.FindName("mainBorder", this) as Border)!;
-                border.Background = resource.GetColor("signColor") as Brush;
+                mainBorder!.Background = resource.GetColor("signColor") as Brush;
             };
             PreviewMouseLeftButtonUp += (sender, e) =>
             {
-                Border border = (Template.FindName("mainBorder", this) as Border)!;
-                border.Background = resource.GetColor("mainWindowTitleBarButtonColor_MouseEnter") as Brush;
+                mainBorder!.Background = resource.GetColor("mainWindowTitleBarButtonColor_MouseEnter") as Brush;
             };
+        }
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+            mainBorder = (Template.FindName("mainBorder", this) as Border)!;
         }
     }
 }

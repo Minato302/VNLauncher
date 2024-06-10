@@ -1,7 +1,11 @@
-﻿using FontAwesome.WPF;
+﻿#pragma warning disable IDE0049
+#pragma warning disable CS8618
+
+using FontAwesome.WPF;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -26,6 +30,7 @@ namespace VNLauncher.Controls
         public static readonly DependencyProperty ItemButtonIconProperty =
           DependencyProperty.Register("ItemButtonIcon", typeof(FontAwesomeIcon), typeof(ItemButton));
         private LocalColorAcquirer resource;
+        private Border mainBorder;
 
         public FontAwesomeIcon ItemButtonIcon
         {
@@ -44,25 +49,26 @@ namespace VNLauncher.Controls
             MouseEnter += (sender, e) =>
             {
                 Cursor = Cursors.Hand;
-                Border border = (Template.FindName("mainBorder", this) as Border)!;
-                border.Background = resource.GetColor("itemButtonColor_MouseEnter") as Brush;
+                mainBorder!.Background = resource.GetColor("itemButtonColor_MouseEnter") as Brush;
             };
             MouseLeave += (sender, e) =>
             {
                 Cursor = Cursors.Arrow;
-                Border border = (Template.FindName("mainBorder", this) as Border)!;
-                border.Background = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
+                mainBorder!.Background = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
             };
             PreviewMouseLeftButtonDown += (sender, e) =>
             {
-                Border border = (Template.FindName("mainBorder", this) as Border)!;
-                border.Background = resource.GetColor("signColor") as Brush;
+                mainBorder!.Background = resource.GetColor("signColor") as Brush;
             };
             PreviewMouseLeftButtonUp += (sender, e) =>
             {
-                Border border = (Template.FindName("mainBorder", this) as Border)!;
-                border.Background = resource.GetColor("itemButtonColor_MouseEnter") as Brush;
+                mainBorder!.Background = resource.GetColor("itemButtonColor_MouseEnter") as Brush;
             };
+        }
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+            mainBorder = (Template.FindName("mainBorder", this) as Border)!;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿#pragma warning disable IDE0049
+#pragma warning disable CS8618
 
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,7 @@ namespace VNLauncher.Controls
     public class MarqueeTranslateButton : Button
     {
         private LocalColorAcquirer resource;
+        private FontAwesome.WPF.FontAwesome mainFont;
         static MarqueeTranslateButton()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(MarqueeTranslateButton), new FrameworkPropertyMetadata(typeof(MarqueeTranslateButton)));
@@ -30,15 +32,18 @@ namespace VNLauncher.Controls
             resource = new LocalColorAcquirer();
             MouseEnter += (sender, e) =>
             {
-                FontAwesome.WPF.FontAwesome font = (Template.FindName("mainFont", this) as FontAwesome.WPF.FontAwesome)!;
-                font.Foreground = resource.GetColor("marqueeTranslateButtonColor_MouseEnter") as Brush;
+                mainFont!.Foreground = resource.GetColor("marqueeTranslateButtonColor_MouseEnter") as Brush;
 
             };
             MouseLeave += (sender, e) =>
             {
-                FontAwesome.WPF.FontAwesome font = (Template.FindName("mainFont", this) as FontAwesome.WPF.FontAwesome)!;
-                font.Foreground = resource.GetColor("marqueeTranslateButtonColor") as Brush;
+                mainFont!.Foreground = resource.GetColor("marqueeTranslateButtonColor") as Brush;
             };
+        }
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+            mainFont = (Template.FindName("mainFont", this) as FontAwesome.WPF.FontAwesome)!;
         }
         public void Turn()
         {
@@ -56,8 +61,14 @@ namespace VNLauncher.Controls
         {
             get
             {
-                FontAwesome.WPF.FontAwesome font = (Template.FindName("mainFont", this) as FontAwesome.WPF.FontAwesome)!;
-                return font.Icon == FontAwesomeIcon.StopCircleOutline;
+                if (mainFont == null)
+                {
+                    return false;
+                }
+                else
+                {
+                    return mainFont.Icon == FontAwesomeIcon.StopCircleOutline;
+                }
             }
         }
     }

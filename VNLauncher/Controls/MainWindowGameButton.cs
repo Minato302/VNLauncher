@@ -1,4 +1,6 @@
 ﻿#pragma warning disable IDE0049
+#pragma warning disable CS8618
+
 
 using System.IO;
 using System.Windows;
@@ -27,6 +29,7 @@ namespace VNLauncher.Controls
                 DependencyProperty.Register("MainWindowGameButtonItemSource", typeof(ImageSource), typeof(MainWindowGameButton));
         private Game game;
         public Game Game => game;
+        private Border mainBorder;
         public MainWindowGameButton(String gameName, Windows.MainWindow mainWindow)
         {
             fileManager = new FileManager();
@@ -48,19 +51,23 @@ namespace VNLauncher.Controls
             {
                 if (!isSelected)
                 {
-                    Border border = (Template.FindName("mainBorder", this) as Border)!;
-                    border.Background = resource.GetColor("mainWindowGameButtonColor_MouseEnter") as Brush;
+                    mainBorder!.Background = resource.GetColor("mainWindowGameButtonColor_MouseEnter") as Brush;
                 }
             };
             MouseLeave += (sender, e) =>
             {
                 if (!isSelected)
                 {
-                    Border border = (Template.FindName("mainBorder", this) as Border)!;
-                    border.Background = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
+                    mainBorder!.Background = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
                 }
             };
 
+        }
+
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+            mainBorder = (Template.FindName("mainBorder", this) as Border)!;
         }
         public String MainWindowGameButtonText
         {
@@ -87,8 +94,7 @@ namespace VNLauncher.Controls
         public void BeingSelected()
         {
             isSelected = true;
-            Border border = (Template.FindName("mainBorder", this) as Border)!;
-            border.Background = resource.GetColor("mainWindowGameButtonColor_Selected") as Brush;
+            mainBorder.Background = resource.GetColor("mainWindowGameButtonColor_Selected") as Brush;
             mainWindow.coverPicture.Source = new BitmapImage(new Uri(fileManager.GetGameCoverPath(Game.Name)!));
             String[] captureNames = Directory.GetFiles(fileManager.GetGameCapturesPath(Game.Name)!);
             Random rand = new Random();
@@ -119,8 +125,7 @@ namespace VNLauncher.Controls
         {
             isSelected = false;
             mainWindow.captureDisplayPanel.Children.Clear();
-            Border border = (Template.FindName("mainBorder", this) as Border)!;
-            border.Background = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
+            mainBorder.Background = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
         }
 
     }
