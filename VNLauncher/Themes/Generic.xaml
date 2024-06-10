@@ -1,0 +1,330 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:fa="http://schemas.fontawesome.io/icons/"
+    xmlns:local="clr-namespace:VNLauncher.Controls">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/VNLauncher;component/Themes/FrontColor.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+    <Style TargetType="{x:Type local:TitleBarButton}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:TitleBarButton}">
+                    <Border BorderThickness="0" Name="mainBorder" Background="Transparent">
+                        <fa:FontAwesome Icon="{TemplateBinding TitleBarButtonIcon}" FontSize="15" Foreground="{StaticResource iconColor}"
+                                        HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type local:MainWindowControlBarButton}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:MainWindowControlBarButton}">
+                    <Border BorderThickness="3" Name="mainBorder" Background="Transparent">
+                        <fa:FontAwesome Icon="{TemplateBinding MainWindowControlBarButtonIcon}" FontSize="15" Foreground="{StaticResource iconColor}"
+                                        HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type local:MainWindowSortWayButtonMenuItem}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:MainWindowSortWayButtonMenuItem}">
+                    <Border BorderThickness="0" Name="mainBorder" Background="{StaticResource mainWindowSortWayButtonMenuColor}" Width="100" Height="20">
+                        <TextBlock x:Name="sortWayTextBlock" Grid.Column="1" Text="{TemplateBinding SortWay}" Foreground="{StaticResource iconColor}" FontFamily="Microsoft YaHei" Margin="10,0,0,0"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type local:MainWindowGameButton}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:MainWindowGameButton}">
+                    <Border Height="50" BorderThickness="2" Background="Transparent" Name="mainBorder" CornerRadius="6">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Image x:Name="image" Source="{TemplateBinding MainWindowGameButtonItemSource}" Grid.Column="0" Margin="10"/>
+                            <TextBlock x:Name="textBlock" Text="{TemplateBinding MainWindowGameButtonText}" Foreground="{StaticResource mainWindowGameButtonColor_Text}"  Grid.Column="1" VerticalAlignment="Center"/>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type local:BigButton}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:BigButton}">
+                    <Border Name="mainBorder" CornerRadius="3" Background="{StaticResource signColor}">
+                        <TextBlock Name="funtionTextBlock" FontSize="15" Foreground="{StaticResource iconColor}" Text="{TemplateBinding BigButtonText}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type local:MainWindowGameInfo}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:MainWindowGameInfo}">
+                    <Grid x:Name="mainGrid" Background="Transparent">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Name="iconColumn" Width="2*"/>
+                            <ColumnDefinition Name="infoColumn" Width="8*"/>
+                        </Grid.ColumnDefinitions>
+                        <fa:FontAwesome Name="icon" Grid.Column="0" Icon="{TemplateBinding MainWindowGameInfoIcon}" Foreground="{StaticResource iconColor}" 
+                                        HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30"/>
+                        <Grid x:Name="infoGrid" Grid.Column="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Name="itemRow" Height="1*"/>
+                                <RowDefinition Name="valueRow" Height="1*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock x:Name="itemTextBlock" Grid.Row="0" FontSize="15" Foreground="{StaticResource iconColor}" Margin="5,0,0,0"
+                                       Text="{TemplateBinding MainWindowGameInfoItem}"  HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                            <TextBlock x:Name="valueTextBlock" Grid.Row="1" FontSize="15" Foreground="{StaticResource iconColor}" Margin="5,0,0,0"
+                                       Text="{TemplateBinding MainWindowGameInfoValue}"  HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        </Grid>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type local:ItemButton}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:ItemButton}">
+                    <Border x:Name="mainBorder" BorderBrush="{StaticResource itemButtonColor}" BorderThickness="2" Width="30" Height="30">
+                        <fa:FontAwesome Icon="{TemplateBinding ItemButtonIcon}" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                        Foreground="{StaticResource iconColor}" Margin="2,2,2,2"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type local:MainWindowCoverBlock}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:MainWindowCoverBlock}">
+                    <Canvas x:Name="mainCanvas" Background="{StaticResource mainWindowCoverBlockColor_Background}">
+                        <Image Name="coverImage" Canvas.Top="5" Canvas.Left="10" Width="270" Height="160" Stretch="UniformToFill" Source="{TemplateBinding MainWindowCoverBlockImage}"/>
+                        <TextBlock Name="imageCountTextBlock"  Canvas.Top="5" Canvas.Left="10" Width="270" Height="160" Foreground="{StaticResource mainWindowCoverBlockColor_ImageCountText}"
+                                   TextAlignment="Center" FontSize="120" Background="{StaticResource mainWindowCoverBlockColor_ImageBackground}"/>
+                        <local:MainWindowCoverBlockButton x:Name="seeCapturesButton" Canvas.Top="175" Canvas.Left="10" MainWindowCoverBlockButtonText="切换显示"/>
+                        <local:MainWindowCoverBlockButton x:Name="changeCoverButton" Canvas.Top="175" Canvas.Left="230" MainWindowCoverBlockButtonText="更换封面"/>
+                    </Canvas>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type local:MainWindowCoverBlockButton}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:MainWindowCoverBlockButton}">
+                    <Border x:Name="mainBorder" Width="60" Height="20" Background="Transparent">
+                        <TextBlock x:Name="itemTextBlock" Text="{TemplateBinding MainWindowCoverBlockButtonText}" Foreground="{StaticResource mainWindowCoverBlockColor_ButtonText}"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <Style TargetType="{x:Type local:MainWindowOpenAlbumButton}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:MainWindowOpenAlbumButton}">
+                    <Border x:Name="mainBorder" Height="32" Background="{StaticResource mainWindowOpenAlbumButtonColor}" CornerRadius="7">
+                        <Image Source="/VNLauncher;component/Resources/photo.png" Width="20" Height="20" Stretch="UniformToFill"
+                               HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type local:MainWindowDailyCaputreDisplay}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:MainWindowDailyCaputreDisplay}">
+                    <Grid Name="mainGrid">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Name="dateDisplayRow" Height="50"/>
+                            <RowDefinition Name="captureDisplayRow" Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Name="dateDisplayTextBlock" Foreground="{StaticResource iconColor}" FontSize="13"/>
+                        <Line X1="90" Y1="7" X2="5000" Y2="7" StrokeThickness="1" Stroke="{StaticResource iconColor}"/>
+                        <Grid Name="captureDisplayGrid" Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Name="leftPanelColumn" Width="1*"/>
+                                <ColumnDefinition Width="30"/>
+                                <ColumnDefinition Name="rightPanelColumn" Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Name="displayCapturePanel_Left" Width="auto" Grid.Column="0"/>
+                            <StackPanel Name="displayCapturePanel_Right" Width="auto" Grid.Column="2"/>
+                        </Grid>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type local:ChangeModeButton}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:ChangeModeButton}">
+                    <Border x:Name="mainBorder" Background="Transparent" BorderThickness="2" BorderBrush="{StaticResource itemButtonColor}">
+                        <Grid x:Name="mainGrid">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Name="startWayIconColumn" Width="auto"/>
+                                <ColumnDefinition Width="3"/>
+                                <ColumnDefinition Name="startWayTextBlockColumn" Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Name="iconBorder" BorderThickness="0" Width="15" Height="15" Grid.Column="0" BorderBrush="{StaticResource iconColor}">
+                                <fa:FontAwesome Name="modeIcon" FontSize="11" Foreground="{StaticResource iconColor}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <TextBlock Name="modeTextBlock"  Grid.Column="2" FontSize="13" Foreground="{StaticResource iconColor}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    
+    <Style TargetType="{x:Type local:QuestionButton}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:QuestionButton}">
+                    <Grid Name="mainGrid">
+                        <fa:FontAwesome Name="questionIcon" Icon="QuestionCircle" Foreground="{StaticResource iconColor}"/>
+                        <Popup Name="tipsPopup" Width="200" Height="auto" PlacementTarget="{Binding ElementName=mainGrid}">
+                            <Grid Name="PopupGrid" Background="{StaticResource mainWindowSortWayButtonMenuColor}">
+                                <TextBlock Name="tipsTextBlock" Width="auto" Height="auto" TextWrapping="Wrap" Foreground="{StaticResource iconColor}" FontSize="12" Margin="5,5,5,5"/>
+                            </Grid>
+                        </Popup>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+    <Style TargetType="{x:Type local:GuidancePageAdjustSideButton}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:GuidancePageAdjustSideButton}">
+                    <Grid x:Name="mainGrid">
+                        <Border x:Name="mainBorder_LeftUp" Background="Transparent" BorderThickness="3.5,3.5,0,0" BorderBrush="{StaticResource signColor}">
+                            <TextBlock x:Name="adjustSideTextBlock" Text="左上" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{StaticResource iconColor}"
+                                   FontSize="12"/>
+                        </Border>
+                        <Border x:Name="mainBorder_RightDown" Background="Transparent" BorderThickness="0,0,1,1" BorderBrush="{StaticResource iconColor}">
+                            
+                        </Border>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type local:TextButton}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:TextButton}">
+                    <TextBlock Name="mainTextBlock" TextDecorations="Underline" Text="这里" Foreground="{StaticResource iconColor}" FontSize="{TemplateBinding TextButtonFontSize}"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type local:MarqueeCloseButton}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:MarqueeCloseButton}">
+                    <Border Width="10" Height="10" Name="mainBorder" Background="Transparent" Focusable="False">
+                        <Grid Name="mainGrid">
+                            <Line Name="crossLine1" X1="0" Y1="0" X2="10" Y2="10" StrokeThickness="1.5" Stroke="{StaticResource marqueeIconColor}"/>
+                            <Line Name="crossLine2" X1="0" Y1="10" X2="10" Y2="0" StrokeThickness="1.5" Stroke="{StaticResource marqueeIconColor}"/>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type local:MarqueeButton}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:MarqueeButton}">
+                    <Border Name="mainBorder" Width="70" Height="22" CornerRadius="4" Focusable="False" BorderBrush="{StaticResource marqueeButtonColor_Border}" Background="{StaticResource marqueeButtonColor}">
+                        <TextBlock Name="mainTextBlock" Text="{TemplateBinding MarqueeButtonText}" Background="Transparent"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Microsoft YaHei" FontWeight="Medium"
+                                   Foreground="{StaticResource marqueeButtonColor_Text}" FontSize="12"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type local:MarqueeStateInfo}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:MarqueeStateInfo}">
+                    <Border Width="120" Height="27" BorderThickness="1" Focusable="False" BorderBrush="{StaticResource marqueeButtonColor_Border}" Background="{StaticResource marqueeButtonColor}" CornerRadius="4">
+                        <Grid Name="mainGrid" Margin="10,0,10,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="8"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <fa:FontAwesome Name="stateIcon" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0" FontSize="18" Foreground="{StaticResource marqueeIconColor}" Icon="Ban"/>
+                            <TextBlock Name="stateTextBlock" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="2" FontSize="16" Foreground="{StaticResource marqueeIconColor}" Text="已关闭"/>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+    <Style TargetType="{x:Type local:MarqueeTranslateButton}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:MarqueeTranslateButton}">
+                    <fa:FontAwesome Name="mainFont" FontSize="24" Foreground="{StaticResource marqueeTranslateButtonColor}" Focusable="False" VerticalAlignment="Center" HorizontalAlignment="Center" Icon="PlayCircleOutline"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+
+    <Style TargetType="{x:Type local:MarqueeAdjustSideButton}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:MarqueeAdjustSideButton}">
+                    <TextBlock Name="mainTextBlock" FontSize="24" Foreground="{StaticResource marqueeTranslateButtonColor}" Focusable="False" VerticalAlignment="Center" HorizontalAlignment="Center" Text="↖"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    
+</ResourceDictionary>

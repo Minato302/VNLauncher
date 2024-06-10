@@ -1,0 +1,14 @@
+﻿<Application x:Class="VNLauncher.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:VNLauncher"
+             StartupUri="/VNLauncher;component/Windows/MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/VNLauncher;component/Themes/FrontColor.xaml"/>
+                <ResourceDictionary Source="/VNLauncher;component/Themes/MainWindowScrollStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

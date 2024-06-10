@@ -1,0 +1,34 @@
+﻿<Window x:Class="VNLauncher.Windows.AddGameWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:VNLauncher.Controls"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
+        mc:Ignorable="d" Left="30" Top="30"
+        Title="添加游戏" Height="250" Width="450" ResizeMode="NoResize" WindowStyle="None" WindowStartupLocation="CenterOwner" AllowsTransparency="True" Background="Transparent">
+    <Canvas Name="mainCanvas" Background="{StaticResource backgroundColor_Dark}" MouseLeftButtonDown="MainCanvas_MouseLeftButtonDown">
+        <local:TitleBarButton x:Name="closeButton" TitleBarButtonIcon="Close" Click="CloseButton_Click" Width="30" Height="20" Canvas.Right="0" Canvas.Top="0"/>
+        <TextBlock x:Name="choosePathTipsTextBlock" Background="Transparent" Text="游戏路径：" Canvas.Left="20" Canvas.Top="40" FontSize="15" FontFamily="Microsoft YaHei"
+                   Foreground="{StaticResource iconColor}"/>
+        <TextBox x:Name="gamePathTextBox" Background="{StaticResource backgroundColor_Light}" Width="240" Height="20" Canvas.Left="100" Canvas.Top="40" BorderThickness="0"
+                 Foreground="{StaticResource iconColor}" FontSize="15" VerticalContentAlignment="Center" HorizontalContentAlignment="Left"/>
+        <Border x:Name="initialSetupButtonBorder" Width="100" Height="50" Canvas.Left="170" Canvas.Top="180">
+            <local:BigButton x:Name="initialSetupButton" BigButtonText="启动初始设置" Click="InitialSetupButton_Click"/>
+        </Border>
+        <local:ItemButton x:Name="openFileDialogButton" Canvas.Left="380" Canvas.Top="34" ItemButtonIcon="File" Click="OpenFileDialogButton_Click"/>
+        <TextBlock x:Name="setGameNameTipsTextBlock" Background="Transparent" Text="游戏名称：" Canvas.Left="20" Canvas.Top="100" FontSize="15" FontFamily="Microsoft YaHei"
+             Foreground="{StaticResource iconColor}"/>
+        <TextBox x:Name="setGameNameTextBox" Background="{StaticResource backgroundColor_Light}" Width="180" Height="20" Canvas.Left="100" Canvas.Top="100" BorderThickness="0"
+          Foreground="{StaticResource iconColor}" FontSize="15" VerticalContentAlignment="Center" HorizontalContentAlignment="Left"/>
+        <TextBlock x:Name="exceptionShowingTextBlock" Canvas.Left="80" Canvas.Top="150" FontSize="13" FontFamily="Microsoft YaHei" 
+                   Background="Transparent"  Foreground="{StaticResource iconColor}"/>
+        <TextBlock x:Name="startWayTipsTextBlock" Background="Transparent" Text="启动方法：" Canvas.Left="300" Canvas.Top="100" FontSize="14" FontFamily="Microsoft YaHei"
+             Foreground="{StaticResource iconColor}"/>
+        <local:ChangeModeButton x:Name="startModeCheckBox" Canvas.Left="363" Canvas.Top="100" ChangeModeButtonMode1Icon="Magic" Width="55" Height="22"
+                                ChangeModeButtonMode1String="自动" ChangeModeButtonMode2Icon="MousePointer" ChangeModeButtonMode2String="手动"/>
+        <Border Width="14" Height="14" Canvas.Top="102" Canvas.Left="430">
+            <local:QuestionButton x:Name="startWayQuestionButton"/>
+        </Border>
+    </Canvas>
+</Window>

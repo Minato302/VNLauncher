@@ -1,0 +1,169 @@
+﻿<Window x:Class="VNLauncher.Windows.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:VNLauncher.Controls"    
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
+        ResizeMode="CanResizeWithGrip"
+        Title="VNLauncher" Height="800" Width="1200" MinHeight="600" MinWidth="1050"
+        WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True"
+        MouseLeftButtonDown="Window_MouseLeftButtonDown" MouseRightButtonDown="Window_MouseRightButtonDown" Loaded="Window_Loaded">
+
+    <Grid Name="mainGrid" Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Name="titlebarRow" Height="30"/>
+            <RowDefinition Name="mainRow" Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Name="titlebarGrid" Grid.Row="0" Background="{StaticResource backgroundColor_Dark}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Name="titlebarEmptyColumn"/>
+                <ColumnDefinition Name="titlebarMinimizeColumn" Width="40"/>
+                <ColumnDefinition Name="titlebarMaximizeColumn" Width="40"/>
+                <ColumnDefinition Name="titlebarCloseColumn" Width="40"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid PreviewMouseDown="MouseDragMove" Background="Transparent"/>
+            <local:TitleBarButton x:Name="minimizeButton" Grid.Column="1" TitleBarButtonIcon="Minus" Click="MinimizeButton_Click"/>
+            <local:TitleBarButton x:Name="maximizeButton" Grid.Column="2" TitleBarButtonIcon="SquareOutline" Click="MaximizeButton_Click"/>
+            <local:TitleBarButton x:Name="closeButton" Grid.Column="3" TitleBarButtonIcon="Times" Click="CloseButton_Click"/>
+
+        </Grid>
+
+
+        <Grid Name="mainRowGrid" Grid.Row="1">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Name="mainLeftColumn" Width="2*"/>
+                <ColumnDefinition Name="mainRightColumn" Width="8*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Name="mainLeftGrid" Grid.Column="0">
+
+                <Grid.RowDefinitions>
+
+                    <RowDefinition Name="gamelogoRow" Height="180"/>
+                    <RowDefinition Name="controlBarRow" Height="30"/>
+                    <RowDefinition Name="gamelistRow" Height="1*"/>
+
+                </Grid.RowDefinitions>
+
+                <Grid Name="gamelogoGrid"  Grid.Row="0" Background="{StaticResource backgroundColor_Dark}"  PreviewMouseLeftButtonDown="MouseDragMove">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Name="logoImageRow" Height="1*"/>
+                        <RowDefinition Name="gameNameRow" Height="1*"/>
+                    </Grid.RowDefinitions>
+                    <Image Name="logoImage" Grid.Row="0" Source="/VNLauncher;component/Resources/logo.png"/>
+                    <TextBlock Name="gameName" Grid.Row="1" Background="Transparent"
+                         Text="VNLauncher" FontSize="34" HorizontalAlignment="Center" VerticalAlignment="Center"
+                         Foreground="{StaticResource iconColor}" FontFamily="Comic Sans MS"/>
+
+                </Grid>
+
+                <Border Name="controlBarBorder" Grid.Row="1" BorderBrush="{StaticResource iconColor}" BorderThickness="1">
+                    <Grid Name="controlBarGrid" Background="{StaticResource mainWindowControlBarColor}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Name="setColumn" Width="30"/>
+                            <ColumnDefinition Name="sortWayColumn" Width="30"/>
+                            <ColumnDefinition Name="aDdGameColumn" Width="30"/>
+                            <ColumnDefinition Name="inputColumn" Width="*"/>
+                            <ColumnDefinition Name="searchColumn" Width="30"/>
+                        </Grid.ColumnDefinitions>
+
+                        <local:MainWindowControlBarButton x:Name="settingButton" MainWindowControlBarButtonIcon="Cog" Grid.Column="0"/>
+                        <local:MainWindowControlBarButton x:Name="addGameButton" MainWindowControlBarButtonIcon="Plus" Grid.Column="2" Click="AddGameButton_Click"/>
+                        <local:MainWindowControlBarButton x:Name="sortWayButton" MainWindowControlBarButtonIcon="SortAmountDesc" Grid.Column="1" Click="SortWayButton_Click"/>
+                        <Popup x:Name="searchWayPopup" Placement="Bottom" PlacementTarget="{Binding ElementName=sortWayButton}">
+                            <Grid Width="90" Height="60" Background="Transparent">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <local:MainWindowSortWayButtonMenuItem x:Name="lastOpenedTimeItem" Grid.Row="0" SortWay="最近打开时间" Click="LastOpenedTimeItem_Click"/>
+                                <local:MainWindowSortWayButtonMenuItem x:Name="lastJoinedTimeItem" Grid.Row="1" SortWay="最近加入时间" Click="LastJoinedTimeItem_Click"/>
+                                <local:MainWindowSortWayButtonMenuItem x:Name="llayedTimeItem" Grid.Row="2" SortWay="游戏时间" Click="PlayedTimeItem_Click"/>
+                            </Grid>
+                        </Popup>
+                        <local:MainWindowControlBarButton x:Name="controlBarButton_Search" MainWindowControlBarButtonIcon="Search" Grid.Column="4"/>
+                        <TextBox Name="controlBarTextBox_Input" Grid.Column="3" Background="Transparent" 
+                                 Foreground="{StaticResource iconColor}" FontSize="20" 
+                                 BorderThickness="0" CaretBrush="{StaticResource iconColor}"/>
+                    </Grid>
+                </Border>
+                <ScrollViewer x:Name="gameListScrollViewer" Template="{StaticResource MainWindowScroll}" Grid.Row="2" Background="{StaticResource backgroundColor_Dark}">
+                    <StackPanel Name="gameListStackPanel"/>
+                </ScrollViewer>
+            </Grid>
+
+            <Grid Name="mainRightGrid_Picture" Grid.Column="1" Panel.ZIndex="0" Background="Transparent">
+                <Grid.RowDefinitions>
+                    <RowDefinition Name="coverPictureRow" Height="6*"/>
+                    <RowDefinition Height="4*"/>
+                </Grid.RowDefinitions>
+                <Image Name="coverPicture" Stretch="UniformToFill" />
+            </Grid>
+            <Grid Name="mainRightGird_GameInfo" Grid.Column="1" Panel.ZIndex="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="7*"/>
+                    <RowDefinition Name="gameControlBarRow" Height="70"/>
+                    <RowDefinition Name="gameHistoryRow" Height="6*"/>
+                </Grid.RowDefinitions>
+                <Grid x:Name="gameControlBarGrid" Grid.Row="1" Background="{StaticResource mainWindowGameControlBarColor}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Name="gameStartButtonColumn" Width="200"/>
+                        <ColumnDefinition Name="gameTotalTimeColumn" Width="170"/>
+                        <ColumnDefinition Name="gameLastStartTimeColumn" Width="170"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Name="openFileColumn" Width="40"/>
+                        <ColumnDefinition Name="removeGameColumn" Width="40"/>
+                        <ColumnDefinition Width="20"/>
+                    </Grid.ColumnDefinitions>
+                    <local:BigButton x:Name="gameStartButton" Grid.Column="0" Margin="10,10,10,10" BigButtonText="开始游戏" Click="GameStartButton_Click"/>
+                    <local:MainWindowGameInfo x:Name="gameTotalTimeInfo" Margin="20,10,10,10"  Grid.Column="1"  MainWindowGameInfoIcon="ClockOutline" MainWindowGameInfoItem="游戏时长" MainWindowGameInfoValue="11.3h"/>
+                    <local:MainWindowGameInfo x:Name="gameLastStartTimeInfo" Margin="20,10,10,10"  Grid.Column="2"  MainWindowGameInfoIcon="Calendar" MainWindowGameInfoItem="最近启动时间" MainWindowGameInfoValue="2024/5/21"/>
+                    <local:ItemButton x:Name="openFileButton" ItemButtonIcon="File" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="4"/>
+                    <local:ItemButton x:Name="removeGameButton" ItemButtonIcon="Trash" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="5"/>
+                </Grid>
+                <ScrollViewer x:Name="gameHistoryScrollViewer"  Grid.Row="2" Template="{StaticResource MainWindowScroll}" Background="{StaticResource backgroundColor_Light}">
+                    <Grid x:Name="gameHistoryGrid" Background="{StaticResource backgroundColor_Light}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="15"/>
+                            <ColumnDefinition x:Name="gameMomentColumn" Width="7*"/>
+                            <ColumnDefinition Width="50"/>
+                            <ColumnDefinition x:Name="coverBlockGridColumn" Width="300"/>
+                            <ColumnDefinition Width="20"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid x:Name="gameMomentmGrid" Grid.Column="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="10"/>
+                                <RowDefinition x:Name="tipsMomentRow" Height="20"/>
+                                <RowDefinition Height="10"/>
+                                <RowDefinition Name="openAlbumButtonRow" Height="34"/>
+                                <RowDefinition Height="20"/>
+                                <RowDefinition Name="gameLogRow" Height="*"/>
+
+                            </Grid.RowDefinitions>
+                            <TextBlock x:Name="tipsMomentTextBlock" Text="动态" Grid.Row="1" Foreground="{StaticResource iconColor}" FontSize="14"/>
+                            <local:MainWindowOpenAlbumButton x:Name="button_OpenAlbum" Grid.Row="3"/>
+                            <StackPanel x:Name="captureDisplayPanel" Grid.Row="5" Width="auto"/>
+                            <!--<local:MainWindowDailyCaputreDisplay x:Name="captrueDisplay" Grid.Row="5"/>-->
+                        </Grid>
+
+                        <Grid x:Name="coverBlockGrid" Grid.Column="3">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="10"/>
+                                <RowDefinition Name="tipsCoverRow" Height="30"/>
+                                <RowDefinition Name="coverBlockRow" Height="200"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock x:Name="tipsCoverTextBlock" Text="封面/截图" Grid.Row="1" Foreground="{StaticResource iconColor}" FontSize="14"/>
+                            <local:MainWindowCoverBlock x:Name="coverBlock"  Grid.Row="3"/>
+                        </Grid>
+                    </Grid>
+                </ScrollViewer>
+            </Grid>
+
+        </Grid>
+    </Grid>
+</Window>

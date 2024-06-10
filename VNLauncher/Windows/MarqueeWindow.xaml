@@ -1,0 +1,57 @@
+﻿<Window x:Class="VNLauncher.Windows.MarqueeWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:VNLauncher.Controls"
+        mc:Ignorable="d"  AllowsTransparency="True" MinHeight="160" MinWidth="700" MaxHeight="210" MaxWidth="900" Background="Transparent" Topmost="True"
+        Title="字幕" Height="180" Width="800" WindowStyle="None" Top="700" Left="460" ResizeMode="CanResizeWithGrip" Unloaded="Window_Unloaded"  >
+    <Border CornerRadius="10" Background="{StaticResource marqueeBackgroundColor}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="3"/>
+                <RowDefinition Name="titleRow" Height="12"/>
+                <RowDefinition Name="mainRow" Height="*"/>
+                <RowDefinition Name="bottomRow" Height="auto"/>
+                <RowDefinition  Height="5"/>
+            </Grid.RowDefinitions>
+            <Grid PreviewMouseDown="MouseDragMove" Grid.Column="0" Background="Transparent"/>
+            <Grid Name="titleGrid" Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Name="closeButtonColumn" Width="18"/>
+                    <ColumnDefinition Width="3"/>
+                </Grid.ColumnDefinitions>
+                <Grid PreviewMouseDown="MouseDragMove" Grid.Column="0" Background="Transparent"/>
+                <local:MarqueeCloseButton Grid.Column="1" Click="MarqueeCloseButton_Click"/>
+            </Grid>
+            <TextBlock x:Name="marqueeTextBlock" Foreground="{StaticResource marqueeIconColor}" Margin="20,5,20,5" Grid.Row="2" FontSize="20" TextWrapping="Wrap"/>
+            <Grid Name="bottomGrid" Grid.Row="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="25"/>
+                    <ColumnDefinition Name="setMarqueeButtonColumn" Width="auto"/>
+                    <ColumnDefinition Width="14"/>
+                    <ColumnDefinition x:Name="selectTranslateModeButtonColumn" Width="auto"/>
+                    <ColumnDefinition Width="14"/>
+                    <ColumnDefinition x:Name="windowOperatorButtonColumn" Width="auto"/>
+                    <ColumnDefinition Width="14"/>
+                    <ColumnDefinition x:Name="scanModeButtonColumn" Width="auto"/>
+                    <ColumnDefinition Width="5*"/>
+                    <ColumnDefinition x:Name="adjustSideButtonColumn" Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition x:Name="translateButtonColumn" Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition x:Name="stateInfoColumn" Width="auto"/>
+                    <ColumnDefinition Width="40"/>
+                </Grid.ColumnDefinitions>
+                <local:MarqueeButton x:Name="marqueeStyleButton" Grid.Column="1" MarqueeButtonText="字幕设置"/>
+                <local:MarqueeButton x:Name="selectTranslateModeButton" Grid.Column="3" MarqueeButtonText="翻译源/OCR"/>
+                <local:MarqueeButton x:Name="windowOperatorButton" Grid.Column="5" MarqueeButtonText="窗口操作"/>
+                <local:MarqueeButton x:Name="scanModeButton" Grid.Column="7" MarqueeButtonText="扫描模式"/>
+                <local:MarqueeAdjustSideButton x:Name="adjustSideButton" Grid.Column="9"/>
+                <local:MarqueeTranslateButton x:Name="translateButton" Grid.Column="11" Click="TranslateButton_Click"/>
+                <local:MarqueeStateInfo x:Name="stateInfo" Grid.Column="13"/>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>

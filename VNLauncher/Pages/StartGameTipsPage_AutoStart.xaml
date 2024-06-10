@@ -1,0 +1,16 @@
+﻿<Page x:Class="VNLauncher.Pages.StartGameTipsPage_AutoStart"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:VNLauncher.Controls"
+      mc:Ignorable="d" 
+      d:DesignHeight="220" d:DesignWidth="350" Background="{StaticResource backgroundColor_Dark}"
+      Title="">
+
+    <Canvas Name="mainCanvas">
+        <TextBlock Name="titleTextBlock" Canvas.Top="10" Canvas.Left="20" Foreground="{StaticResource iconColor}" Text="Tips：" FontSize="20"/>
+        <TextBlock Name="mainTipsTextBlock" Canvas.Top="50" Canvas.Left="10" Foreground="{StaticResource iconColor}" Text="系统正在启动游戏，请稍候..." 
+                   FontSize="18" Width="340" TextWrapping="Wrap"/>
+    </Canvas>
+</Page>

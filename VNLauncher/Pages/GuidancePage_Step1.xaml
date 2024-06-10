@@ -1,0 +1,25 @@
+﻿<Page x:Class="VNLauncher.Pages.GuidancePage_Step1"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:VNLauncher.Controls"
+      mc:Ignorable="d" 
+      d:DesignHeight="250" d:DesignWidth="400"
+      Title="Step 1/3" Unloaded="Page_Unloaded">
+    <Canvas Name="mainCanvas">
+        <local:TitleBarButton x:Name="closeButton" Width="30" Height="20" TitleBarButtonIcon="Close" Canvas.Right="0" Canvas.Top="0" Click="CloseButton_Click"/>
+        <local:TitleBarButton x:Name="backButton" Width="30" Height="20" TitleBarButtonIcon="ArrowLeft" Canvas.Right="30" Canvas.Top="0" Click="BackButton_Click"/>
+        <TextBlock x:Name="stepTipsTextBlock" Text="Step 1/3" Foreground="{StaticResource iconColor}" FontSize="20" Canvas.Top="10" Canvas.Left="20"/>
+        <TextBlock x:Name="mainTipsTextBlock" Width="380"
+                   Text=""
+                   Foreground="{StaticResource iconColor}" FontSize="14" Canvas.Top="50" Canvas.Left="20" TextWrapping="Wrap"/>
+        <local:BigButton x:Name="nextStepButton" BigButtonText="下一步"  Height="50" Width="90" Canvas.Left="280" Canvas.Top="140" Click="NextStepButton_Click"/>
+        <TextBlock Name="errorTipsTextBlock" Width="130" Text="请先选择游戏窗口后再进行下一步！"  Foreground="{StaticResource iconColor}" FontSize="11" Canvas.Left="260"
+                   Canvas.Top="200" Visibility="Hidden" TextWrapping="Wrap"/>
+        <TextBlock Name="windowSelectTipsTextBlock" Text="窗口名称" Foreground="{StaticResource iconColor}" FontSize="14" Canvas.Top="140" Canvas.Left="30" />
+        <Border Canvas.Top="166" Width="200" Canvas.Left="30" BorderThickness="1" BorderBrush="{StaticResource iconColor}">
+            <TextBlock Name="windowTitleBlock" Text="" Foreground="{StaticResource iconColor}" FontSize="14" Canvas.Left="30" TextWrapping="Wrap"/>
+        </Border>
+    </Canvas>
+</Page>

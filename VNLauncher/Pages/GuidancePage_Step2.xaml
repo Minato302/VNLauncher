@@ -1,0 +1,26 @@
+﻿<Page x:Class="VNLauncher.Pages.GuidancePage_Step2"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:VNLauncher.Controls"
+      mc:Ignorable="d" 
+      d:DesignHeight="250" d:DesignWidth="400" Unloaded="Page_Unloaded">
+    <Canvas Name="mainCanvas">
+        <local:TitleBarButton x:Name="closeButton" Width="30" Height="20" TitleBarButtonIcon="Close" Canvas.Right="0" Canvas.Top="0" Click="CloseButton_Click"/>
+        <local:TitleBarButton x:Name="backButton" Width="30" Height="20" TitleBarButtonIcon="ArrowLeft" Canvas.Right="30" Canvas.Top="0" Click="BackButton_Click"/>
+        <TextBlock x:Name="stepTipsTextBlock" Text="Step 2/3" Foreground="{StaticResource iconColor}" FontSize="20" Canvas.Top="10" Canvas.Left="20"/>
+        <TextBlock Width="380" x:Name="mainTipsTextBlock" 
+                   Text="   已捕获游戏窗口，现在需要获得游戏封面。请保证游戏窗口可以完整看到（本窗口可覆盖在游戏窗口上方），并在游戏窗口运行到封面时按下键盘回车键进行封面的截取。"
+                   Foreground="{StaticResource iconColor}" FontSize="14" Canvas.Top="40" Canvas.Left="20" TextWrapping="Wrap"/>
+        <TextBlock x:Name="screenShotModeTextBlock" Canvas.Top="128" Canvas.Left="253" Foreground="{StaticResource iconColor}" FontSize="14" Text="截屏模式："/>
+        <TextBlock x:Name="changeScreenShotModeTextBlock" Canvas.Top="100" Canvas.Left="20" Text="    若截出黑屏或尺寸错误，可在下方更改截屏模式后重试。"  Foreground="{StaticResource iconColor}" FontSize="14"/>
+        <local:ChangeModeButton x:Name="screenShotModeButton" Canvas.Left="320" Canvas.Top="127" Width="75" Height="21" ChangeModeButtonMode1Icon="WindowRestore" ChangeModeButtonMode1String="窗口截取"
+                                ChangeModeButtonMode2Icon="Scissors" ChangeModeButtonMode2String="全屏切割"/>
+        <Border Width="220" Height="120" Canvas.Top="125" Canvas.Left="20" BorderThickness="1" BorderBrush="{StaticResource iconColor}">
+            <Image Name="coverImage" Stretch="UniformToFill" />
+        </Border>
+        <local:BigButton x:Name="nextStepButton" BigButtonText="下一步"  Height="50" Width="90" Canvas.Left="280" Canvas.Top="160" Click="NextStepButton_Click"/>
+        <TextBlock Name="errorTipsBlock" Text="请先截图后再进行下一步！"  Foreground="{StaticResource iconColor}" FontSize="11" Canvas.Left="260" Canvas.Top="220" Visibility="Hidden"/>
+    </Canvas>
+</Page>
