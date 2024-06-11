@@ -155,5 +155,9 @@ namespace VNLauncher.FuntionalClasses
             }
             return prefixGroups;
         }
+        public void SaveCapture(String gameName, Bitmap capture, String captureName)
+        {
+            capture.Save(Path.Combine(GetGameCapturesPath(gameName)!, captureName + ".png"));
+        }
     }
 }

@@ -85,7 +85,7 @@ namespace VNLauncher.FuntionalClasses
             }
             minDistance /= wordBlocks.Count * 2;
             List<List<WordBlock>> res = new List<List<WordBlock>>();
-            foreach (var wordBlock in wordBlocks)
+            foreach (WordBlock wordBlock in wordBlocks)
             {
 
                 int ind;
@@ -156,6 +156,7 @@ namespace VNLauncher.FuntionalClasses
         }
         public List<WordBlock> Scan(System.Drawing.Bitmap pic)
         {
+            pic.Save("D:\\yoshino\\OcrPic.jpg");
             List<WordBlock> blocks = new List<WordBlock>();
             Mat src = BitmapConverter.ToMat(pic);
             Mat mat = new Mat();

@@ -11,7 +11,7 @@
     <Canvas Name="mainCanvas">
         <local:TitleBarButton x:Name="closeButton" Width="30" Height="20" Canvas.Top="0" Canvas.Right="0" TitleBarButtonIcon="Close" Click="CloseButton_Click"/>
         <TextBlock Name="titleTextBlock" Canvas.Top="10" Canvas.Left="20" Foreground="{StaticResource iconColor}" Text="Tips：" FontSize="20"/>
-        <TextBlock Name="mainTipsTextBlock" Canvas.Top="50" Canvas.Left="10" Foreground="{StaticResource iconColor}" Text="系统正在启动游戏，请稍候..." 
+        <TextBlock Name="mainTipsTextBlock" Canvas.Top="50" Canvas.Left="10" Foreground="{StaticResource iconColor}" Text="  系统正在启动游戏，请稍候..." 
                    FontSize="18" Width="340" TextWrapping="Wrap"/>
     </Canvas>
 </Page>

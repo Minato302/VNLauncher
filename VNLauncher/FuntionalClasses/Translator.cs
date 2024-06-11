@@ -13,6 +13,7 @@ namespace VNLauncher.FuntionalClasses
     public class Conversation
     {
         private List<String> history;
+        public List<String> History => history;
         private Int32 k;
         public Conversation(Int32 k)
         {
@@ -60,6 +61,10 @@ namespace VNLauncher.FuntionalClasses
             url = "https://api.chatanywhere.com.cn/v1/chat/completions";
             httpClient = new HttpClient();
             conversation = new Conversation(10);
+        }
+        public void RemoveLast()
+        {
+            conversation.History.RemoveAt(conversation.History.Count - 1);
         }
         public async Task<String> Translate(String jp)
         {

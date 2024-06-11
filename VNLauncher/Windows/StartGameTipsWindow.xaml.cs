@@ -13,8 +13,9 @@ namespace VNLauncher
     {
         private System.Timers.Timer timer;
         private Game game;
-        private Process gameProcess;
+        private Process gameProcess = null;
         public Process GameProcess => gameProcess;
+        public Game Game => game;
         public StartGameTipsWindow(Game game)
         {
             InitializeComponent();
@@ -22,15 +23,23 @@ namespace VNLauncher
             timer.Elapsed += OnTimedEvent;
             timer.AutoReset = true;
             this.game = game;
-            if(game.IsAutoStart)
+            StartGameTipsPage_AutoStart autoStartPage = new StartGameTipsPage_AutoStart(this);
+            if (game.IsAutoStart)
             {
-                mainFrame.Navigate(new StartGameTipsPage_AutoStart(this));
+                mainFrame.Navigate(autoStartPage);
             }
             else
             {
                 mainFrame.Navigate(new StartGameTipsPage_ManualStart(this));
             }
-            gameProcess = game.StartGame();
+            try
+            {
+                gameProcess = game.StartGame();
+            }
+            catch (Exception)
+            {
+                autoStartPage.mainTipsTextBlock.Text = "系统无法启动游戏，游戏路径可能被更改，请将游戏文件重新移回源路径处或重新加入该游戏";
+            }
             timer.Enabled = true;
         }
         private void OnTimedEvent(Object? sender, System.Timers.ElapsedEventArgs e)

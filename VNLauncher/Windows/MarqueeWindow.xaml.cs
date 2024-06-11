@@ -1,15 +1,17 @@
 ﻿#pragma warning disable IDE0049
+#pragma warning disable CS8618
 
 using OpenCvSharp.Extensions;
 using System.Drawing;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Threading;
 using VNLauncher.FuntionalClasses;
 
 namespace VNLauncher.Windows
 {
-    public partial class MarqueeWindow : Window
+    public partial class MarqueeWindow : System.Windows.Window
     {
         private IntPtr gameWindowHwnd;
         private Game game;
@@ -18,14 +20,15 @@ namespace VNLauncher.Windows
         private GlobalHook hook;
         private LocalOCR scanner;
         private TransparentWindow tWindow;
+        private FileManager fileManager;
 
-        private Thread workingThread;
 
         public MarqueeWindow(IntPtr gameWindowHwnd, Game game)
         {
             InitializeComponent();
             this.gameWindowHwnd = gameWindowHwnd;
             this.game = game;
+            fileManager = new FileManager();
             windowMonitoringTimer = new System.Timers.Timer(1000);
             windowMonitoringTimer.Elapsed += OnTimedEvent;
             windowMonitoringTimer.AutoReset = true;
@@ -33,8 +36,8 @@ namespace VNLauncher.Windows
             hook = new GlobalHook(new List<(String, Action)>
             {
                 ("鼠标左键", WaitAndScan), ("键盘按键←", LeftKeyDown), ("键盘按键→", RightKeyDown), ("键盘按键↑", UpKeyDown),
-                ("键盘按键↓", DownKeyDown),("键盘按键Tab",TabKeyDown) });
-
+                ("键盘按键↓", DownKeyDown),("键盘按键Tab",TabKeyDown),("键盘按键R",Retranslate),("键盘按键P", ScreenShot)
+            });
             tWindowTimer = new System.Timers.Timer(2000);
             tWindowTimer.Elapsed += (sender, e) =>
             {
@@ -51,7 +54,6 @@ namespace VNLauncher.Windows
             tWindow = new TransparentWindow(gameWindowHwnd, game.Loaction);
             tWindow.Show();
             tWindow.Visibility = Visibility.Hidden;
-            workingThread = new Thread(() => { });
             translator = new ChatGPTTranslator();
 
         }
@@ -79,6 +81,7 @@ namespace VNLauncher.Windows
                 {
                     Topmost = true;
                     game.EndGame();
+                    tWindow.Close();
                     windowMonitoringTimer.Stop();
                     Close();
 
@@ -104,57 +107,64 @@ namespace VNLauncher.Windows
                 }
             }
         }
-        private CancellationTokenSource tokenSource;
         private ChatGPTTranslator translator;
-        private async void WaitAndScan()  
+        // 在类级别声明一个 CancellationTokenSource 变量
+        private CancellationTokenSource tokenSource;
+
+        private async void WaitAndScan()
         {
             if (translateButton.IsTranslating)
             {
-
-
-                tokenSource?.Cancel();
-                tokenSource = new CancellationTokenSource();
-
                 WordBlock? b = null;
-                CancellationToken token = tokenSource.Token;
+
+                // 取消上一个任务
+                tokenSource?.Cancel();
+
+                // 创建新的 CancellationTokenSource
+                tokenSource = new CancellationTokenSource();
+                var token = tokenSource.Token;
+
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    stateInfo.ChangeState(Controls.MarqueeStateInfo.State.Waiting);
+                });
+
                 try
                 {
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        stateInfo.ChangeState(Controls.MarqueeStateInfo.State.Waiting);
-                    });
                     await Task.Run(async () =>
                     {
                         while (true)
                         {
-                            if (token.IsCancellationRequested)
-                                token.ThrowIfCancellationRequested();
+                            // 检查是否请求取消任务
+                            token.ThrowIfCancellationRequested();
 
                             Bitmap lastCapture = WindowCapture.Shot(gameWindowHwnd,
                                 game.IsWindowShot ? WindowCapture.CaptureMode.Window : WindowCapture.CaptureMode.FullScreenCut,
                                 game.Loaction);
-
                             List<Int32> historySimilarities = new List<Int32>();
+
                             for (Int32 i = 0; i < 15; i++)
                             {
-                                await Task.Delay(300, token);
+                                token.ThrowIfCancellationRequested();
 
-                                if (token.IsCancellationRequested)
-                                {
-                                    token.ThrowIfCancellationRequested();
-                                }
+                                await Task.Delay(200);
                                 Bitmap capture = WindowCapture.Shot(gameWindowHwnd,
                                     game.IsWindowShot ? WindowCapture.CaptureMode.Window : WindowCapture.CaptureMode.FullScreenCut,
                                     game.Loaction);
-
-                                Int32 similarity = ImageHandler.GetSimilarity(BitmapConverter.ToMat(lastCapture), BitmapConverter.ToMat(capture));
+                                //          Int32 similarity = ImageHandler.GetSimilarity(BitmapConverter.ToMat(lastCapture), BitmapConverter.ToMat(capture));
+                                
+                                Int32 similarity = ImageHandler.CalculateWhiteIntersections(BitmapConverter.ToMat(capture));
 
                                 Int32 count = 0;
+
                                 foreach (Int32 historySimilarity in historySimilarities)
                                 {
-                                    if (historySimilarity == similarity)
+                                    if (similarity != 0)
                                     {
-                                        count++;
+                                        if (historySimilarity >= similarity)
+                                        {
+                                            count++;
+                                        }
                                     }
                                 }
 
@@ -168,12 +178,15 @@ namespace VNLauncher.Windows
                                     break;
                                 }
                             }
+
                             Application.Current.Dispatcher.Invoke(() =>
                             {
                                 stateInfo.ChangeState(Controls.MarqueeStateInfo.State.Identifying);
                             });
+
                             List<WordBlock> dialog = scanner.Scan(lastCapture);
                             b = WordBlock.Splicing(dialog);
+
                             if (b.Words.Length != 0)
                             {
                                 break;
@@ -185,9 +198,9 @@ namespace VNLauncher.Windows
                     {
                         Application.Current.Dispatcher.Invoke(() =>
                         {
-                            stateInfo.ChangeState(Controls.MarqueeStateInfo.State.Translating);
                             marqueeTextBlock.Text = b.Words;
-                            Translate(b.Words);
+                            stateInfo.ChangeState(Controls.MarqueeStateInfo.State.Translating);
+                            //   Translate(b.Words);
                         });
                     }
                 }
@@ -196,6 +209,48 @@ namespace VNLauncher.Windows
 
                 }
             }
+        }
+
+        private async void Retranslate()
+        {
+            WordBlock b = null;
+            Bitmap capture = WindowCapture.Shot(gameWindowHwnd,
+                          game.IsWindowShot ? WindowCapture.CaptureMode.Window : WindowCapture.CaptureMode.FullScreenCut,
+                          game.Loaction);
+            await Task.Run(async () =>
+            {
+                List<WordBlock> dialog = scanner.Scan(capture);
+                Application.Current.Dispatcher.Invoke(() =>
+                 {
+                     stateInfo.ChangeState(Controls.MarqueeStateInfo.State.Identifying);
+                     b = WordBlock.Splicing(dialog);
+                 });
+            });
+            if (b != null)
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    stateInfo.ChangeState(Controls.MarqueeStateInfo.State.Translating);
+                    marqueeTextBlock.Text = b.Words;
+                    translator.RemoveLast();
+                    Translate(b.Words);
+                });
+            }
+
+        }
+        private void ScreenShot()
+        {
+            String soundPath = AppDomain.CurrentDomain.BaseDirectory + "Resources\\ScreenshotSound.mp3";
+            MediaPlayer mediaPlayer = new MediaPlayer();
+            mediaPlayer.Open(new Uri(soundPath));
+            mediaPlayer.Play();
+
+            String time = DateTime.Now.ToString("yyMMddHHmmssffffff");
+            Bitmap capture = WindowCapture.Shot(gameWindowHwnd,
+                          game.IsWindowShot ? WindowCapture.CaptureMode.Window : WindowCapture.CaptureMode.FullScreenCut,
+                          game.Loaction);
+            fileManager.SaveCapture(game.Name, capture, time);
+
         }
         private async void Translate(String jpContent)
         {
@@ -207,8 +262,8 @@ namespace VNLauncher.Windows
         private void TabKeyDown()
         {
             translateButton.Turn();
-            workingThread.Interrupt();
-            if(translateButton.IsTranslating)
+            tokenSource?.Cancel();
+            if (translateButton.IsTranslating)
             {
                 stateInfo.ChangeState(Controls.MarqueeStateInfo.State.Over);
             }

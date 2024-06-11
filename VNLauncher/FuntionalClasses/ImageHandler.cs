@@ -2,6 +2,7 @@
 
 using OpenCvSharp;
 using OpenCvSharp.Extensions;
+using System.Drawing.Imaging;
 
 namespace VNLauncher.FuntionalClasses
 {
@@ -14,8 +15,6 @@ namespace VNLauncher.FuntionalClasses
 
             Mat binary = new Mat();
             Cv2.Threshold(grayImg, binary, 0, 255, ThresholdTypes.Binary | ThresholdTypes.Otsu);
-//            Mat morphKernel = Cv2.GetStructuringElement(MorphShapes.Rect, new Size(3, 3));
-  //          Cv2.MorphologyEx(binary, binary, MorphTypes.Open, morphKernel);
             return binary;
         }
         private static Boolean IsSubset(Mat img1, Mat img2)
@@ -49,8 +48,10 @@ namespace VNLauncher.FuntionalClasses
 
             return IsSubset(contourImg1, contourImg2);
         }
+
         public static Int32 GetSimilarity(Mat img1, Mat img2)
         {
+
             Mat binary1 = Binarize(img1);
             Mat binary2 = Binarize(img2);
 
@@ -74,6 +75,57 @@ namespace VNLauncher.FuntionalClasses
             return Cv2.CountNonZero(andImage);
 
         }
+        public static Int32 CalculateWhiteIntersections(Mat mat)
+        {
+            // 计算各水平线所在的高度位置
+            Mat binary1 = Binarize(mat);
+            Point[][] contours;
+            HierarchyIndex[] hierarchy;
+            Cv2.FindContours(binary1, out contours, out hierarchy, RetrievalModes.External, ContourApproximationModes.ApproxSimple);
+            contours = FilterContours(contours, mat.Size());
+            Mat contourImg1 = Mat.Zeros(binary1.Size(), MatType.CV_8UC1);
+            Cv2.DrawContours(contourImg1, contours, -1, Scalar.White, 1);
+
+            BitmapConverter.ToBitmap(binary1).Save("D:\\yoshino\\1.jpg");
+
+            Int32 height = contourImg1.Height;
+            Int32 width = contourImg1.Width;
+            Int32[] heights = { height / 10,height/5,height*3/10,height*2/5,height/2, 3 * height / 5,7*height/10,  4 * height / 5, 9* height / 10 };
+
+            Int32 totalIntersections = 0;
+
+            // 遍历每条线
+            foreach (Int32 y in heights)
+            {
+                Int32 lineIntersections = 0;
+                Boolean inWhite = false;
+
+                for (Int32 x = 0; x < width; x++)
+                {
+                    byte color = contourImg1.At<byte>(y, x);
+                    // 检查当前点是否为白色 (白色在黑白图像中是255)
+                    if (color == 255)
+                    {
+                        if (!inWhite)
+                        {
+                            // 进入白色区域
+                            inWhite = true;
+                            lineIntersections++;
+                        }
+                    }
+                    else
+                    {
+                        // 离开白色区域
+                        inWhite = false;
+                    }
+                }
+
+                totalIntersections += lineIntersections;
+            }
+
+            return totalIntersections;
+        }
+
         private static Point[][] FilterContours(Point[][] contours, Size size)
         {
             List<Point[]> filteredContours = new List<Point[]>();
@@ -81,7 +133,7 @@ namespace VNLauncher.FuntionalClasses
             foreach (Point[] contour in contours)
             {
                 Double area = Cv2.ContourArea(contour);
-                if (area < size.Width * size.Height / 100 && area >= 2)
+                if (area < size.Width * size.Height / 100 && area >= 2 && !Cv2.IsContourConvex(contour))
                 {
                     filteredContours.Add(contour);
                 }
@@ -114,6 +166,66 @@ namespace VNLauncher.FuntionalClasses
             System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(croppedImage);
             g.DrawImage(originalImage, new System.Drawing.Rectangle(0, 0, captionWidth, captionHeight), captionRect, System.Drawing.GraphicsUnit.Pixel);
             return croppedImage;
+        }
+        public static System.Drawing.Bitmap ResizeToFullImage(System.Drawing.Bitmap originalImage)
+        {
+            // Determine the bounding rectangle of the content
+            System.Drawing.Rectangle contentRect = GetContentRectangle(originalImage);
+
+            // Create a new bitmap with the same size as the original image
+            System.Drawing.Bitmap resizedImage = new System.Drawing.Bitmap(originalImage.Width, originalImage.Height);
+
+            // Create graphics object for drawing
+            using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(resizedImage))
+            {
+                // Clear the background with transparency
+                g.Clear(System.Drawing.Color.Transparent);
+
+                // Define the destination rectangle (the entire new image)
+                System.Drawing.Rectangle destRect = new System.Drawing.Rectangle(0, 0, resizedImage.Width, resizedImage.Height);
+
+                // Draw the resized image
+                g.DrawImage(originalImage, destRect, contentRect, System.Drawing.GraphicsUnit.Pixel);
+            }
+
+            return resizedImage;
+        }
+
+        private static System.Drawing.Rectangle GetContentRectangle(System.Drawing.Bitmap image)
+        {
+            int minX = image.Width, minY = image.Height, maxX = 0, maxY = 0;
+
+            BitmapData bitmapData = image.LockBits(new System.Drawing.Rectangle(0, 0, image.Width, image.Height),
+                                                   ImageLockMode.ReadOnly, image.PixelFormat);
+            int bytesPerPixel = System.Drawing.Image.GetPixelFormatSize(image.PixelFormat) / 8;
+            int byteCount = bitmapData.Stride * image.Height;
+            byte[] pixels = new byte[byteCount];
+            IntPtr ptrFirstPixel = bitmapData.Scan0;
+
+            System.Runtime.InteropServices.Marshal.Copy(ptrFirstPixel, pixels, 0, pixels.Length);
+
+            for (int y = 0; y < image.Height; y++)
+            {
+                int yOffset = y * bitmapData.Stride;
+                for (int x = 0; x < image.Width; x++)
+                {
+                    int xOffset = x * bytesPerPixel;
+                    byte alpha = pixels[yOffset + xOffset + 3]; // Assuming 32bpp (ARGB)
+
+                    if (alpha != 0) // Non-transparent pixel
+                    {
+                        if (x < minX) minX = x;
+                        if (x > maxX) maxX = x;
+                        if (y < minY) minY = y;
+                        if (y > maxY) maxY = y;
+                    }
+                }
+            }
+
+            image.UnlockBits(bitmapData);
+
+            // Create a rectangle around the content
+            return new System.Drawing.Rectangle(minX, minY, maxX - minX + 1, maxY - minY + 1);
         }
     }
 }

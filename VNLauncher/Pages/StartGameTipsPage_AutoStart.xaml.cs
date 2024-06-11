@@ -29,7 +29,8 @@ namespace VNLauncher.Pages
 
         private void CloseButton_Click(Object sender, RoutedEventArgs e)
         {
-            baseWindow.GameProcess.Close();
+            baseWindow.Game.EndGame();
+            baseWindow.GameProcess?.Kill();
             baseWindow.Close();
         }
     }

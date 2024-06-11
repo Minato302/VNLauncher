@@ -15,8 +15,16 @@
 
   <ItemGroup>
     <None Remove="Resources\photo.png" />
+    <None Remove="Resources\ScreenshotSound.mp3" />
+    <None Remove="Resources\ScreenshotSound.wav" />
     <None Remove="Resources\transparent.png" />
     <None Remove="Themes\logo.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\ScreenshotSound.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -33,8 +41,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Resources\logo.png" />
-    <Resource Include="Resources\photo.png" />
+    <Resource Include="Resources\logo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\photo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
 </Project>
