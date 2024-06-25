@@ -18,7 +18,7 @@
         <local:ChangeModeButton x:Name="screenShotModeButton" Canvas.Left="320" Canvas.Top="127" Width="75" Height="21" ChangeModeButtonMode1Icon="WindowRestore" ChangeModeButtonMode1String="窗口截取"
                                 ChangeModeButtonMode2Icon="Scissors" ChangeModeButtonMode2String="全屏切割"/>
         <Border Width="220" Height="120" Canvas.Top="125" Canvas.Left="20" BorderThickness="1" BorderBrush="{StaticResource iconColor}">
-            <Image Name="coverImage" Stretch="UniformToFill" />
+            <Image Name="coverImage" Stretch="UniformToFill"/>
         </Border>
         <local:BigButton x:Name="nextStepButton" BigButtonText="下一步"  Height="50" Width="90" Canvas.Left="280" Canvas.Top="160" Click="NextStepButton_Click"/>
         <TextBlock Name="errorTipsBlock" Text="请先截图后再进行下一步！"  Foreground="{StaticResource iconColor}" FontSize="11" Canvas.Left="260" Canvas.Top="220" Visibility="Hidden"/>

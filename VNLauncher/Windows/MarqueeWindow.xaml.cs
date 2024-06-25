@@ -21,11 +21,13 @@ namespace VNLauncher.Windows
         private LocalOCR scanner;
         private TransparentWindow tWindow;
         private FileManager fileManager;
+        private MainWindow mainWindow;
 
 
-        public MarqueeWindow(IntPtr gameWindowHwnd, Game game)
+        public MarqueeWindow(IntPtr gameWindowHwnd, Game game, MainWindow mainWindow)
         {
             InitializeComponent();
+            this.mainWindow = mainWindow;
             this.gameWindowHwnd = gameWindowHwnd;
             this.game = game;
             fileManager = new FileManager();
@@ -54,7 +56,8 @@ namespace VNLauncher.Windows
             tWindow = new TransparentWindow(gameWindowHwnd, game.Loaction);
             tWindow.Show();
             tWindow.Visibility = Visibility.Hidden;
-            translator = new ChatGPTTranslator();
+            cTranslator = new ChatGPTTranslator();
+            lTranslator = new LocalTranslator();
 
         }
         void MouseDragMove(Object sender, MouseButtonEventArgs e)
@@ -107,8 +110,9 @@ namespace VNLauncher.Windows
                 }
             }
         }
-        private ChatGPTTranslator translator;
-        // 在类级别声明一个 CancellationTokenSource 变量
+        private ChatGPTTranslator cTranslator;
+        private LocalTranslator lTranslator;
+
         private CancellationTokenSource tokenSource;
 
         private async void WaitAndScan()
@@ -138,9 +142,7 @@ namespace VNLauncher.Windows
                             // 检查是否请求取消任务
                             token.ThrowIfCancellationRequested();
 
-                            Bitmap lastCapture = WindowCapture.Shot(gameWindowHwnd,
-                                game.IsWindowShot ? WindowCapture.CaptureMode.Window : WindowCapture.CaptureMode.FullScreenCut,
-                                game.Loaction);
+                            Bitmap lastCapture = GetGameShot(game.Loaction);
                             List<Int32> historySimilarities = new List<Int32>();
 
                             for (Int32 i = 0; i < 15; i++)
@@ -148,11 +150,7 @@ namespace VNLauncher.Windows
                                 token.ThrowIfCancellationRequested();
 
                                 await Task.Delay(200);
-                                Bitmap capture = WindowCapture.Shot(gameWindowHwnd,
-                                    game.IsWindowShot ? WindowCapture.CaptureMode.Window : WindowCapture.CaptureMode.FullScreenCut,
-                                    game.Loaction);
-                                //          Int32 similarity = ImageHandler.GetSimilarity(BitmapConverter.ToMat(lastCapture), BitmapConverter.ToMat(capture));
-                                
+                                Bitmap capture = GetGameShot(game.Loaction);
                                 Int32 similarity = ImageHandler.CalculateWhiteIntersections(BitmapConverter.ToMat(capture));
 
                                 Int32 count = 0;
@@ -200,8 +198,8 @@ namespace VNLauncher.Windows
                         {
                             marqueeTextBlock.Text = b.Words;
                             stateInfo.ChangeState(Controls.MarqueeStateInfo.State.Translating);
-                            //   Translate(b.Words);
                         });
+                        Translate(b.Words);
                     }
                 }
                 catch (OperationCanceledException)
@@ -214,9 +212,7 @@ namespace VNLauncher.Windows
         private async void Retranslate()
         {
             WordBlock b = null;
-            Bitmap capture = WindowCapture.Shot(gameWindowHwnd,
-                          game.IsWindowShot ? WindowCapture.CaptureMode.Window : WindowCapture.CaptureMode.FullScreenCut,
-                          game.Loaction);
+            Bitmap capture = GetGameShot(game.Loaction);
             await Task.Run(async () =>
             {
                 List<WordBlock> dialog = scanner.Scan(capture);
@@ -232,7 +228,7 @@ namespace VNLauncher.Windows
                 {
                     stateInfo.ChangeState(Controls.MarqueeStateInfo.State.Translating);
                     marqueeTextBlock.Text = b.Words;
-                    translator.RemoveLast();
+                    cTranslator.RemoveLast();
                     Translate(b.Words);
                 });
             }
@@ -245,16 +241,58 @@ namespace VNLauncher.Windows
             mediaPlayer.Open(new Uri(soundPath));
             mediaPlayer.Play();
 
-            String time = DateTime.Now.ToString("yyMMddHHmmssffffff");
-            Bitmap capture = WindowCapture.Shot(gameWindowHwnd,
-                          game.IsWindowShot ? WindowCapture.CaptureMode.Window : WindowCapture.CaptureMode.FullScreenCut,
-                          game.Loaction);
-            fileManager.SaveCapture(game.Name, capture, time);
+            String time = DateTime.Now.ToString("yyyyMMddHHmmssffffff");
 
+            Bitmap capture = GetGameShot();
+            fileManager.SaveCapture(game.Name, capture, time);
+            ScreenShotWindow sWindow = new ScreenShotWindow(ImageHandler.ConvertBitmapToBitmapSource(capture));
+            sWindow.Show();
+        }
+        private Bitmap GetGameShot()
+        {
+            Bitmap capture;
+            if (!game.IsWindowShot)
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    Visibility = Visibility.Hidden;
+                });
+                capture = WindowCapture.Shot(gameWindowHwnd, WindowCapture.CaptureMode.FullScreenCut);
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    Visibility = Visibility.Visible;
+                });
+            }
+            else
+            {
+                capture = WindowCapture.Shot(gameWindowHwnd, WindowCapture.CaptureMode.Window);
+            }
+            return capture;
+        }
+        private Bitmap GetGameShot(Game.CaptionLocation location)
+        {
+            Bitmap capture;
+            if (!game.IsWindowShot)
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    Visibility = Visibility.Hidden;
+                });
+                capture = WindowCapture.Shot(gameWindowHwnd, WindowCapture.CaptureMode.FullScreenCut, location);
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    Visibility = Visibility.Visible;
+                });
+            }
+            else
+            {
+                capture = WindowCapture.Shot(gameWindowHwnd, WindowCapture.CaptureMode.Window, location);
+            }
+            return capture;
         }
         private async void Translate(String jpContent)
         {
-            String cnContent = await translator.Translate(jpContent);
+            String cnContent = await cTranslator.Translate(jpContent);
             marqueeTextBlock.Text += '\n';
             marqueeTextBlock.Text += cnContent;
             stateInfo.ChangeState(Controls.MarqueeStateInfo.State.Over);
@@ -368,6 +406,7 @@ namespace VNLauncher.Windows
 
         private void Window_Unloaded(Object sender, RoutedEventArgs e)
         {
+            mainWindow.UpdateSelectedGameInfo();
             hook.UninstallHook();
         }
     }

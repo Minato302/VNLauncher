@@ -113,8 +113,18 @@ namespace VNLauncher.Windows
             {
                 if(gameButton.IsSelected)
                 {
-                    StartGameTipsWindow tipsWindow = new StartGameTipsWindow(gameButton.Game);
+                    StartGameTipsWindow tipsWindow = new StartGameTipsWindow(gameButton.Game, this);
                     tipsWindow.Show();
+                }
+            }
+        }
+        public void UpdateSelectedGameInfo()
+        {
+            foreach (MainWindowGameButton gameButton in gameListStackPanel.Children)
+            {
+                if (gameButton.IsSelected)
+                {
+                    gameButton.UpdateInfo();
                 }
             }
         }

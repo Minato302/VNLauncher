@@ -3,6 +3,9 @@
 using OpenCvSharp;
 using OpenCvSharp.Extensions;
 using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
+using System.Windows.Media.Imaging;
+using System.Windows.Interop;
 
 namespace VNLauncher.FuntionalClasses
 {
@@ -49,6 +52,7 @@ namespace VNLauncher.FuntionalClasses
             return IsSubset(contourImg1, contourImg2);
         }
 
+
         public static Int32 GetSimilarity(Mat img1, Mat img2)
         {
 
@@ -77,7 +81,6 @@ namespace VNLauncher.FuntionalClasses
         }
         public static Int32 CalculateWhiteIntersections(Mat mat)
         {
-            // 计算各水平线所在的高度位置
             Mat binary1 = Binarize(mat);
             Point[][] contours;
             HierarchyIndex[] hierarchy;
@@ -86,15 +89,12 @@ namespace VNLauncher.FuntionalClasses
             Mat contourImg1 = Mat.Zeros(binary1.Size(), MatType.CV_8UC1);
             Cv2.DrawContours(contourImg1, contours, -1, Scalar.White, 1);
 
-            BitmapConverter.ToBitmap(binary1).Save("D:\\yoshino\\1.jpg");
-
             Int32 height = contourImg1.Height;
             Int32 width = contourImg1.Width;
-            Int32[] heights = { height / 10,height/5,height*3/10,height*2/5,height/2, 3 * height / 5,7*height/10,  4 * height / 5, 9* height / 10 };
+            Int32[] heights = { height / 10, height / 5, height * 3 / 10, height * 2 / 5, height / 2, 3 * height / 5, 7 * height / 10, 4 * height / 5, 9 * height / 10 };
 
             Int32 totalIntersections = 0;
 
-            // 遍历每条线
             foreach (Int32 y in heights)
             {
                 Int32 lineIntersections = 0;
@@ -102,27 +102,23 @@ namespace VNLauncher.FuntionalClasses
 
                 for (Int32 x = 0; x < width; x++)
                 {
-                    byte color = contourImg1.At<byte>(y, x);
-                    // 检查当前点是否为白色 (白色在黑白图像中是255)
+                    Byte color = contourImg1.At<Byte>(y, x);
                     if (color == 255)
                     {
                         if (!inWhite)
                         {
-                            // 进入白色区域
                             inWhite = true;
                             lineIntersections++;
                         }
                     }
                     else
                     {
-                        // 离开白色区域
                         inWhite = false;
                     }
                 }
 
                 totalIntersections += lineIntersections;
             }
-
             return totalIntersections;
         }
 
@@ -169,28 +165,41 @@ namespace VNLauncher.FuntionalClasses
         }
         public static System.Drawing.Bitmap ResizeToFullImage(System.Drawing.Bitmap originalImage)
         {
-            // Determine the bounding rectangle of the content
             System.Drawing.Rectangle contentRect = GetContentRectangle(originalImage);
-
-            // Create a new bitmap with the same size as the original image
             System.Drawing.Bitmap resizedImage = new System.Drawing.Bitmap(originalImage.Width, originalImage.Height);
-
-            // Create graphics object for drawing
             using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(resizedImage))
             {
-                // Clear the background with transparency
                 g.Clear(System.Drawing.Color.Transparent);
-
-                // Define the destination rectangle (the entire new image)
                 System.Drawing.Rectangle destRect = new System.Drawing.Rectangle(0, 0, resizedImage.Width, resizedImage.Height);
-
-                // Draw the resized image
                 g.DrawImage(originalImage, destRect, contentRect, System.Drawing.GraphicsUnit.Pixel);
             }
 
             return resizedImage;
         }
+        public static BitmapSource ConvertBitmapToBitmapSource(System.Drawing.Bitmap bitmap)
+        {
+            IntPtr hBitmap = bitmap.GetHbitmap();
+            BitmapSource bitmapSource;
 
+            try
+            {
+                bitmapSource = Imaging.CreateBitmapSourceFromHBitmap(
+                    hBitmap,
+                    IntPtr.Zero,
+                    System.Windows.Int32Rect.Empty,
+                    BitmapSizeOptions.FromEmptyOptions());
+            }
+            finally
+            {
+                DeleteObject(hBitmap);
+            }
+
+            return bitmapSource;
+        }
+
+        [DllImport("gdi32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern Boolean DeleteObject(IntPtr hObject);
         private static System.Drawing.Rectangle GetContentRectangle(System.Drawing.Bitmap image)
         {
             int minX = image.Width, minY = image.Height, maxX = 0, maxY = 0;
@@ -223,8 +232,6 @@ namespace VNLauncher.FuntionalClasses
             }
 
             image.UnlockBits(bitmapData);
-
-            // Create a rectangle around the content
             return new System.Drawing.Rectangle(minX, minY, maxX - minX + 1, maxY - minY + 1);
         }
     }

@@ -1,7 +1,6 @@
 ﻿#pragma warning disable IDE0049
 
 using System.Diagnostics;
-using System.Reflection.Metadata;
 using System.Windows;
 using VNLauncher.FuntionalClasses;
 using VNLauncher.Pages;
@@ -16,9 +15,11 @@ namespace VNLauncher
         private Process gameProcess = null;
         public Process GameProcess => gameProcess;
         public Game Game => game;
-        public StartGameTipsWindow(Game game)
+        private MainWindow mainWindow;
+        public StartGameTipsWindow(Game game, MainWindow mainWindow)
         {
             InitializeComponent();
+            this.mainWindow = mainWindow;
             timer = new System.Timers.Timer(1000);
             timer.Elapsed += OnTimedEvent;
             timer.AutoReset = true;
@@ -47,11 +48,11 @@ namespace VNLauncher
             WindowInfo? window = WindowsHandler.GetWindow(game.WindowTitle, game.WindowClass);
             if (window != null)
             {
-                Dispatcher.Invoke(() => 
+                Dispatcher.Invoke(() =>
                 {
                     timer.Stop();
                     timer.Dispose();
-                    MarqueeWindow marquee = new MarqueeWindow(((WindowInfo)window).Hwnd, game);
+                    MarqueeWindow marquee = new MarqueeWindow(((WindowInfo)window).Hwnd, game, mainWindow);
                     marquee.Show();
                     Close();
                 });

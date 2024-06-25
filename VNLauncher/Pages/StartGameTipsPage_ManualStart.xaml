@@ -15,6 +15,6 @@
         <TextBlock Name="locateTipsTextBlock" Canvas.Top="120" Canvas.Left="10" Foreground="{StaticResource iconColor}" Text="    您可以点击下方按钮快速定位到游戏文件所在位置。" 
                    FontSize="18" Width="340" TextWrapping="Wrap"/>
         <local:TitleBarButton x:Name="closeButton" Width="30" Height="20" Canvas.Top="0" Canvas.Right="0" TitleBarButtonIcon="Close" Click="CloseButton_Click"/>
-        <local:ItemButton x:Name="openGameFileButton" Width="30" Height="30" Canvas.Top="170" Canvas.Left="240" ItemButtonIcon="File"/>
+        <local:ItemButton x:Name="openGameFileButton" Width="30" Height="30" Canvas.Top="170" Canvas.Left="240" ItemButtonIcon="File" Click="OpenGameFileButton_Click"/>
     </Canvas>
 </Page>

@@ -12,7 +12,7 @@ namespace VNLauncher.FuntionalClasses
     public class WordBlock
     {
         private Rect block;
-        
+
         private String words;
         public Rect Block => block;
         public String Words => words;
@@ -65,7 +65,7 @@ namespace VNLauncher.FuntionalClasses
             Int32 up = Convert.ToInt32("9fa5", 16);
             foreach (Char ch in words)
             {
-                if (down <= Convert.ToInt32(ch) && Convert.ToInt32(ch) <= up)
+                if (TextModifier.IsJapaneseWord(ch))
                 {
                     return true;
                 }
@@ -88,7 +88,7 @@ namespace VNLauncher.FuntionalClasses
             foreach (WordBlock wordBlock in wordBlocks)
             {
 
-                int ind;
+                Int32 ind;
                 for (ind = 0; ind < res.Count; ind++)
                 {
                     if (InSameLine(wordBlock, res[ind][0], minDistance))

@@ -1,4 +1,5 @@
 ﻿#pragma warning disable IDE0049
+#pragma warning disable CS8618
 
 using FontAwesome.WPF;
 using System.Windows;
@@ -15,6 +16,7 @@ namespace VNLauncher.Controls
         }
         public static readonly DependencyProperty MainWindowGameInfoIconProperty =
                    DependencyProperty.Register("MainWindowGameInfoIcon", typeof(FontAwesomeIcon), typeof(MainWindowGameInfo));
+        private TextBlock valueTextBlock;
 
         public FontAwesomeIcon MainWindowGameInfoIcon
         {
@@ -56,6 +58,16 @@ namespace VNLauncher.Controls
             {
                 SetValue(MainWindowGameInfoValueProperty, value);
             }
+        }
+        public void SetInfo(String info)
+        {
+            valueTextBlock.Text = info;
+        }
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+            valueTextBlock = (Template.FindName("valueTextBlock", this) as TextBlock)!;
+
         }
         public MainWindowGameInfo()
         {

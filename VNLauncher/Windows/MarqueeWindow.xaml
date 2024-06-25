@@ -25,7 +25,7 @@
                 <Grid PreviewMouseDown="MouseDragMove" Grid.Column="0" Background="Transparent"/>
                 <local:MarqueeCloseButton Grid.Column="1" Click="MarqueeCloseButton_Click"/>
             </Grid>
-            <TextBlock x:Name="marqueeTextBlock" Foreground="{StaticResource marqueeIconColor}" Margin="20,5,20,5" Grid.Row="2" FontSize="20" TextWrapping="Wrap"/>
+            <TextBlock PreviewMouseDown="MouseDragMove" x:Name="marqueeTextBlock" Foreground="{StaticResource marqueeIconColor}" Margin="20,5,20,5" Grid.Row="2" FontSize="20" TextWrapping="Wrap"/>
             <Grid Name="bottomGrid" Grid.Row="3">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="25"/>
@@ -44,6 +44,13 @@
                     <ColumnDefinition x:Name="stateInfoColumn" Width="auto"/>
                     <ColumnDefinition Width="40"/>
                 </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0" PreviewMouseDown="MouseDragMove" Background="Transparent"/>
+                <Grid Grid.Column="2" PreviewMouseDown="MouseDragMove" Background="Transparent"/>
+                <Grid Grid.Column="4" PreviewMouseDown="MouseDragMove" Background="Transparent"/>
+                <Grid Grid.Column="6" PreviewMouseDown="MouseDragMove" Background="Transparent"/>
+                <Grid Grid.Column="8" PreviewMouseDown="MouseDragMove" Background="Transparent"/>
+                <Grid Grid.Column="10" PreviewMouseDown="MouseDragMove" Background="Transparent"/>
+                <Grid Grid.Column="12" PreviewMouseDown="MouseDragMove" Background="Transparent"/>
                 <local:MarqueeButton x:Name="marqueeStyleButton" Grid.Column="1" MarqueeButtonText="字幕设置"/>
                 <local:MarqueeButton x:Name="selectTranslateModeButton" Grid.Column="3" MarqueeButtonText="翻译源/OCR"/>
                 <local:MarqueeButton x:Name="windowOperatorButton" Grid.Column="5" MarqueeButtonText="窗口操作"/>

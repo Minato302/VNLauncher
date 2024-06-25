@@ -91,6 +91,41 @@ namespace VNLauncher.Controls
                 SetValue(MainWindowGameButtonItemSourceProperty, value);
             }
         }
+        public void UpdateInfo()
+        {
+            mainWindow.captureDisplayPanel.Children.Clear();
+            String[] captureNames = Directory.GetFiles(fileManager.GetGameCapturesPath(Game.Name)!);
+            Random rand = new Random();
+            Int32 index = rand.Next(captureNames.Length + 1);
+            if (index == captureNames.Length)
+            {
+                mainWindow.coverBlock.MainWindowCoverBlockImage = new BitmapImage(new Uri(fileManager.GetGameCoverPath(Game.Name)!));
+            }
+            else
+            {
+                mainWindow.coverBlock.MainWindowCoverBlockImage = new BitmapImage(new Uri(captureNames[index]));
+            }
+            mainWindow.coverBlock.SetImageCount(captureNames.Length);
+            List<List<String>> groups = fileManager.GroupCaptureNamesByPrefix(Game.Name).Values.ToList();
+            groups.Sort(delegate (List<String> x, List<String> y)
+            {
+                return -Convert.ToInt64(x[0][..8]).CompareTo(Convert.ToInt64(y[0][..8]));
+            });
+            foreach (List<String> group in groups)
+            {
+                mainWindow.captureDisplayPanel.Children.Add(new MainWindowDailyCaputreDisplay(group, Game.Name));
+            }
+            if (game.PlayTimeMinute >= 120)
+            {
+                mainWindow.gameTotalTimeInfo.SetInfo((game.PlayTimeMinute / 60.0).ToString("0.0") + "小时");
+            }
+            else
+            {
+                mainWindow.gameTotalTimeInfo.SetInfo(game.PlayTimeMinute.ToString() + "分钟");
+            }
+
+            mainWindow.gameLastStartTimeInfo.SetInfo(game.LastStartTime.ToString("d"));
+        }
         public void BeingSelected()
         {
             isSelected = true;
@@ -119,6 +154,16 @@ namespace VNLauncher.Controls
             {
                 mainWindow.captureDisplayPanel.Children.Add(new MainWindowDailyCaputreDisplay(group, Game.Name));
             }
+            if (game.PlayTimeMinute >= 120)
+            {
+                mainWindow.gameTotalTimeInfo.SetInfo((game.PlayTimeMinute / 60.0).ToString("0.0") + "小时");
+            }
+            else
+            {
+                mainWindow.gameTotalTimeInfo.SetInfo(game.PlayTimeMinute.ToString() + "分钟");
+            }
+         
+            mainWindow.gameLastStartTimeInfo.SetInfo(game.LastStartTime.ToString("d"));
 
         }
         public void RelieveSelected()

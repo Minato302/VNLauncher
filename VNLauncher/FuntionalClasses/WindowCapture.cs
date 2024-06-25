@@ -91,7 +91,6 @@ namespace VNLauncher.FuntionalClasses
                 //    PrintWindow(hWnd, hdc, 1);
                 //    graphics.ReleaseHdc(hdc);
                 //}
-                return windowBitmap;
             }
             return windowBitmap;
         }

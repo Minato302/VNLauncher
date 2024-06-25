@@ -51,4 +51,7 @@
     <SolidColorBrush x:Key="marqueeTranslateButtonColor" Color="#BA444444"/>
     <SolidColorBrush x:Key="marqueeTranslateButtonColor_MouseEnter" Color="#DD222222"/>
 
+    <SolidColorBrush x:Key="settingWindowSetItemColor_Selected" Color="#FF464646"/>
+    <SolidColorBrush x:Key="settingWindowSetItemColor_MouseEnter" Color="#FF252525"/>
+    
 </ResourceDictionary>

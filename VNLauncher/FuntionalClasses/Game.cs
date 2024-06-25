@@ -115,6 +115,8 @@ namespace VNLauncher.FuntionalClasses
         public CaptionLocation Loaction => location;
 
         private Int32 playTimeMinute;
+        public Int32 PlayTimeMinute => playTimeMinute;
+
         private Boolean isAutoStart;
         public Boolean IsAutoStart => isAutoStart;
         private Boolean isWindowShot;
@@ -124,6 +126,7 @@ namespace VNLauncher.FuntionalClasses
         private String windowClass;
         public String WindowClass => windowClass;
         private DateTime lastStartTime;
+        public DateTime LastStartTime => lastStartTime;
         private System.Timers.Timer timer;
 
         public Game(String name, FileManager reader)
