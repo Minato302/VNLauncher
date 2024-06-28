@@ -50,7 +50,7 @@ namespace VNLauncher.Pages
                 parameter.GameInfo.GameWindow = ((WindowInfo)gameWindowInfo).Hwnd;
                 parameter.GameInfo.GameWindowTitle = ((WindowInfo)gameWindowInfo).Title;
                 parameter.GameInfo.GameWindowClass = ((WindowInfo)gameWindowInfo).ClassName;
-                parameter.BaseWindow.Handoff(new GuidancePage_Step2(parameter),parameter.BaseWindow);
+                parameter.BaseWindow.Handoff(new GuidancePage_Step2(parameter), parameter.BaseWindow);
 
             }
             else

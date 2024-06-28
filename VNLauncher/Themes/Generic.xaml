@@ -216,7 +216,7 @@
                         <fa:FontAwesome Name="questionIcon" Icon="QuestionCircle" Foreground="{StaticResource iconColor}"/>
                         <Popup Name="tipsPopup" Width="200" Height="auto" PlacementTarget="{Binding ElementName=mainGrid}">
                             <Grid Name="PopupGrid" Background="{StaticResource mainWindowSortWayButtonMenuColor}">
-                                <TextBlock Name="tipsTextBlock" Width="auto" Height="auto" TextWrapping="Wrap" Foreground="{StaticResource iconColor}" FontSize="12" Margin="5,5,5,5"/>
+                                <TextBlock Background="Transparent" Name="tipsTextBlock" Width="auto" Height="auto" TextWrapping="Wrap" Foreground="{StaticResource iconColor}" FontSize="12" Margin="5,5,5,5"/>
                             </Grid>
                         </Popup>
                     </Grid>
@@ -329,7 +329,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:SettingWindowSetItemButton}">
                     <Border Height="50" BorderThickness="2" Background="Transparent" Name="mainBorder" CornerRadius="6">
-                        <Grid>
+                        <Grid Name="mainGrid">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="5"/>
                                 <ColumnDefinition Name="iconColumn" Width="auto"/>
@@ -349,16 +349,18 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:SettingPageCheckBox}">
                     <Border Height="20" Width="auto" BorderThickness="0" Background="Transparent" Name="mainBorder">
-                        <Grid>
+                        <Grid Name="mainGrid">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Name="textColumn" Width="auto"/>
                                 <ColumnDefinition Width="5"/>
                                 <ColumnDefinition Name="boxColumn" Width="20"/>
+                                <ColumnDefinition Name="starColumn" Width="auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="{TemplateBinding SettingPageCheckBoxText}"  Foreground="{StaticResource iconColor}" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <TextBlock Name="checkNameTextBlock" Grid.Column="0" Text="{TemplateBinding SettingPageCheckBoxText}"  Foreground="{StaticResource iconColor}" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             <Border Margin="3,3,3,3" Grid.Column="2" Name="boxBorder" BorderThickness="1" BorderBrush="{StaticResource iconColor}">
-                                <Rectangle Margin="2,2,2,2" Fill="{StaticResource iconColor}"/>
+                                <Rectangle Name="isCheckedRect" Margin="2,2,2,2" Fill="{StaticResource iconColor}" Visibility="Hidden"/>
                             </Border>
+                            <TextBlock Name="starTextBlock" Margin="3,0,0,0" Text="*" Grid.Column="3" Visibility="Hidden" Foreground="{StaticResource iconColor}" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Grid>
                     </Border>
                 </ControlTemplate>
@@ -366,4 +368,70 @@
         </Setter>
     </Style>
 
+    <Style TargetType="{x:Type local:KeyMappingItem}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:KeyMappingItem}">
+                    <Border Height="20" Width="auto" BorderThickness="0" Background="Transparent" Name="mainBorder"  Focusable="False">
+                        <Grid Name="mainGrid">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Name="functionColumn" Width="auto"/>
+                                <ColumnDefinition Width="5"/>
+                                <ColumnDefinition Name="keyColumn" Width="auto"/>
+                                <ColumnDefinition Name="starColumn" Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Name="functionTextBlock" Grid.Column="0" Text="{TemplateBinding KeyMappingItemFunctionText}"  Foreground="{StaticResource iconColor}" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <Border x:Name="keyTextBorder" BorderThickness="1" Grid.Column="2"  BorderBrush="{StaticResource iconColor}" Background="Transparent">
+                                <TextBlock  Margin="2,2,2,2" Name="keyTextBlock" Foreground="{StaticResource iconColor}" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <TextBlock Name="starTextBlock" Margin="3,0,0,0" Text="*" Grid.Column="3" Visibility="Hidden" Foreground="{StaticResource iconColor}" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type local:SettingPageTextBox}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:SettingPageTextBox}">
+                    <Grid Name="mainGrid">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Name="textBoxColumn" Width="*"/>
+                            <ColumnDefinition Name="starColumn" Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox Name="mainTextBox" BorderThickness="1" BorderBrush="{StaticResource iconColor}" Background="Transparent" TextWrapping="{TemplateBinding SettingPageTextBoxTextWrapping}" AcceptsReturn="True"
+                                 CaretBrush="{StaticResource iconColor}" Foreground="{StaticResource iconColor}" FontSize="14"/>
+                        <TextBlock Name="starTextBlock" Margin="3,0,0,0" Text="*" Grid.Column="1" Visibility="Hidden" Foreground="{StaticResource iconColor}" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type local:SettingPageRadioButton}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:SettingPageRadioButton}">
+                    <Border Height="20" Width="auto" BorderThickness="0" Background="Transparent" Name="mainBorder">
+                        <Grid Name="mainGrid">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Name="textColumn" Width="auto"/>
+                                <ColumnDefinition Width="5"/>
+                                <ColumnDefinition Name="boxColumn" Width="20"/>
+                                <ColumnDefinition Name="starColumn" Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Name="checkNameTextBlock" Grid.Column="0" Text="{TemplateBinding SettingPageRadioButtonText}"  Foreground="{StaticResource iconColor}" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <Border Margin="3,3,3,3" Grid.Column="2" Name="boxBorder" BorderThickness="1" BorderBrush="{StaticResource iconColor}" CornerRadius="6" >
+                                <Ellipse Name="isCheckedCircle" Margin="2,2,2,2" Fill="{StaticResource iconColor}" Visibility="Hidden"/>
+                            </Border>
+                            <TextBlock Name="starTextBlock" Margin="3,0,0,0" Text="*" Grid.Column="3" Visibility="Hidden" Foreground="{StaticResource iconColor}" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
 </ResourceDictionary>

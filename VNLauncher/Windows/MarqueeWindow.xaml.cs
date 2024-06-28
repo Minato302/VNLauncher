@@ -56,7 +56,7 @@ namespace VNLauncher.Windows
             tWindow = new TransparentWindow(gameWindowHwnd, game.Loaction);
             tWindow.Show();
             tWindow.Visibility = Visibility.Hidden;
-            cTranslator = new ChatGPTTranslator();
+            cTranslator = new GPTTranslator();
             lTranslator = new LocalTranslator();
 
         }
@@ -110,7 +110,7 @@ namespace VNLauncher.Windows
                 }
             }
         }
-        private ChatGPTTranslator cTranslator;
+        private GPTTranslator cTranslator;
         private LocalTranslator lTranslator;
 
         private CancellationTokenSource tokenSource;

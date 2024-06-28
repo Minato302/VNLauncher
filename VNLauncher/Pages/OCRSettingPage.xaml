@@ -4,25 +4,26 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:VNLauncher.Controls"
-      mc:Ignorable="d" ShowsNavigationUI = "False"
+      mc:Ignorable="d" ShowsNavigationUI = "False" Loaded="Page_Loaded"
       d:DesignHeight="570" d:DesignWidth="720">
-    <Canvas Name="mainCanvas">
+    <Canvas Name="mainCanvas" MouseLeftButtonDown="MainCanvas_MouseLeftButtonDown" MouseRightButtonDown="MainCanvas_MouseRightButtonDown" Background="Transparent">
         <TextBlock Foreground="{StaticResource iconColor}" Text="本地OCR" FontSize="24" Canvas.Left="40" Canvas.Top="30"/>
         <TextBlock Foreground="{StaticResource iconColor}" Text="使用模型：" FontSize="16" Canvas.Left="35" Canvas.Top="90"/>
-        <local:SettingPageCheckBox SettingPageCheckBoxText="V3模型" Canvas.Left="160" Canvas.Top="90"/>
-        <local:SettingPageCheckBox SettingPageCheckBoxText="V4模型" Canvas.Left="360" Canvas.Top="90"/>
+        <local:SettingPageRadioButton x:Name="modelV3RadioButton" SettingPageRadioButtonText="V3模型" Canvas.Left="160" Canvas.Top="90"/>
+        <local:SettingPageRadioButton x:Name="modelV4RadioButton" SettingPageRadioButtonText="V4模型" Canvas.Left="360" Canvas.Top="90"/>
         <TextBlock Foreground="{StaticResource iconColor}" Text="运行：" FontSize="16" Canvas.Left="35" Canvas.Top="160"/>
-        <local:SettingPageCheckBox SettingPageCheckBoxText="CPU" Canvas.Left="160" Canvas.Top="160"/>
-        <local:SettingPageCheckBox SettingPageCheckBoxText="GPU" Canvas.Left="360" Canvas.Top="160"/>
+        <local:SettingPageRadioButton x:Name="usingCPURadioButton" SettingPageRadioButtonText="CPU" Canvas.Left="160" Canvas.Top="160"/>
+        <local:SettingPageRadioButton x:Name="usingGPURadioButton" SettingPageRadioButtonText="GPU" Canvas.Left="360" Canvas.Top="160"/>
 
         <TextBlock Foreground="{StaticResource iconColor}" Text="在线OCR（百度）" FontSize="24" Canvas.Left="40" Canvas.Top="260"/>
         <TextBlock Foreground="{StaticResource iconColor}" Text="是否启用：" FontSize="16" Canvas.Left="35" Canvas.Top="330"/>
-        <local:SettingPageCheckBox SettingPageCheckBoxText="启用" Canvas.Left="194" Canvas.Top="330"/>
+        <local:SettingPageCheckBox x:Name="onlineOCREnabledCheckBox" SettingPageCheckBoxText="启用" Canvas.Left="194" Canvas.Top="330"/>
         <TextBlock Foreground="{StaticResource iconColor}" Text="API Key：" FontSize="16" Canvas.Left="35" Canvas.Top="390"/>
-        <TextBox BorderThickness="1" BorderBrush="{StaticResource iconColor}" Width="400" Height="25" Background="Transparent"   CaretBrush="{StaticResource iconColor}"
-                 Foreground="{StaticResource iconColor}" FontSize="16" Canvas.Left="190" Canvas.Top="388" />
+        <local:SettingPageTextBox  x:Name="apiKeyTextBox"  Canvas.Left="190" Canvas.Top="388" Width="400" Height="25" SettingPageTextBoxTextWrapping="NoWrap" />
         <TextBlock Foreground="{StaticResource iconColor}" Text="Secret Key：" FontSize="16" Canvas.Left="35" Canvas.Top="450"/>
-        <TextBox BorderThickness="1" BorderBrush="{StaticResource iconColor}" Width="400" Height="25" Background="Transparent" CaretBrush="{StaticResource iconColor}"
-                 Foreground="{StaticResource iconColor}" FontSize="16" Canvas.Left="190" Canvas.Top="448"/>
+        <local:SettingPageTextBox  x:Name="secretKeyTextBox"  Canvas.Left="190" Canvas.Top="448" Width="400" Height="25" SettingPageTextBoxTextWrapping="NoWrap"/>
+        <local:BigButton x:Name="saveButton" Canvas.Left="600" Canvas.Top="500" Width="80" Height="50" BigButtonText="保存" Click="SaveButton_Click"/>
+
+        <local:QuestionButton x:Name="localOCRQuestionButton" Canvas.Left="150" Canvas.Top="40"/>
     </Canvas>
 </Page>

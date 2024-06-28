@@ -24,29 +24,23 @@ namespace VNLauncher.Windows
 
         private void OcrSettingButton_Click(Object sender, RoutedEventArgs e)
         {
-
-            if (!ocrSettingButton.IsSelected)
+            foreach (SettingWindowSetItemButton button in settingItemStackPanel.Children)
             {
-                foreach (SettingWindowSetItemButton button in settingItemStackPanel.Children)
-                {
-                    button.RelieveSelected();
-                }
-                ocrSettingButton.BeingSelected();
-                settingInfoFrame.Navigate(new Pages.OCRSettingPage());
+                button.RelieveSelected();
             }
+            ocrSettingButton.BeingSelected();
+            settingInfoFrame.Navigate(new Pages.OCRSettingPage());
         }
 
         private void KeymappingButton_Click(Object sender, RoutedEventArgs e)
         {
-            if (!keymappingButton.IsSelected)
+
+            foreach (SettingWindowSetItemButton button in settingItemStackPanel.Children)
             {
-                foreach (SettingWindowSetItemButton button in settingItemStackPanel.Children)
-                {
-                    button.RelieveSelected();
-                }
-                keymappingButton.BeingSelected();
-                settingInfoFrame.Navigate(new Pages.OCRSettingPage());
+                button.RelieveSelected();
             }
+            keymappingButton.BeingSelected();
+            settingInfoFrame.Navigate(new Pages.KeymappingPage());
         }
 
         private void BaiduTranslateSettingButton_Click(Object sender, RoutedEventArgs e)
@@ -56,6 +50,7 @@ namespace VNLauncher.Windows
                 button.RelieveSelected();
             }
             baiduTranslateSettingButton.BeingSelected();
+            settingInfoFrame.Navigate(new Pages.BaiduTranslateSettingPage());
         }
 
         private void GptTranslateSettingButton_Click(Object sender, RoutedEventArgs e)
@@ -65,6 +60,7 @@ namespace VNLauncher.Windows
                 button.RelieveSelected();
             }
             gptTranslateSettingButton.BeingSelected();
+            settingInfoFrame.Navigate(new Pages.GPTTranslateSettingPage());
         }
 
         private void LocalTranslateSettingButton_Click(Object sender, RoutedEventArgs e)
@@ -73,6 +69,7 @@ namespace VNLauncher.Windows
             {
                 button.RelieveSelected();
             }
+            settingInfoFrame.Navigate(new Pages.LocalTranslateSettingPage());
             localTranslateSettingButton.BeingSelected();
         }
 
@@ -83,6 +80,11 @@ namespace VNLauncher.Windows
                 button.RelieveSelected();
             }
             aboutButton.BeingSelected();
+        }
+
+        private void MouseDragMove(Object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            DragMove();
         }
     }
 }

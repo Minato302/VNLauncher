@@ -1,0 +1,26 @@
+﻿<Page x:Class="VNLauncher.Pages.LocalTranslateSettingPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:VNLauncher.Controls"
+      ShowsNavigationUI = "False"
+      mc:Ignorable="d" Loaded="Page_Loaded"
+      d:DesignHeight="570" d:DesignWidth="720">
+    <Canvas Name="mainCanvas" MouseLeftButtonDown="MainCanvas_MouseLeftButtonDown" MouseRightButtonDown="MainCanvas_MouseRightButtonDown" Background="Transparent">
+        <TextBlock Foreground="{StaticResource iconColor}" Text="本地（TextGeneration）翻译设置" FontSize="24" Canvas.Left="40" Canvas.Top="30"/>
+        <TextBlock Foreground="{StaticResource iconColor}" Text="是否启用：" FontSize="16" Canvas.Left="35" Canvas.Top="90"/>
+        <local:SettingPageCheckBox x:Name="enabledChechBox" SettingPageCheckBoxText="启用" Canvas.Left="150" Canvas.Top="90"/>
+        <TextBlock Foreground="{StaticResource iconColor}" Text="上下文句数" FontSize="16" Canvas.Left="35" Canvas.Top="140"/>
+        <local:SettingPageTextBox x:Name="urlTextBox" Width="400" Height="25" Background="Transparent" Canvas.Left="150" Canvas.Top="188" SettingPageTextBoxTextWrapping="NoWrap"/>
+        <TextBlock Foreground="{StaticResource iconColor}" Text="本地Url：" FontSize="16" Canvas.Left="35" Canvas.Top="190"/>
+        <local:SettingPageTextBox x:Name="contextTextBox" Width="120" Height="25" Canvas.Left="150" Canvas.Top="138" SettingPageTextBoxTextWrapping="NoWrap"/>
+        <TextBlock Foreground="{StaticResource iconColor}" Text="提示词：" FontSize="16" Canvas.Left="35" Canvas.Top="240"/>
+        <local:SettingPageTextBox x:Name="promptTextBox" Width="400" Height="160" Canvas.Left="150" Canvas.Top="238" SettingPageTextBoxTextWrapping="Wrap"/>
+        <local:BigButton x:Name="saveButton" Canvas.Left="520" Canvas.Top="420" Width="80" Height="50" BigButtonText="保存" Click="SaveButton_Click"/>
+        <local:QuestionButton x:Name="localTranslateQuestionButton" Canvas.Top="40" Canvas.Left="420"/>
+        <local:QuestionButton x:Name="localTranslateUrlQuestionButton" Canvas.Top="195" Canvas.Left="110"/>
+        <local:QuestionButton x:Name="localTranslatePromptQuestionButton" Canvas.Top="243" Canvas.Left="105"/>
+    </Canvas>
+</Page>
+

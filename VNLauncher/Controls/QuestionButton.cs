@@ -4,15 +4,14 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Documents;
 using System.Windows.Input;
-using FontAwesome.WPF;
 using VNLauncher.FuntionalClasses;
 
 namespace VNLauncher.Controls
 {
     public class QuestionButton : Button
     {
-        private String tips;
         private LocalColorAcquirer resource;
         private Popup tipsPopUp;
         private TextBlock tipsTextBlock;
@@ -23,17 +22,15 @@ namespace VNLauncher.Controls
         }
         public QuestionButton()
         {
-            tips = "";
             resource = new LocalColorAcquirer();
             PreviewMouseLeftButtonDown += (e, sender) =>
             {
                 tipsPopUp!.IsOpen = true;
-                tipsTextBlock!.Text = tips;
-                questionIcon!.Foreground = resource.GetColor("signColor") as System.Windows.Media.Brush;                
+                questionIcon!.Foreground = resource.GetColor("signColor") as System.Windows.Media.Brush;
             };
             MouseEnter += (e, sender) =>
             {
-                Cursor= Cursors.Hand;
+                Cursor = Cursors.Hand;
             };
             MouseLeave += (e, sender) =>
             {
@@ -54,7 +51,73 @@ namespace VNLauncher.Controls
         }
         public void SetTips(String tips)
         {
-            this.tips = tips;
+            ApplyTemplate();
+            tipsTextBlock.Text = tips;
         }
+        public void ReplaceTextWithHyperlink(String searchString, String url, String replaceString)
+        {
+            ApplyTemplate();
+            String text = tipsTextBlock.Text;
+
+            var inlines = new List<Inline>(tipsTextBlock.Inlines);
+            tipsTextBlock.Inlines.Clear();
+            foreach (Inline inline in inlines)
+            {
+                if (inline is Run run)
+                {
+                    String inlineText = run.Text;
+                    Int32 index = inlineText.IndexOf(searchString);
+                    if (index >= 0)
+                    {
+                        if (index > 0)
+                        {
+                            tipsTextBlock.Inlines.Add(new Run(inlineText.Substring(0, index)));
+                        }
+                        Hyperlink hyperlink = new Hyperlink(new Run(replaceString))
+                        {
+                            NavigateUri = new Uri(url),
+                            Foreground = resource.GetColor("iconColor_White") as System.Windows.Media.Brush,
+                            TextDecorations = TextDecorations.Underline
+                        };
+
+                        hyperlink.RequestNavigate += (sender, e) =>
+                        {
+                            e.Handled = true;
+                            ClosePopup();
+                            try
+                            {
+                                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                                {
+                                    FileName = e.Uri.AbsoluteUri,
+                                    UseShellExecute = true,
+                                    Verb = "open",
+                                });
+                            }
+                            catch (Exception)
+                            {
+                            }
+                        };
+
+                        tipsTextBlock.Inlines.Add(hyperlink);
+
+                        if (index + searchString.Length < inlineText.Length)
+                        {
+                            tipsTextBlock.Inlines.Add(new Run(inlineText.Substring(index + searchString.Length)));
+                        }
+                    }
+                    else
+                    {
+                        tipsTextBlock.Inlines.Add(inline);
+                    }
+                }
+                else
+                {
+                    tipsTextBlock.Inlines.Add(inline);
+                }
+            }
+        }
+
+
+
     }
 }

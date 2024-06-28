@@ -5,14 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:VNLauncher.Controls"
         mc:Ignorable="d" 
-        Title="设置" Height="600" Width="900"
+        Title="设置" Height="600" Width="900" Focusable="False"
         WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True">
-    <Grid Name="mainGrid">
+    <Grid Name="mainGrid" Focusable="False" Background="Transparent">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Name="settingItemListColumn" Width="2*"/>
             <ColumnDefinition Name="settingInfoColumn" Width="8*"/>
         </Grid.ColumnDefinitions>
-        <Grid Name="settingItemListGrid" Grid.Column="0" Background="{StaticResource backgroundColor_Dark}">
+        <Grid Name="settingItemListGrid" Grid.Column="0" Background="{StaticResource backgroundColor_Dark}" Focusable="False"  MouseLeftButtonDown="MouseDragMove" >
             <Grid.RowDefinitions>
                 <RowDefinition Name="textRow1" Height="auto"/>
                 <RowDefinition Name="textRow2" Height="auto"/>
@@ -22,30 +22,29 @@
             <TextBlock x:Name="settingText1" Margin="20,20,10,5" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Left" Text="VNLuncher" Foreground="{StaticResource iconColor}" FontSize="20"/>
             <TextBlock x:Name="settingText2" Margin="20,0,10,30" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left" Text="设置" Foreground="{StaticResource iconColor}" FontSize="24"/>
             <StackPanel Name="settingItemStackPanel" Grid.Row="3">
-                <local:SettingWindowSetItemButton x:Name="keymappingButton" SettingWindowSetItemButtonIcon="KeyboardOutline" SettingWindowSetItemButtonText="键位映射" Click="KeymappingButton_Click"/>
-                <local:SettingWindowSetItemButton x:Name="ocrSettingButton" SettingWindowSetItemButtonIcon="Search" SettingWindowSetItemButtonText="OCR设置" Click="OcrSettingButton_Click"/>
-                <local:SettingWindowSetItemButton x:Name="baiduTranslateSettingButton" SettingWindowSetItemButtonIcon="Cloud" SettingWindowSetItemButtonText="百度翻译设置" Click="BaiduTranslateSettingButton_Click"/>
-                <local:SettingWindowSetItemButton x:Name="gptTranslateSettingButton" SettingWindowSetItemButtonIcon="Send" SettingWindowSetItemButtonText="GPT翻译设置" Click="GptTranslateSettingButton_Click"/>
-                <local:SettingWindowSetItemButton x:Name="localTranslateSettingButton" SettingWindowSetItemButtonIcon="TV" SettingWindowSetItemButtonText="本地模型翻译设置" Click="LocalTranslateSettingButton_Click"/>
-                <local:SettingWindowSetItemButton x:Name="aboutButton" SettingWindowSetItemButtonIcon="QuestionCircle" SettingWindowSetItemButtonText="关于VNLuncher" Click="AboutButton_Click"/>
+                <local:SettingWindowSetItemButton x:Name="keymappingButton" SettingWindowSetItemButtonIcon="KeyboardOutline" SettingWindowSetItemButtonText="键位映射" Click="KeymappingButton_Click" Focusable="False"/>
+                <local:SettingWindowSetItemButton x:Name="ocrSettingButton" SettingWindowSetItemButtonIcon="Search" SettingWindowSetItemButtonText="OCR设置" Click="OcrSettingButton_Click" Focusable="False"/>
+                <local:SettingWindowSetItemButton x:Name="baiduTranslateSettingButton" SettingWindowSetItemButtonIcon="Cloud" SettingWindowSetItemButtonText="百度翻译设置" Click="BaiduTranslateSettingButton_Click" Focusable="False"/>
+                <local:SettingWindowSetItemButton x:Name="gptTranslateSettingButton" SettingWindowSetItemButtonIcon="Send" SettingWindowSetItemButtonText="GPT翻译设置" Click="GptTranslateSettingButton_Click" Focusable="False"/>
+                <local:SettingWindowSetItemButton x:Name="localTranslateSettingButton" SettingWindowSetItemButtonIcon="TV" SettingWindowSetItemButtonText="本地模型翻译设置" Click="LocalTranslateSettingButton_Click" Focusable="False"/>
+                <local:SettingWindowSetItemButton x:Name="aboutButton" SettingWindowSetItemButtonIcon="QuestionCircle" SettingWindowSetItemButtonText="关于VNLuncher" Click="AboutButton_Click" Focusable="False"/>
             </StackPanel>
         </Grid>
-        <Grid Name="settingInfoGrid" Grid.Column="1" Background="{StaticResource backgroundColor_Light}">
+        <Grid Name="settingInfoGrid" Grid.Column="1" Background="{StaticResource backgroundColor_Light}" Focusable="False">
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <Grid Name="titleGrid" Grid.Row="0">
+            <Grid Name="titleGrid" Grid.Row="0" Focusable="False">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Name="titlebarEmptyColumn"/>
                     <ColumnDefinition Name="titlebarMinimizeColumn" Width="40"/>
                     <ColumnDefinition Name="titlebarCloseColumn" Width="40"/>
                 </Grid.ColumnDefinitions>
-                <Grid  Background="Transparent"/>
-                <local:TitleBarButton x:Name="minimizeButton" Grid.Column="1" TitleBarButtonIcon="Minus" Click="MinimizeButton_Click"/>
-                <local:TitleBarButton x:Name="closeButton" Grid.Column="3" TitleBarButtonIcon="Times" Click="CloseButton_Click"/>
+                <local:TitleBarButton x:Name="minimizeButton" Grid.Column="1" TitleBarButtonIcon="Minus" Click="MinimizeButton_Click" Focusable="False"/>
+                <local:TitleBarButton x:Name="closeButton" Grid.Column="3" TitleBarButtonIcon="Times" Click="CloseButton_Click" Focusable="False"/>
             </Grid>
-            <Frame NavigationUIVisibility="Hidden" Name="settingInfoFrame" Grid.Row="1"/>
+            <Frame Focusable="False" NavigationUIVisibility="Hidden" Name="settingInfoFrame" Grid.Row="1"/>
         </Grid>
     </Grid>
 </Window>

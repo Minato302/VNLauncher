@@ -57,7 +57,7 @@ namespace VNLauncher.Controls
             {
                 if (!isRunning)
                 {
-                    mainBorder!.Background = resource.GetColor("signColor") as Brush;
+                    mainBorder!.Background = resource.GetColor("signColor_Dark") as Brush;
                 }
             };
         }

@@ -1,0 +1,31 @@
+﻿<Page x:Class="VNLauncher.Pages.GPTTranslateSettingPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:VNLauncher.Controls"
+      mc:Ignorable="d" 
+      ShowsNavigationUI = "False" Loaded="Page_Loaded"
+      d:DesignHeight="570" d:DesignWidth="720">
+    <Canvas Name="mainCanvas" Background="Transparent" MouseLeftButtonDown="MainCanvas_MouseLeftButtonDown" MouseRightButtonDown="MainCanvas_MouseRightButtonDown">
+        <TextBlock Foreground="{StaticResource iconColor}" Text="GPT翻译设置" FontSize="24" Canvas.Left="40" Canvas.Top="30"/>
+        <TextBlock Foreground="{StaticResource iconColor}" Text="是否启用：" FontSize="16" Canvas.Left="35" Canvas.Top="90"/>
+        <local:SettingPageCheckBox x:Name="enabledCheckBox" SettingPageCheckBoxText="启用" Canvas.Left="150" Canvas.Top="90"/>
+        <TextBlock Foreground="{StaticResource iconColor}" Text="Url：" FontSize="16" Canvas.Left="35" Canvas.Top="140"/>
+        <local:SettingPageTextBox x:Name="urlTextBox" Width="480" Height="25" Background="Transparent" Canvas.Left="150" Canvas.Top="138" SettingPageTextBoxTextWrapping="NoWrap"/>
+
+        <TextBlock Foreground="{StaticResource iconColor}" Text="API Key：" FontSize="16" Canvas.Left="35" Canvas.Top="190"/>
+        <local:SettingPageTextBox x:Name="apiKeyTextBox" Width="480" Height="25" Background="Transparent" Canvas.Left="150" Canvas.Top="188" SettingPageTextBoxTextWrapping="NoWrap"/>
+        <TextBlock Foreground="{StaticResource iconColor}" Text="模型：" FontSize="16" Canvas.Left="35" Canvas.Top="240"/>
+        <local:SettingPageTextBox x:Name="modelTextBox" Width="220" Height="25" Background="Transparent" Canvas.Left="150" Canvas.Top="238" SettingPageTextBoxTextWrapping="NoWrap"/>
+        <TextBlock Foreground="{StaticResource iconColor}" Text="上下文句数：" FontSize="16" Canvas.Left="380" Canvas.Top="240"/>
+        <local:SettingPageTextBox x:Name="contextTextBox" Width="140" Height="25" Background="Transparent" Canvas.Left="490" Canvas.Top="238" SettingPageTextBoxTextWrapping="NoWrap"/>
+        <TextBlock Foreground="{StaticResource iconColor}" Text="提示词：" FontSize="16" Canvas.Left="35" Canvas.Top="300"/>
+        <local:SettingPageTextBox x:Name="promptTextBox" Width="480" Height="160" Background="Transparent" Canvas.Left="150" Canvas.Top="298" SettingPageTextBoxTextWrapping="Wrap"/>
+        <local:BigButton x:Name="saveButton" Canvas.Left="600" Canvas.Top="480" Width="80" Height="50" BigButtonText="保存" Click="SaveButton_Click"/>
+        <TextBlock Name="tipsTextBlock" Text="Prompt格式错误，请检查是否有当前句标识符：//{当前句}//" Foreground="{StaticResource iconColor}" FontSize="14" Canvas.Top="480" Canvas.Left="130" Visibility="Hidden"/>
+        <local:QuestionButton x:Name="gptTranslateQuestionButton" Canvas.Top="40" Canvas.Left="195"/>
+        <local:QuestionButton x:Name="promptQuestionButton" Canvas.Top="303" Canvas.Left="105"/>
+    </Canvas>
+</Page>
+

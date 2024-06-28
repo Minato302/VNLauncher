@@ -46,7 +46,7 @@ namespace VNLauncher.FuntionalClasses
             }
         }
     }
-    public class ChatGPTTranslator
+    public class GPTTranslator
     {
         private String url;
         private HttpClient httpClient;
@@ -56,7 +56,7 @@ namespace VNLauncher.FuntionalClasses
         private Conversation conversation;
 
 
-        public ChatGPTTranslator()
+        public GPTTranslator()
         {
             url = "https://api.chatanywhere.com.cn/v1/chat/completions";
             httpClient = new HttpClient();

@@ -21,7 +21,7 @@ namespace VNLauncher.FuntionalClasses
             gamesFolder = Path.Combine(userDataFolder, "games");
         }
         public String UserDataJsonPath => userDataJson;
-
+        public String UserDataFolderPath => userDataFolder;
         public String GamesFolderPath => gamesFolder;
 
         public String? GetGameFolderPath(String gameName)
@@ -85,6 +85,7 @@ namespace VNLauncher.FuntionalClasses
                 return Path.Combine(gameFolderPath, "screenshot");
             }
         }
+        
         public void CreateNewGameToFile(String gameName, String gamePath, Bitmap cover, Boolean isAutoStart, Boolean isWindowShot,
             String windowTitle, String windowClass, Game.CaptionLocation gameCaptionLocation)
         {
@@ -158,6 +159,7 @@ namespace VNLauncher.FuntionalClasses
         public void SaveCapture(String gameName, Bitmap capture, String captureName)
         {
             capture.Save(Path.Combine(GetGameCapturesPath(gameName)!, captureName + ".jpg"));
+
         }
     }
 }

@@ -4,40 +4,26 @@ using System.Configuration;
 using System.Data;
 using System.IO;
 using System.Windows;
+using VNLauncher.FuntionalClasses;
 
 namespace VNLauncher
 {
     public partial class App : Application
     {
         protected override void OnStartup(StartupEventArgs e)
-       {
+        {
             base.OnStartup(e);
 
-            String appDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            FileManager fileManager = new FileManager();
 
-            String userDataFolder = Path.Combine(appDirectory, "userdata");
-            String userDataFile = Path.Combine(userDataFolder, "userdata.json");
-            String gamesFolder = Path.Combine(userDataFolder, "games");
-
-
-
-            if (!Directory.Exists(userDataFolder))
+            if (!Directory.Exists(fileManager.UserDataFolderPath))
             {
-                Directory.CreateDirectory(userDataFolder);
-                Directory.CreateDirectory(gamesFolder);
-                DirectoryInfo dirInfo = new DirectoryInfo(userDataFolder);
+                Directory.CreateDirectory(fileManager.UserDataFolderPath);
+                Directory.CreateDirectory(fileManager.GamesFolderPath);
+                DirectoryInfo dirInfo = new DirectoryInfo(fileManager.UserDataFolderPath);
                 dirInfo.Attributes |= FileAttributes.Hidden;
-
-                Directory.CreateDirectory(userDataFolder);
-
-                if (!File.Exists(userDataFile))
-                {
-                    File.WriteAllText(userDataFile, "{}"); 
-                }
-                if (!Directory.Exists(gamesFolder))
-                {
-                    Directory.CreateDirectory(gamesFolder);
-                }
+                InitialInfo initialInfo = new InitialInfo();
+                initialInfo.WriteInitialInfo(fileManager.UserDataJsonPath);
 
             }
         }

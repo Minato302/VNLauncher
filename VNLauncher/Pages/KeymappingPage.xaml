@@ -1,0 +1,22 @@
+﻿<Page x:Class="VNLauncher.Pages.KeymappingPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:VNLauncher.Controls"
+      ShowsNavigationUI = "False"
+      mc:Ignorable="d" Focusable="False" Loaded="Page_Loaded"
+      d:DesignHeight="570" d:DesignWidth="720">
+    <Canvas Name="mainCanvas"  Focusable="False">
+        <TextBlock Foreground="{StaticResource iconColor}" Text="键位映射" FontSize="24" Canvas.Left="40" Canvas.Top="30" Focusable="False"/>
+        <local:KeyMappingItem x:Name="translateSwitchItem" KeyMappingItemFunctionText="翻译开关：" Canvas.Top="120" Canvas.Left="70" Focusable="False"/>
+        <local:KeyMappingItem x:Name="showMarqueeItem" KeyMappingItemFunctionText="字幕显示：" Canvas.Top="120" Canvas.Left="370" Focusable="False"/>
+        <local:KeyMappingItem x:Name="screenShotItem" KeyMappingItemFunctionText="截屏键：" Canvas.Top="180" Canvas.Left="70" Focusable="False"/>
+        <local:KeyMappingItem x:Name="retranslateItem" KeyMappingItemFunctionText="重新翻译：" Canvas.Top="180" Canvas.Left="370" Focusable="False"/>
+        <local:KeyMappingItem x:Name="captureSideUpMoveItem" KeyMappingItemFunctionText="框选区域向上移动：" Canvas.Top="240" Canvas.Left="70" Focusable="False"/>
+        <local:KeyMappingItem x:Name="captureSideDownMoveItem" KeyMappingItemFunctionText="框选区域向下移动：" Canvas.Top="240" Canvas.Left="370" Focusable="False"/>
+        <local:KeyMappingItem x:Name="captureSideLeftMoveItem" KeyMappingItemFunctionText="框选区域向左移动：" Canvas.Top="300" Canvas.Left="70" Focusable="False"/>
+        <local:KeyMappingItem x:Name="captureSideRightMoveItem" KeyMappingItemFunctionText="框选区域向右移动：" Canvas.Top="300" Canvas.Left="370" Focusable="False"/>
+        <local:BigButton x:Name="saveButton" Canvas.Left="550" Canvas.Top="370" Width="80" Height="50" BigButtonText="保存" Focusable="False" Click="SaveButton_Click"/>
+    </Canvas>
+</Page>

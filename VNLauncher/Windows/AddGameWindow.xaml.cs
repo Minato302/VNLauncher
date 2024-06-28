@@ -14,14 +14,18 @@ namespace VNLauncher.Windows
     {
         private MainWindow mainWindow;
         private FileManager fileManager;
+        
         public AddGameWindow(MainWindow mainWindow)
         {
             InitializeComponent();
             fileManager = new FileManager();
+           
+            
             this.mainWindow = mainWindow;
             startWayQuestionButton.SetTips("    使用自动启动时，系统将尝试打开游戏的exe文件，在大部分情况下可以正常打开，适用于不需要转区运行的较新的游戏。\n" +
                 "    而手动启动针对那些需要转区或系统无法直接打开的游戏，每次启动时需要您自己从文件夹中打开游戏，系统将寻找对应的游戏窗口并进行翻译。\n" +
                 "    建议您先使用自动启动，如果发现无法启动、需要转区等问题导致系统无法启动后，再尝试使用手动启动。");
+            
         }
         public AddGameWindow(MainWindow mainWindow,String gameName, String gamePath)
         {
@@ -110,6 +114,11 @@ namespace VNLauncher.Windows
         }
 
         private void MainCanvas_MouseLeftButtonDown(Object sender, MouseButtonEventArgs e)
+        {
+            startWayQuestionButton.ClosePopup();
+        }
+
+        private void MainCanvas_MouseRightButtonDown(Object sender, MouseButtonEventArgs e)
         {
             startWayQuestionButton.ClosePopup();
         }
