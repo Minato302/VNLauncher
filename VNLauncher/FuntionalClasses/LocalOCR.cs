@@ -145,18 +145,47 @@ namespace VNLauncher.FuntionalClasses
     {
         private FullOcrModel model;
         private PaddleOcrAll all;
-        public LocalOCR()
+        public class OCRResult
         {
-            model = LocalFullModels.JapanV4;
-            all = new PaddleOcrAll(model, PaddleDevice.Gpu(4000))
+            private Boolean hasContent;
+            private String? resultText;
+            public OCRResult(Boolean hasContent, String? resultText = null)
             {
-                AllowRotateDetection = false,
-                Enable180Classification = false,
-            };
+                this.hasContent = hasContent;
+                this.resultText = resultText;
+            }
+            public Boolean HasContent => hasContent;
+            public String ResultText => resultText!;
         }
-        public List<WordBlock> Scan(System.Drawing.Bitmap pic)
+        public LocalOCR(Boolean isV4Model,Boolean usingGPU)
         {
-            pic.Save("D:\\yoshino\\OcrPic.jpg");
+            if (isV4Model)
+            {
+                model = LocalFullModels.JapanV4;
+            }
+            else
+            {
+                model = LocalFullModels.JapanV3;
+            }
+            if (usingGPU)
+            {
+                all = new PaddleOcrAll(model, PaddleDevice.Gpu())
+                {
+                    AllowRotateDetection = false,
+                    Enable180Classification = false,
+                };
+            }
+            else
+            {
+                all = new PaddleOcrAll(model, PaddleDevice.Mkldnn())
+                {
+                    AllowRotateDetection = false,
+                    Enable180Classification = false,
+                };
+            }
+        }
+        public OCRResult Scan(System.Drawing.Bitmap pic)
+        {
             List<WordBlock> blocks = new List<WordBlock>();
             Mat src = BitmapConverter.ToMat(pic);
             Mat mat = new Mat();
@@ -179,7 +208,14 @@ namespace VNLauncher.FuntionalClasses
             }
             mat.Dispose();
             src.Dispose();
-            return blocks;
+            if (blocks.Count > 0) 
+            {
+                return new OCRResult(true, WordBlock.Splicing(blocks).Words);
+            }
+            else
+            {
+                return new OCRResult(false);
+            }
         }
     }
 }

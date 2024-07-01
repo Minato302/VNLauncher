@@ -25,7 +25,7 @@
                 <local:SettingWindowSetItemButton x:Name="keymappingButton" SettingWindowSetItemButtonIcon="KeyboardOutline" SettingWindowSetItemButtonText="键位映射" Click="KeymappingButton_Click" Focusable="False"/>
                 <local:SettingWindowSetItemButton x:Name="ocrSettingButton" SettingWindowSetItemButtonIcon="Search" SettingWindowSetItemButtonText="OCR设置" Click="OcrSettingButton_Click" Focusable="False"/>
                 <local:SettingWindowSetItemButton x:Name="baiduTranslateSettingButton" SettingWindowSetItemButtonIcon="Cloud" SettingWindowSetItemButtonText="百度翻译设置" Click="BaiduTranslateSettingButton_Click" Focusable="False"/>
-                <local:SettingWindowSetItemButton x:Name="gptTranslateSettingButton" SettingWindowSetItemButtonIcon="Send" SettingWindowSetItemButtonText="GPT翻译设置" Click="GptTranslateSettingButton_Click" Focusable="False"/>
+                <local:SettingWindowSetItemButton x:Name="onlineModelTranslateSettingButton" SettingWindowSetItemButtonIcon="Signal" SettingWindowSetItemButtonText="在线模型翻译设置" Click="OnlineModelTranslateSettingButton_Click" Focusable="False"/>
                 <local:SettingWindowSetItemButton x:Name="localTranslateSettingButton" SettingWindowSetItemButtonIcon="TV" SettingWindowSetItemButtonText="本地模型翻译设置" Click="LocalTranslateSettingButton_Click" Focusable="False"/>
                 <local:SettingWindowSetItemButton x:Name="aboutButton" SettingWindowSetItemButtonIcon="QuestionCircle" SettingWindowSetItemButtonText="关于VNLuncher" Click="AboutButton_Click" Focusable="False"/>
             </StackPanel>

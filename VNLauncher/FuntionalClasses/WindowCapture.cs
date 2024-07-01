@@ -82,15 +82,6 @@ namespace VNLauncher.FuntionalClasses
                 PrintWindow(hWnd, hdc, 1);
                 graphics.ReleaseHdc(hdc);
                 windowBitmap=ImageHandler.ResizeToFullImage(windowBitmap);
-
-                //if (HasBlankRegion(windowBitmap))
-                //{
-                //    windowBitmap = new Bitmap(Convert.ToInt32(window.Bounds.Width / GetDpiFactor()), Convert.ToInt32(window.Bounds.Height / GetDpiFactor()));
-                //    graphics = Graphics.FromImage(windowBitmap);
-                //    hdc = graphics.GetHdc();
-                //    PrintWindow(hWnd, hdc, 1);
-                //    graphics.ReleaseHdc(hdc);
-                //}
             }
             return windowBitmap;
         }

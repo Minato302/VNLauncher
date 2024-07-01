@@ -1,15 +1,16 @@
 ﻿#pragma warning disable IDE0049
 
-using Microsoft.VisualBasic;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace VNLauncher.FuntionalClasses
 {
+    public abstract class Translator
+    {
+        public abstract Task<String> Translate(String jp);
+        public abstract void RemoveLast();
+    }
+
     public class Conversation
     {
         private List<String> history;
@@ -46,42 +47,96 @@ namespace VNLauncher.FuntionalClasses
             }
         }
     }
-    public class GPTTranslator
+    public class OnlineModelTranslator :Translator
     {
+        public class Prompt
+        {
+            private Boolean hasContext;
+            private Boolean contextFist;
+            private String prompt1;
+            private String prompt2;
+            private String prompt3;
+            public Boolean HasContext => hasContext;
+            public Boolean ContextFist => contextFist;
+            public String Prompt1 => prompt1;
+            public String Prompt2 => prompt2;
+            public String Prompt3 => prompt3;
+            public Prompt(Boolean hasContext, Boolean contextFist, String prompt1, String prompt2, String prompt3)
+            {
+                this.hasContext = hasContext;
+                this.contextFist = contextFist;
+                this.prompt1 = prompt1;
+                this.prompt2 = prompt2;
+                this.prompt3 = prompt3;
+            }
+        }
+
         private String url;
+        private Prompt prompt;
         private HttpClient httpClient;
-        private String apiKey = "sk-mhpEcarQrnAhAPReNM9aF9gEMamN5BFObjeGjslah6ytNeZ9";
-        private String userAgent = "Apifox/1.0.0 (https://apifox.com)";
+        private String apiKey;
+        private String userAgent;
+        private String model;
 
         private Conversation conversation;
 
 
-        public GPTTranslator()
+        public OnlineModelTranslator(String apiKey, String url, Prompt prompt, Int32 contextNum, String model)
         {
-            url = "https://api.chatanywhere.com.cn/v1/chat/completions";
             httpClient = new HttpClient();
-            conversation = new Conversation(10);
+            userAgent = "Apifox/1.0.0 (https://apifox.com)";
+
+            this.url = url;
+            this.apiKey = apiKey;
+            this.model = model;
+            conversation = new Conversation(contextNum);
+            this.prompt = prompt;
         }
-        public void RemoveLast()
+        public override void RemoveLast()
         {
             conversation.History.RemoveAt(conversation.History.Count - 1);
         }
-        public async Task<String> Translate(String jp)
+        public override async Task<String> Translate(String jp)
         {
 
             List<Dictionary<String, String>> text = new List<Dictionary<String, String>>();
-            jp = TextModifier.Modify(jp);
             conversation.Add(jp);
-            text.Add(new Dictionary<String, String>
+            String content = "";
+            if (prompt.HasContext)
+            {
+                if (prompt.ContextFist)
                 {
+                    content += prompt.Prompt1;
+                    content += conversation.ToString();
+                    content += prompt.Prompt2;
+                    content += conversation.LastSentence;
+                    content += prompt.Prompt3;
+                }
+                else
+                {
+                    content += prompt.Prompt1;
+                    content += conversation.LastSentence;
+                    content += prompt.Prompt2;
+                    content += conversation.ToString();
+                    content += prompt.Prompt3;
+                }
+            }
+            else
+            {
+                content += prompt.Prompt1;
+                content += conversation.LastSentence;
+                content += prompt.Prompt2;
+
+            }
+            text.Add(new Dictionary<String, String>
+            {
                     { "role", "user" },
-                    { "content", "阅读下面一段日文对话或独白：\n："+conversation.ToString()+"结合上文翻译对话中的最后一句："+conversation.LastSentence+"\n为简体中文。" +
-                    "注意，对话来源于OCR光学识别，因此可能有形近字错误。"},
-                });
+                    { "content", content},
+             });
 
             Dictionary<String, Object> requestData = new Dictionary<String, Object>
                 {
-                    { "model", "gpt-3.5-turbo-0125" },
+                    { "model", model },
                     { "messages", text }
                 };
             StringContent jsonContent = new StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(requestData), Encoding.UTF8, "application/json");
@@ -89,6 +144,7 @@ namespace VNLauncher.FuntionalClasses
             httpClient.DefaultRequestHeaders.UserAgent.ParseAdd(userAgent);
 
             HttpResponseMessage response = await httpClient.PostAsync(url, jsonContent);
+
             response.EnsureSuccessStatusCode();
 
             String responseContent = await response.Content.ReadAsStringAsync();
@@ -100,24 +156,27 @@ namespace VNLauncher.FuntionalClasses
             return assistantMessage;
         }
     }
-    public class LocalTranslator
+    public class LocalTranslator :Translator
     {
         private String url;
         private HttpClient httpClient;
-        List<Dictionary<String, String>> history = new List<Dictionary<String, String>>();
-        public LocalTranslator()
+        private Int32 context;
+        private String prompt;
+        private List<Dictionary<String, String>> history = new List<Dictionary<String, String>>();
+        public LocalTranslator(String url, Int32 context, String prompt)
         {
-            url = "http://127.0.0.1:5000/v1/chat/completions";
+            this.url = url + "/v1/chat/completions";
+            this.context = context;
+            this.prompt = prompt;
             httpClient = new HttpClient();
         }
-        public async Task<String> Translate(String jp)
+        public override async Task<String> Translate(String jp)
         {
-            jp = TextModifier.Modify(jp);
             history.Add(
                 new Dictionary<String, String>
             {
                 { "role", "user" },
-                { "content", "将这段文本直接翻译成中文，不要进行任何额外的格式修改，如果遇到大量语气词，请直接将语气词保留，注意连接上下文，这里是你需要翻译的文本：{"+jp+"}" }
+                { "content", prompt +"{"+jp+"}" }
             });
             Dictionary<String, Object> requestData = new Dictionary<String, Object>
             {
@@ -136,16 +195,21 @@ namespace VNLauncher.FuntionalClasses
             dynamic responseData = Newtonsoft.Json.JsonConvert.DeserializeObject(responseContent)!;
             String assistantMessage = responseData.choices[0].message.content;
             history.Add(new Dictionary<String, String>
-                         {
+            {
                 { "role", "assistant" },
                 { "content", assistantMessage }
             });
-            if (history.Count >= 22)
+            if (history.Count >= context)
             {
                 history.RemoveAt(0);
                 history.RemoveAt(0);
             }
             return assistantMessage;
+        }
+        public override void RemoveLast()
+        {
+            history.RemoveAt(history.Count - 1);
+            history.RemoveAt(history.Count - 1);
         }
     }
 }

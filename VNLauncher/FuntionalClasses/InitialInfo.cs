@@ -19,7 +19,7 @@ namespace VNLauncher.FuntionalClasses
             {
                 ["translateSwitch"] = "键盘按键Tab",
                 ["showMarquee"] = "键盘按键左Shift",
-                ["screenshot"] = "键盘按键F8",
+                ["screenShot"] = "键盘按键F8",
                 ["retranslate"] = "键盘按键F7",
                 ["captureSideUpMove"] = "键盘按键↑",
                 ["captureSideDownMove"] = "键盘按键↓",
@@ -62,7 +62,7 @@ namespace VNLauncher.FuntionalClasses
                 ["prompt3"] = "\r\n为简体中文。注意，给你的日文句子结果来自OCR光学字符识别，因此可能会有形近字错误。\r\n"
             };
 
-            JObject GPTTranslate = new JObject
+            JObject onlineModelTranslate = new JObject
             {
                 ["enabled"] = false,
                 ["url"] = "https://api.chatanywhere.com.cn/v1/chat/completions",
@@ -83,7 +83,7 @@ namespace VNLauncher.FuntionalClasses
             initialSettings["keyMapping"] = keyMapping;
             initialSettings["ocr"] = OCR;
             initialSettings["baiduTranslate"] = baiduTranslate;
-            initialSettings["gptTranslate"] = GPTTranslate;
+            initialSettings["onlineModelTranslate"] = onlineModelTranslate;
             initialSettings["localTranslate"] = localTranslate;
 
             System.IO.File.WriteAllText(path, initialSettings.ToString());

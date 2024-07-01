@@ -1,12 +1,13 @@
 ﻿#pragma warning disable IDE0049
-#pragma warning disable CS8618
 
 using OpenCvSharp.Extensions;
 using System.Drawing;
+using System.IO;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
+using VNLauncher.Controls;
 using VNLauncher.FuntionalClasses;
 
 namespace VNLauncher.Windows
@@ -22,6 +23,9 @@ namespace VNLauncher.Windows
         private TransparentWindow tWindow;
         private FileManager fileManager;
         private MainWindow mainWindow;
+        private dynamic settingResponseData;
+
+        private Translator translator;
 
 
         public MarqueeWindow(IntPtr gameWindowHwnd, Game game, MainWindow mainWindow)
@@ -35,11 +39,7 @@ namespace VNLauncher.Windows
             windowMonitoringTimer.Elapsed += OnTimedEvent;
             windowMonitoringTimer.AutoReset = true;
             windowMonitoringTimer.Enabled = true;
-            hook = new GlobalHook(new List<(String, Action)>
-            {
-                ("鼠标左键", WaitAndScan), ("键盘按键←", LeftKeyDown), ("键盘按键→", RightKeyDown), ("键盘按键↑", UpKeyDown),
-                ("键盘按键↓", DownKeyDown),("键盘按键Tab",TabKeyDown),("键盘按键R",Retranslate),("键盘按键P", ScreenShot)
-            });
+
             tWindowTimer = new System.Timers.Timer(2000);
             tWindowTimer.Elapsed += (sender, e) =>
             {
@@ -51,14 +51,91 @@ namespace VNLauncher.Windows
             };
             windowMonitoringTimer.AutoReset = true;
 
-            scanner = new LocalOCR();
-
             tWindow = new TransparentWindow(gameWindowHwnd, game.Loaction);
             tWindow.Show();
             tWindow.Visibility = Visibility.Hidden;
-            cTranslator = new GPTTranslator();
-            lTranslator = new LocalTranslator();
 
+            SettingInit();
+        }
+        public void SettingInit()
+        {
+            String jsonContent = File.ReadAllText(fileManager.UserDataJsonPath);
+            settingResponseData = Newtonsoft.Json.JsonConvert.DeserializeObject(jsonContent)!;
+
+            scanner = new LocalOCR((Boolean)settingResponseData.ocr.localOCR.isV4Model, (Boolean)settingResponseData.ocr.localOCR.usingGPU);
+
+            if (!(Boolean)settingResponseData.ocr.onlineOCR.enabled)
+            {
+                onlineOCRRadioButton.SetUnenabled();
+            }
+            if (!(Boolean)settingResponseData.baiduTranslate.enabled)
+            {
+                baiduTranslateRadioButton.SetUnenabled();
+            }
+            if (!(Boolean)settingResponseData.localTranslate.enabled)
+            {
+                localTranslateRadioButton.SetUnenabled();
+            }
+            if (!(Boolean)settingResponseData.onlineModelTranslate.enabled)
+            {
+                onlineModelTranslateRadioButton.SetUnenabled();
+            }
+
+            Action ocrChangedAction = () =>
+            {
+
+            };
+
+            Action translateChangedAction = () =>
+            {
+                if (translator is LocalTranslator)
+                {
+                    translator = new OnlineModelTranslator((String)settingResponseData.onlineModelTranslate.apiKey, (String)settingResponseData.onlineModelTranslate.url,
+                    new OnlineModelTranslator.Prompt((Boolean)settingResponseData.onlineModelTranslate.prompt.hasContext, (Boolean)settingResponseData.onlineModelTranslate.prompt.contextFirst,
+                    (String)settingResponseData.onlineModelTranslate.prompt.prompt1, (String)settingResponseData.onlineModelTranslate.prompt.prompt2, (String)settingResponseData.onlineModelTranslate.prompt.prompt3),
+                    (Int32)settingResponseData.onlineModelTranslate.context, (String)settingResponseData.onlineModelTranslate.model);
+                }
+                else
+                {
+                    translator = new LocalTranslator((String)settingResponseData.localTranslate.url, (Int32)settingResponseData.localTranslate.context, (String)settingResponseData.localTranslate.prompt);
+                }
+            };
+            MarqueeRadioButton.SetGroup(new List<MarqueeRadioButton> { onlineOCRRadioButton, localOCRRadioButton }, ocrChangedAction, localOCRRadioButton);
+            MarqueeRadioButton.SetGroup(new List<MarqueeRadioButton> { localTranslateRadioButton, onlineModelTranslateRadioButton, baiduTranslateRadioButton }, translateChangedAction);
+
+
+            if (onlineModelTranslateRadioButton.IsEnabled)
+            {
+                onlineModelTranslateRadioButton.SetChecked();
+
+                translator = new OnlineModelTranslator((String)settingResponseData.onlineModelTranslate.apiKey, (String)settingResponseData.onlineModelTranslate.url,
+                new OnlineModelTranslator.Prompt((Boolean)settingResponseData.onlineModelTranslate.prompt.hasContext, (Boolean)settingResponseData.onlineModelTranslate.prompt.contextFirst,
+                (String)settingResponseData.onlineModelTranslate.prompt.prompt1, (String)settingResponseData.onlineModelTranslate.prompt.prompt2, (String)settingResponseData.onlineModelTranslate.prompt.prompt3),
+                (Int32)settingResponseData.onlineModelTranslate.context, (String)settingResponseData.onlineModelTranslate.model);
+            }
+            else if (localTranslateRadioButton.IsEnabled)
+            {
+                localTranslateRadioButton.SetChecked();
+                translator = new LocalTranslator((String)settingResponseData.localTranslate.url, (Int32)settingResponseData.localTranslate.context, (String)settingResponseData.localTranslate.prompt);
+            }
+            else if (baiduTranslateRadioButton.IsEnabled)
+            {
+                baiduTranslateRadioButton.SetChecked();
+            }
+
+            hook = new GlobalHook(new List<(String, Action)>
+            {
+                (((String)settingResponseData.keyMapping.translateSwitch),TranslateSwitch),
+                (((String)settingResponseData.keyMapping.retranslate),Retranslate),
+                (((String)settingResponseData.keyMapping.screenShot),ScreenShot),
+                (((String)settingResponseData.keyMapping.showMarquee),ShowMarquee),
+                (((String)settingResponseData.keyMapping.captureSideUpMove),CaptureSideUpMove),
+                (((String)settingResponseData.keyMapping.captureSideDownMove),CaptureSideDownMove),
+                (((String)settingResponseData.keyMapping.captureSideLeftMove),CaptureSideLeftMove),
+                (((String)settingResponseData.keyMapping.captureSideRightMove),CaptureSideRightMove),
+                ("鼠标左键",WaitAndScan),
+
+            });
         }
         void MouseDragMove(Object sender, MouseButtonEventArgs e)
         {
@@ -73,6 +150,17 @@ namespace VNLauncher.Windows
         private void TranslateButton_Click(Object sender, RoutedEventArgs e)
         {
             translateButton.Turn();
+        }
+        private void ShowMarquee()
+        {
+            if (Visibility == Visibility.Visible)
+            {
+                Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                Visibility = Visibility.Visible;
+            }
         }
         private Rectangle gameWindowLocation;
         private void OnTimedEvent(Object? sender, System.Timers.ElapsedEventArgs e)
@@ -110,50 +198,39 @@ namespace VNLauncher.Windows
                 }
             }
         }
-        private GPTTranslator cTranslator;
-        private LocalTranslator lTranslator;
 
         private CancellationTokenSource tokenSource;
 
         private async void WaitAndScan()
         {
+            
             if (translateButton.IsTranslating)
             {
-                WordBlock? b = null;
-
-                // 取消上一个任务
+                String jpResult = "";
                 tokenSource?.Cancel();
-
-                // 创建新的 CancellationTokenSource
                 tokenSource = new CancellationTokenSource();
-                var token = tokenSource.Token;
-
+                CancellationToken token = tokenSource.Token;
                 Application.Current.Dispatcher.Invoke(() =>
                 {
                     stateInfo.ChangeState(Controls.MarqueeStateInfo.State.Waiting);
                 });
-
                 try
                 {
                     await Task.Run(async () =>
                     {
                         while (true)
                         {
-                            // 检查是否请求取消任务
                             token.ThrowIfCancellationRequested();
-
                             Bitmap lastCapture = GetGameShot(game.Loaction);
                             List<Int32> historySimilarities = new List<Int32>();
-
                             for (Int32 i = 0; i < 15; i++)
                             {
                                 token.ThrowIfCancellationRequested();
-
                                 await Task.Delay(200);
                                 Bitmap capture = GetGameShot(game.Loaction);
                                 Int32 similarity = ImageHandler.CalculateWhiteIntersections(BitmapConverter.ToMat(capture));
 
-                                Int32 count = 0;
+                                Int32 sameCount = 0;
 
                                 foreach (Int32 historySimilarity in historySimilarities)
                                 {
@@ -161,12 +238,11 @@ namespace VNLauncher.Windows
                                     {
                                         if (historySimilarity >= similarity)
                                         {
-                                            count++;
+                                            sameCount++;
                                         }
                                     }
                                 }
-
-                                if (count < 2)
+                                if (sameCount < 2)
                                 {
                                     historySimilarities.Add(similarity);
                                     lastCapture = new Bitmap(capture);
@@ -176,31 +252,27 @@ namespace VNLauncher.Windows
                                     break;
                                 }
                             }
-
                             Application.Current.Dispatcher.Invoke(() =>
                             {
                                 stateInfo.ChangeState(Controls.MarqueeStateInfo.State.Identifying);
                             });
 
-                            List<WordBlock> dialog = scanner.Scan(lastCapture);
-                            b = WordBlock.Splicing(dialog);
-
-                            if (b.Words.Length != 0)
+                            LocalOCR.OCRResult result = scanner.Scan(lastCapture);
+                            if (result.HasContent)
                             {
+                                jpResult = result.ResultText;
                                 break;
                             }
                         }
                     }, token);
-
-                    if (b != null)
+                    String oriJpSentence = "";
+                    Application.Current.Dispatcher.Invoke(() =>
                     {
-                        Application.Current.Dispatcher.Invoke(() =>
-                        {
-                            marqueeTextBlock.Text = b.Words;
-                            stateInfo.ChangeState(Controls.MarqueeStateInfo.State.Translating);
-                        });
-                        Translate(b.Words);
-                    }
+                        oriJpSentence = TextModifier.Modify(jpResult);
+                        marqueeTextBlock.Text = oriJpSentence;
+                        stateInfo.ChangeState(Controls.MarqueeStateInfo.State.Translating);
+                    });
+                    Translate(oriJpSentence);
                 }
                 catch (OperationCanceledException)
                 {
@@ -208,28 +280,26 @@ namespace VNLauncher.Windows
                 }
             }
         }
-
         private async void Retranslate()
         {
-            WordBlock b = null;
             Bitmap capture = GetGameShot(game.Loaction);
+            LocalOCR.OCRResult result = null;
             await Task.Run(async () =>
             {
-                List<WordBlock> dialog = scanner.Scan(capture);
+                result = scanner.Scan(capture);
                 Application.Current.Dispatcher.Invoke(() =>
                  {
                      stateInfo.ChangeState(Controls.MarqueeStateInfo.State.Identifying);
-                     b = WordBlock.Splicing(dialog);
                  });
             });
-            if (b != null)
+            if (result!.HasContent)
             {
                 Application.Current.Dispatcher.Invoke(() =>
                 {
                     stateInfo.ChangeState(Controls.MarqueeStateInfo.State.Translating);
-                    marqueeTextBlock.Text = b.Words;
-                    cTranslator.RemoveLast();
-                    Translate(b.Words);
+                    marqueeTextBlock.Text = result.ResultText;
+                    translator.RemoveLast();
+                    Translate(result.ResultText);
                 });
             }
 
@@ -292,12 +362,12 @@ namespace VNLauncher.Windows
         }
         private async void Translate(String jpContent)
         {
-            String cnContent = await cTranslator.Translate(jpContent);
+            String cnContent = await translator.Translate(jpContent);
             marqueeTextBlock.Text += '\n';
             marqueeTextBlock.Text += cnContent;
             stateInfo.ChangeState(Controls.MarqueeStateInfo.State.Over);
         }
-        private void TabKeyDown()
+        private void TranslateSwitch()
         {
             translateButton.Turn();
             tokenSource?.Cancel();
@@ -311,7 +381,7 @@ namespace VNLauncher.Windows
             }
         }
 
-        public void LeftKeyDown()
+        public void CaptureSideLeftMove()
         {
             if (adjustSideButton.Side == Controls.MarqueeAdjustSideButton.AdjustSide.LeftUp)
             {
@@ -334,7 +404,7 @@ namespace VNLauncher.Windows
                 tWindowTimer.Start();
             }
         }
-        public void RightKeyDown()
+        public void CaptureSideRightMove()
         {
             if (adjustSideButton.Side == Controls.MarqueeAdjustSideButton.AdjustSide.LeftUp)
             {
@@ -357,7 +427,7 @@ namespace VNLauncher.Windows
                 tWindowTimer.Start();
             }
         }
-        public void UpKeyDown()
+        public void CaptureSideUpMove()
         {
             if (adjustSideButton.Side == Controls.MarqueeAdjustSideButton.AdjustSide.LeftUp)
             {
@@ -380,7 +450,7 @@ namespace VNLauncher.Windows
                 tWindowTimer.Start();
             }
         }
-        public void DownKeyDown()
+        public void CaptureSideDownMove()
         {
             if (adjustSideButton.Side == Controls.MarqueeAdjustSideButton.AdjustSide.LeftUp)
             {
@@ -408,6 +478,16 @@ namespace VNLauncher.Windows
         {
             mainWindow.UpdateSelectedGameInfo();
             hook.UninstallHook();
+        }
+
+        private void MarqueeStyleButton_Click(Object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void SelectTranslateModeButton_Click(Object sender, RoutedEventArgs e)
+        {
+            selectTranslateModePopup.IsOpen = true;
         }
     }
 }

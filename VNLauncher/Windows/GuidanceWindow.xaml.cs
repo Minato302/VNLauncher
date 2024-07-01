@@ -82,6 +82,13 @@ namespace VNLauncher.Windows
                     endWindow.Show();
                 };
             }
+            else
+            {
+                storyboard.Completed += (s, e) =>
+                {
+                    Close();
+                };
+            }
             BeginStoryboard(storyboard);
         }
         public void Handoff(Page targetPage, GuidanceWindow baseWindow)

@@ -71,7 +71,7 @@
                             <ColumnDefinition Name="searchColumn" Width="30"/>
                         </Grid.ColumnDefinitions>
 
-                        <local:MainWindowControlBarButton x:Name="settingButton" MainWindowControlBarButtonIcon="Cog" Grid.Column="0"/>
+                        <local:MainWindowControlBarButton x:Name="settingButton" MainWindowControlBarButtonIcon="Cog" Grid.Column="0" Click="SettingButton_Click"/>
                         <local:MainWindowControlBarButton x:Name="addGameButton" MainWindowControlBarButtonIcon="Plus" Grid.Column="2" Click="AddGameButton_Click"/>
                         <local:MainWindowControlBarButton x:Name="sortWayButton" MainWindowControlBarButtonIcon="SortAmountDesc" Grid.Column="1" Click="SortWayButton_Click"/>
                         <Popup x:Name="searchWayPopup" Placement="Bottom" PlacementTarget="{Binding ElementName=sortWayButton}">
@@ -121,8 +121,8 @@
                         <ColumnDefinition Width="20"/>
                     </Grid.ColumnDefinitions>
                     <local:BigButton x:Name="gameStartButton" Grid.Column="0" Margin="10,10,10,10" BigButtonText="开始游戏" Click="GameStartButton_Click"/>
-                    <local:MainWindowGameInfo x:Name="gameTotalTimeInfo" Margin="20,10,10,10"  Grid.Column="1"  MainWindowGameInfoIcon="ClockOutline" MainWindowGameInfoItem="游戏时长" MainWindowGameInfoValue="11.3h"/>
-                    <local:MainWindowGameInfo x:Name="gameLastStartTimeInfo" Margin="20,10,10,10"  Grid.Column="2"  MainWindowGameInfoIcon="Calendar" MainWindowGameInfoItem="最近启动时间" MainWindowGameInfoValue="2024/5/21"/>
+                    <local:MainWindowGameInfo x:Name="gameTotalTimeInfo" Margin="20,10,10,10"  Grid.Column="1"  MainWindowGameInfoIcon="ClockOutline" MainWindowGameInfoItem="游戏时长" MainWindowGameInfoValue="0.0h"/>
+                    <local:MainWindowGameInfo x:Name="gameLastStartTimeInfo" Margin="20,10,10,10"  Grid.Column="2"  MainWindowGameInfoIcon="Calendar" MainWindowGameInfoItem="最近启动时间"/>
                     <local:ItemButton x:Name="openFileButton" ItemButtonIcon="File" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="4"/>
                     <local:ItemButton x:Name="removeGameButton" ItemButtonIcon="Trash" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="5"/>
                 </Grid>

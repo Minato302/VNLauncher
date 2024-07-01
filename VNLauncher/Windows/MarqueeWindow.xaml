@@ -51,8 +51,21 @@
                 <Grid Grid.Column="8" PreviewMouseDown="MouseDragMove" Background="Transparent"/>
                 <Grid Grid.Column="10" PreviewMouseDown="MouseDragMove" Background="Transparent"/>
                 <Grid Grid.Column="12" PreviewMouseDown="MouseDragMove" Background="Transparent"/>
-                <local:MarqueeButton x:Name="marqueeStyleButton" Grid.Column="1" MarqueeButtonText="字幕设置"/>
-                <local:MarqueeButton x:Name="selectTranslateModeButton" Grid.Column="3" MarqueeButtonText="翻译源/OCR"/>
+                <local:MarqueeButton x:Name="marqueeStyleButton" Grid.Column="1" MarqueeButtonText="字幕设置" Click="MarqueeStyleButton_Click"/>
+                <local:MarqueeButton x:Name="selectTranslateModeButton" Grid.Column="3" MarqueeButtonText="翻译源/OCR" Click="SelectTranslateModeButton_Click"/>
+                <Popup x:Name="selectTranslateModePopup" Placement="Top" PlacementTarget="{Binding ElementName=selectTranslateModeButton}" AllowsTransparency="True">
+                    <Border x:Name="selectTranslateModePopupMainBorder" Width="300" Height="170" Background="{StaticResource marqueeBackgroundColor}" CornerRadius="10">
+                        <Canvas Background="#01FFFFFF" Name="selectTranslateModePopupMainCanvas">
+                            <TextBlock Text="OCR选择" Canvas.Top="10" Canvas.Left="13" FontSize="16"/>
+                            <local:MarqueeRadioButton x:Name="localOCRRadioButton" MarqueeRadioButtonText="本地OCR" Canvas.Left="30" Canvas.Top="40"/>
+                            <local:MarqueeRadioButton x:Name ="onlineOCRRadioButton" MarqueeRadioButtonText="在线OCR" Canvas.Left="160" Canvas.Top="40"/>
+                            <TextBlock Text="翻译选择" Canvas.Top="70" Canvas.Left="13" FontSize="16"/>
+                            <local:MarqueeRadioButton x:Name="baiduTranslateRadioButton" MarqueeRadioButtonText="百度翻译" Canvas.Left="30" Canvas.Top="100"/>
+                            <local:MarqueeRadioButton x:Name="onlineModelTranslateRadioButton" MarqueeRadioButtonText="在线大模型" Canvas.Left="160" Canvas.Top="100"/>
+                            <local:MarqueeRadioButton x:Name="localTranslateRadioButton" MarqueeRadioButtonText="本地模型" Canvas.Left="30" Canvas.Top="130"/>
+                        </Canvas>
+                    </Border>
+                </Popup>
                 <local:MarqueeButton x:Name="windowOperatorButton" Grid.Column="5" MarqueeButtonText="窗口操作"/>
                 <local:MarqueeButton x:Name="scanModeButton" Grid.Column="7" MarqueeButtonText="扫描模式"/>
                 <local:MarqueeAdjustSideButton x:Name="adjustSideButton" Grid.Column="9"/>

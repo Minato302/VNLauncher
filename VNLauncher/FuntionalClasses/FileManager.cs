@@ -1,5 +1,6 @@
 ﻿#pragma warning disable IDE0049
 
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Drawing;
 using System.IO;
@@ -159,7 +160,6 @@ namespace VNLauncher.FuntionalClasses
         public void SaveCapture(String gameName, Bitmap capture, String captureName)
         {
             capture.Save(Path.Combine(GetGameCapturesPath(gameName)!, captureName + ".jpg"));
-
         }
     }
 }

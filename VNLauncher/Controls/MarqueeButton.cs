@@ -19,7 +19,7 @@ using VNLauncher.FuntionalClasses;
 
 namespace VNLauncher.Controls
 {
-    public class MarqueeButton : Control
+    public class MarqueeButton : Button
     {
         private LocalColorAcquirer resource;
         private Border mainBorer;

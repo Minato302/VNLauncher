@@ -152,7 +152,7 @@ namespace VNLauncher.FuntionalClasses
             location = new CaptionLocation(d1, d2, d3, d4, d5, d6);
 
             timer = new System.Timers.Timer(60000);
-            timer.Elapsed += OnTimedEvent;
+            timer.Elapsed += OnMinuteEvent;
             timer.AutoReset = true;
             timer.Enabled = false;
         }
@@ -202,7 +202,7 @@ namespace VNLauncher.FuntionalClasses
             timer.Stop();
             UpdateToFile();
         }
-        private void OnTimedEvent(Object? sender, System.Timers.ElapsedEventArgs e)
+        private void OnMinuteEvent(Object? sender, System.Timers.ElapsedEventArgs e)
         {
             playTimeMinute++;
         }

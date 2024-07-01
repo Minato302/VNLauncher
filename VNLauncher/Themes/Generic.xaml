@@ -433,5 +433,29 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
+
+
+    <Style TargetType="{x:Type local:MarqueeRadioButton}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:MarqueeRadioButton}">
+                    <Border Height="20" Width="auto" BorderThickness="0" Background="Transparent" Name="mainBorder">
+                        <Grid Name="mainGrid">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Name="textColumn" Width="auto"/>
+                                <ColumnDefinition Width="5"/>
+                                <ColumnDefinition Name="boxColumn" Width="20"/>
+                                <ColumnDefinition Name="starColumn" Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Name="checkNameTextBlock" Grid.Column="0" Text="{TemplateBinding MarqueeRadioButtonText}"  Foreground="{StaticResource marqueeButtonColor_Text}" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <Border Margin="3,3,3,3" Grid.Column="2" Name="boxBorder" BorderThickness="1" BorderBrush="{StaticResource marqueeButtonColor_Text}" CornerRadius="6" >
+                                <Ellipse Name="isCheckedCircle" Margin="2,2,2,2" Fill="{StaticResource marqueeButtonColor_Text}" Visibility="Hidden"/>
+                            </Border>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 </ResourceDictionary>

@@ -109,9 +109,9 @@ namespace VNLauncher.Windows
 
         private void GameStartButton_Click(Object sender, RoutedEventArgs e)
         {
-            foreach(MainWindowGameButton gameButton in gameListStackPanel.Children)
+            foreach (MainWindowGameButton gameButton in gameListStackPanel.Children)
             {
-                if(gameButton.IsSelected)
+                if (gameButton.IsSelected)
                 {
                     StartGameTipsWindow tipsWindow = new StartGameTipsWindow(gameButton.Game, this);
                     tipsWindow.Show();
@@ -127,6 +127,12 @@ namespace VNLauncher.Windows
                     gameButton.UpdateInfo();
                 }
             }
+        }
+
+        private void SettingButton_Click(Object sender, RoutedEventArgs e)
+        {
+            SettingWindow settingWindow = new SettingWindow();
+            settingWindow.ShowDialog();
         }
     }
 }

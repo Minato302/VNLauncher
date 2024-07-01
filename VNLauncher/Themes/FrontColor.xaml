@@ -48,10 +48,14 @@
     <SolidColorBrush x:Key="marqueeButtonColor_MouseDown" Color="#AA999999"/>
     <SolidColorBrush x:Key="marqueeButtonColor_Text" Color="#FF000000"/>
 
+    <SolidColorBrush x:Key="marqueeButtonColor_Text_Unenabled" Color="#FF666666"/>
+
     <SolidColorBrush x:Key="marqueeTranslateButtonColor" Color="#BA444444"/>
     <SolidColorBrush x:Key="marqueeTranslateButtonColor_MouseEnter" Color="#DD222222"/>
 
     <SolidColorBrush x:Key="settingWindowSetItemColor_Selected" Color="#FF464646"/>
     <SolidColorBrush x:Key="settingWindowSetItemColor_MouseEnter" Color="#FF252525"/>
-    
+
+    <SolidColorBrush x:Key="marqueePopupBackgroundColor" Color="#88BBBB88"/>
+
 </ResourceDictionary>

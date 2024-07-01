@@ -53,14 +53,14 @@ namespace VNLauncher.Windows
             settingInfoFrame.Navigate(new Pages.BaiduTranslateSettingPage());
         }
 
-        private void GptTranslateSettingButton_Click(Object sender, RoutedEventArgs e)
+        private void OnlineModelTranslateSettingButton_Click(Object sender, RoutedEventArgs e)
         {
             foreach (SettingWindowSetItemButton button in settingItemStackPanel.Children)
             {
                 button.RelieveSelected();
             }
-            gptTranslateSettingButton.BeingSelected();
-            settingInfoFrame.Navigate(new Pages.GPTTranslateSettingPage());
+            onlineModelTranslateSettingButton.BeingSelected();
+            settingInfoFrame.Navigate(new Pages.OnlineModelTranslateSettingPage());
         }
 
         private void LocalTranslateSettingButton_Click(Object sender, RoutedEventArgs e)
