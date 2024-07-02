@@ -14,7 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using VNLauncher.FuntionalClasses;
+using VNLauncher.FunctionalClasses;
 using System.IO;
 
 namespace VNLauncher.Pages

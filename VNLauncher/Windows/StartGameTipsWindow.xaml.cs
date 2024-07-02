@@ -2,7 +2,7 @@
 
 using System.Diagnostics;
 using System.Windows;
-using VNLauncher.FuntionalClasses;
+using VNLauncher.FunctionalClasses;
 using VNLauncher.Pages;
 using VNLauncher.Windows;
 

@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
-using VNLauncher.FuntionalClasses;
+using VNLauncher.FunctionalClasses;
 
 namespace VNLauncher.Pages
 {

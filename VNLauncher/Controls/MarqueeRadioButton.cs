@@ -4,7 +4,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Shapes;
-using VNLauncher.FuntionalClasses;
+using VNLauncher.FunctionalClasses;
 
 namespace VNLauncher.Controls
 {

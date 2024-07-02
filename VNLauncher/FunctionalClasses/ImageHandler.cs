@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Media.Imaging;
 using System.Windows.Interop;
 
-namespace VNLauncher.FuntionalClasses
+namespace VNLauncher.FunctionalClasses
 {
     public class ImageHandler
     {

@@ -2,7 +2,7 @@
 
 using System.Text;
 
-namespace VNLauncher.FuntionalClasses
+namespace VNLauncher.FunctionalClasses
 {
     public class TextModifier
     {

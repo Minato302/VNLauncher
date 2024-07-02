@@ -4,9 +4,8 @@ using System.Drawing;
 using System.Reflection.Metadata;
 using System.Runtime.InteropServices;
 using System.Text;
-using static VNLauncher.FuntionalClasses.WindowsHandler;
 
-namespace VNLauncher.FuntionalClasses
+namespace VNLauncher.FunctionalClasses
 {
     public class WindowsHandler
     {
@@ -105,28 +104,37 @@ namespace VNLauncher.FuntionalClasses
 
         [DllImport("user32.dll")]
         private static extern IntPtr SendMessage(IntPtr hWnd, UInt32 msg, IntPtr wParam, IntPtr lParam);
+        [DllImport("user32.dll", SetLastError = true)] 
+        private static extern Boolean MoveWindow(IntPtr hWnd, Int32 X, Int32 Y, Int32 nWidth, Int32 nHeight, Boolean bRepaint);
+        [DllImport("user32.dll", SetLastError = true)] 
+        private static extern Boolean GetClientRect(IntPtr hWnd, out WindowsHandler.LPRECT lpRect);
+
+
+        private static Int32 GWL_STYLE = -16;
+        private static UInt32 WS_CAPTION = 0x00C00000;
+        private static UInt32 WS_THICKFRAME = 0x00040000;
+        private static UInt32 WS_SYSMENU = 0x00080000;
+        private static UInt32 WS_POPUP = 0x80000000;
+
+        private static UInt32 SWP_NOSIZE = 0x0001;
+        private static UInt32 SWP_NOMOVE = 0x0002;
+        private static UInt32 SWP_NOZORDER = 0x0004;
+        private static UInt32 SWP_FRAMECHANGED = 0x0020;
+
+        private static UInt32 WM_SYSCOMMAND = 0x0112;
+
+        private static Int32 GWL_EXSTYLE = -20;
+        private static UInt32 WS_EX_DLGMODALFRAME = 0x00000001;
+        private static UInt32 WS_EX_CLIENTEDGE = 0x00000200;
+        private static UInt32 WS_EX_STATICEDGE = 0x00020000;
+        private static UInt32 WS_EX_WINDOWEDGE = 0x00000100;
+        private static UInt32 WS_EX_LAYERED = 0x00080000;
+
+        private const UInt32 SC_MAXIMIZE = 0xF030;
+        private const UInt32 SC_RESTORE = 0xF120;
+
         public static void RemoveUI(IntPtr hWnd)
         {
-            Int32 GWL_STYLE = -16;
-            UInt32 WS_CAPTION = 0x00C00000;
-            UInt32 WS_THICKFRAME = 0x00040000;
-            UInt32 WS_SYSMENU = 0x00080000;
-
-            UInt32 SWP_NOSIZE = 0x0001;
-            UInt32 SWP_NOMOVE = 0x0002;
-            UInt32 SWP_NOZORDER = 0x0004;
-            UInt32 SWP_FRAMECHANGED = 0x0020;
-
-            UInt32 WM_SYSCOMMAND = 0x0112;
-
-            Int32 GWL_EXSTYLE = -20;
-            UInt32 WS_EX_DLGMODALFRAME = 0x00000001;
-            UInt32 WS_EX_CLIENTEDGE = 0x00000200;
-            UInt32 WS_EX_STATICEDGE = 0x00020000;
-            UInt32 WS_EX_WINDOWEDGE = 0x00000100;
-            UInt32 WS_EX_LAYERED = 0x00080000;
-
-
             IntPtr stylePtr = GetWindowLongPtr(hWnd, GWL_STYLE);
             Int64 style = stylePtr.ToInt64();
             style &= ~WS_CAPTION; style &= ~WS_THICKFRAME; style &= ~WS_SYSMENU;
@@ -136,9 +144,54 @@ namespace VNLauncher.FuntionalClasses
             exStyle &= ~(WS_EX_DLGMODALFRAME | WS_EX_CLIENTEDGE | WS_EX_STATICEDGE | WS_EX_WINDOWEDGE | WS_EX_LAYERED);
             SetWindowLongPtr(hWnd, GWL_EXSTYLE, new IntPtr(exStyle));
             SetWindowPos(hWnd, IntPtr.Zero, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE | SWP_NOZORDER | SWP_FRAMECHANGED);
-            PostMessage(hWnd, WM_SYSCOMMAND, (IntPtr)0xF030, IntPtr.Zero);
-            PostMessage(hWnd, WM_SYSCOMMAND, (IntPtr)0xF120, IntPtr.Zero);
+            PostMessage(hWnd, WM_SYSCOMMAND, (IntPtr)SC_MAXIMIZE, IntPtr.Zero);
+            PostMessage(hWnd, WM_SYSCOMMAND, (IntPtr)SC_RESTORE, IntPtr.Zero);
+
         }
+        public static void RestoreUI(IntPtr hWnd)
+        {
+            IntPtr stylePtr = GetWindowLongPtr(hWnd, GWL_STYLE);
+            Int64 style = stylePtr.ToInt64();
+            style |= WS_CAPTION | WS_THICKFRAME | WS_SYSMENU;
+            SetWindowLongPtr(hWnd, GWL_STYLE, new IntPtr(style));
+
+            IntPtr exStylePtr = GetWindowLongPtr(hWnd, GWL_EXSTYLE);
+            Int64 exStyle = exStylePtr.ToInt64();
+            exStyle |= WS_EX_DLGMODALFRAME | WS_EX_CLIENTEDGE | WS_EX_STATICEDGE | WS_EX_WINDOWEDGE | WS_EX_LAYERED;
+            SetWindowLongPtr(hWnd, GWL_EXSTYLE, new IntPtr(exStyle));
+
+            SetWindowPos(hWnd, IntPtr.Zero, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE | SWP_NOZORDER | SWP_FRAMECHANGED);
+            PostMessage(hWnd, WM_SYSCOMMAND, (IntPtr)SC_MAXIMIZE, IntPtr.Zero);
+            PostMessage(hWnd, WM_SYSCOMMAND, (IntPtr)SC_RESTORE, IntPtr.Zero);
+        }
+        public static void MaximizeAndFullscreen(IntPtr hWnd)
+        {
+            IntPtr stylePtr = GetWindowLongPtr(hWnd, GWL_STYLE);
+            Int64 style = stylePtr.ToInt64();
+            style &= ~WS_CAPTION; style &= ~WS_THICKFRAME; style &= ~WS_SYSMENU;
+            SetWindowLongPtr(hWnd, GWL_STYLE, new IntPtr(style));
+            IntPtr exStylePtr = GetWindowLongPtr(hWnd, GWL_EXSTYLE);
+            Int64 exStyle = exStylePtr.ToInt64();
+            exStyle &= ~(WS_EX_DLGMODALFRAME | WS_EX_CLIENTEDGE | WS_EX_STATICEDGE | WS_EX_WINDOWEDGE | WS_EX_LAYERED);
+            SetWindowLongPtr(hWnd, GWL_EXSTYLE, new IntPtr(exStyle));
+            SetWindowPos(hWnd, IntPtr.Zero, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE | SWP_NOZORDER | SWP_FRAMECHANGED);
+            PostMessage(hWnd, WM_SYSCOMMAND, (IntPtr)SC_MAXIMIZE, IntPtr.Zero);
+        }
+        public static void RestoreToNormalWindow(IntPtr hWnd)
+        {
+            IntPtr stylePtr = GetWindowLongPtr(hWnd, GWL_STYLE);
+            Int64 style = stylePtr.ToInt64();
+            style |= WS_CAPTION | WS_THICKFRAME | WS_SYSMENU;
+            SetWindowLongPtr(hWnd, GWL_STYLE, new IntPtr(style));
+            IntPtr exStylePtr = GetWindowLongPtr(hWnd, GWL_EXSTYLE);
+            Int64 exStyle = exStylePtr.ToInt64();
+            exStyle |= WS_EX_DLGMODALFRAME | WS_EX_CLIENTEDGE | WS_EX_STATICEDGE | WS_EX_WINDOWEDGE | WS_EX_LAYERED;
+            SetWindowLongPtr(hWnd, GWL_EXSTYLE, new IntPtr(exStyle));
+            SetWindowPos(hWnd, IntPtr.Zero, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE | SWP_NOZORDER | SWP_FRAMECHANGED);
+            PostMessage(hWnd, WM_SYSCOMMAND, (IntPtr)SC_RESTORE, IntPtr.Zero);
+        }
+
+
         public static void Close(IntPtr hWnd)
         {
             UInt32 WM_CLOSE = 0x0010;
@@ -190,7 +243,7 @@ namespace VNLauncher.FuntionalClasses
     {
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
-        private static extern Boolean GetWindowRect(IntPtr hWnd, ref LPRECT lpRect);
+        private static extern Boolean GetWindowRect(IntPtr hWnd, ref WindowsHandler.LPRECT lpRect);
         [DllImport("user32")]
         private static extern Int32 GetClassName(IntPtr hWnd, StringBuilder lpString, Int32 nMaxCount);
 
@@ -214,7 +267,7 @@ namespace VNLauncher.FuntionalClasses
             GetWindowText(hWnd, lptrString, lptrString.Capacity);
             String title = lptrString.ToString().Trim();
             Boolean isVisible = IsWindowVisible(hWnd);
-            LPRECT rect = default;
+            WindowsHandler.LPRECT rect = default;
             GetWindowRect(hWnd, ref rect);
             Rectangle bounds = new Rectangle(rect.Left, rect.Top, rect.Right - rect.Left, rect.Bottom - rect.Top);
 
@@ -276,17 +329,5 @@ namespace VNLauncher.FuntionalClasses
         }
         public Boolean IsMinimized => Bounds.Left <= -30000 && Bounds.Top <= -30000;
 
-        [DllImport("User32.dll", CharSet = CharSet.Auto)]
-        public static extern Int32 GetWindowThreadProcessId(IntPtr hwnd, out Int32 id);
-
-        public Int32 ThreadID
-        {
-            get
-            {
-                Int32 id;
-                GetWindowThreadProcessId(Hwnd, out id);
-                return id;
-            }
-        }
     }
 }

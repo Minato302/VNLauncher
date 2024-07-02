@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VNLauncher.FuntionalClasses
+namespace VNLauncher.FunctionalClasses
 {
     public struct KeyCode
     {

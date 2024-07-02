@@ -7,7 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using VNLauncher.FuntionalClasses;
+using VNLauncher.FunctionalClasses;
 
 namespace VNLauncher.Controls
 {
@@ -30,6 +30,7 @@ namespace VNLauncher.Controls
         private Game game;
         public Game Game => game;
         private Border mainBorder;
+
         public MainWindowGameButton(String gameName, Windows.MainWindow mainWindow)
         {
             fileManager = new FileManager();
@@ -107,7 +108,7 @@ namespace VNLauncher.Controls
             }
             mainWindow.coverBlock.SetImageCount(captureNames.Length);
             List<List<String>> groups = fileManager.GroupCaptureNamesByPrefix(Game.Name).Values.ToList();
-            groups.Sort(delegate (List<String> x, List<String> y)
+            groups.Sort((List<String> x, List<String> y) =>
             {
                 return -Convert.ToInt64(x[0][..8]).CompareTo(Convert.ToInt64(y[0][..8]));
             });
@@ -131,40 +132,7 @@ namespace VNLauncher.Controls
             isSelected = true;
             mainBorder.Background = resource.GetColor("mainWindowGameButtonColor_Selected") as Brush;
             mainWindow.coverPicture.Source = new BitmapImage(new Uri(fileManager.GetGameCoverPath(Game.Name)!));
-            String[] captureNames = Directory.GetFiles(fileManager.GetGameCapturesPath(Game.Name)!);
-            Random rand = new Random();
-            Int32 index = rand.Next(captureNames.Length + 1);
-            if (index == captureNames.Length)
-            {
-                mainWindow.coverBlock.MainWindowCoverBlockImage = new BitmapImage(new Uri(fileManager.GetGameCoverPath(Game.Name)!));
-            }
-            else
-            {
-                mainWindow.coverBlock.MainWindowCoverBlockImage = new BitmapImage(new Uri(captureNames[index]));
-            }
-
-            mainWindow.coverBlock.SetImageCount(captureNames.Length);
-
-            List<List<String>> groups = fileManager.GroupCaptureNamesByPrefix(Game.Name).Values.ToList();
-            groups.Sort(delegate (List<String> x, List<String> y)
-            {
-                return -Convert.ToInt64(x[0][..8]).CompareTo(Convert.ToInt64(y[0][..8]));
-            });
-            foreach (List<String> group in groups)
-            {
-                mainWindow.captureDisplayPanel.Children.Add(new MainWindowDailyCaputreDisplay(group, Game.Name));
-            }
-            if (game.PlayTimeMinute >= 120)
-            {
-                mainWindow.gameTotalTimeInfo.SetInfo((game.PlayTimeMinute / 60.0).ToString("0.0") + "小时");
-            }
-            else
-            {
-                mainWindow.gameTotalTimeInfo.SetInfo(game.PlayTimeMinute.ToString() + "分钟");
-            }
-         
-            mainWindow.gameLastStartTimeInfo.SetInfo(game.LastStartTime.ToString("d"));
-
+            UpdateInfo();
         }
         public void RelieveSelected()
         {

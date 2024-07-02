@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:VNLauncher.Controls"
         mc:Ignorable="d"  AllowsTransparency="True" MinHeight="160" MinWidth="700" MaxHeight="210" MaxWidth="900" Background="Transparent" Topmost="True"
-        Title="字幕" Height="180" Width="800" WindowStyle="None" Top="700" Left="460" ResizeMode="CanResizeWithGrip" Unloaded="Window_Unloaded"  >
-    <Border CornerRadius="10" Background="{StaticResource marqueeBackgroundColor}">
-        <Grid>
+        Title="字幕" Height="180" Width="800" WindowStyle="None" Top="700" Left="460" ResizeMode="CanResizeWithGrip" Unloaded="Window_Unloaded">
+    <Border CornerRadius="10" Background="{StaticResource marqueeBackgroundColor}" Name="mainBorder"  MouseRightButtonDown="MainBorder_MouseRightButtonDown">
+        <Grid Name="mainGrid">
             <Grid.RowDefinitions>
                 <RowDefinition Height="3"/>
                 <RowDefinition Name="titleRow" Height="12"/>
@@ -15,17 +15,17 @@
                 <RowDefinition Name="bottomRow" Height="auto"/>
                 <RowDefinition  Height="5"/>
             </Grid.RowDefinitions>
-            <Grid PreviewMouseDown="MouseDragMove" Grid.Column="0" Background="Transparent"/>
+            <Grid PreviewMouseLeftButtonDown="MouseDragMove" Grid.Column="0" Background="Transparent"/>
             <Grid Name="titleGrid" Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Name="closeButtonColumn" Width="18"/>
                     <ColumnDefinition Width="3"/>
                 </Grid.ColumnDefinitions>
-                <Grid PreviewMouseDown="MouseDragMove" Grid.Column="0" Background="Transparent"/>
+                <Grid PreviewMouseLeftButtonDown="MouseDragMove" Grid.Column="0" Background="Transparent"/>
                 <local:MarqueeCloseButton Grid.Column="1" Click="MarqueeCloseButton_Click"/>
             </Grid>
-            <TextBlock PreviewMouseDown="MouseDragMove" x:Name="marqueeTextBlock" Foreground="{StaticResource marqueeIconColor}" Margin="20,5,20,5" Grid.Row="2" FontSize="20" TextWrapping="Wrap"/>
+            <TextBlock PreviewMouseLeftButtonDown="MouseDragMove" x:Name="marqueeTextBlock" Foreground="{StaticResource marqueeIconColor}" Margin="20,5,20,5" Grid.Row="2" FontSize="20" TextWrapping="Wrap"/>
             <Grid Name="bottomGrid" Grid.Row="3">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="25"/>
@@ -44,18 +44,18 @@
                     <ColumnDefinition x:Name="stateInfoColumn" Width="auto"/>
                     <ColumnDefinition Width="40"/>
                 </Grid.ColumnDefinitions>
-                <Grid Grid.Column="0" PreviewMouseDown="MouseDragMove" Background="Transparent"/>
-                <Grid Grid.Column="2" PreviewMouseDown="MouseDragMove" Background="Transparent"/>
-                <Grid Grid.Column="4" PreviewMouseDown="MouseDragMove" Background="Transparent"/>
-                <Grid Grid.Column="6" PreviewMouseDown="MouseDragMove" Background="Transparent"/>
-                <Grid Grid.Column="8" PreviewMouseDown="MouseDragMove" Background="Transparent"/>
-                <Grid Grid.Column="10" PreviewMouseDown="MouseDragMove" Background="Transparent"/>
-                <Grid Grid.Column="12" PreviewMouseDown="MouseDragMove" Background="Transparent"/>
+                <Grid Grid.Column="0" PreviewMouseLeftButtonDown="MouseDragMove" Background="Transparent"/>
+                <Grid Grid.Column="2" PreviewMouseLeftButtonDown="MouseDragMove" Background="Transparent"/>
+                <Grid Grid.Column="4" PreviewMouseLeftButtonDown="MouseDragMove" Background="Transparent"/>
+                <Grid Grid.Column="6" PreviewMouseLeftButtonDown="MouseDragMove" Background="Transparent"/>
+                <Grid Grid.Column="8" PreviewMouseLeftButtonDown="MouseDragMove" Background="Transparent"/>
+                <Grid Grid.Column="10" PreviewMouseLeftButtonDown="MouseDragMove" Background="Transparent"/>
+                <Grid Grid.Column="12" PreviewMouseLeftButtonDown="MouseDragMove" Background="Transparent"/>
                 <local:MarqueeButton x:Name="marqueeStyleButton" Grid.Column="1" MarqueeButtonText="字幕设置" Click="MarqueeStyleButton_Click"/>
                 <local:MarqueeButton x:Name="selectTranslateModeButton" Grid.Column="3" MarqueeButtonText="翻译源/OCR" Click="SelectTranslateModeButton_Click"/>
                 <Popup x:Name="selectTranslateModePopup" Placement="Top" PlacementTarget="{Binding ElementName=selectTranslateModeButton}" AllowsTransparency="True">
                     <Border x:Name="selectTranslateModePopupMainBorder" Width="300" Height="170" Background="{StaticResource marqueeBackgroundColor}" CornerRadius="10">
-                        <Canvas Background="#01FFFFFF" Name="selectTranslateModePopupMainCanvas">
+                        <Canvas Background="Transparent" Name="selectTranslateModePopupMainCanvas">
                             <TextBlock Text="OCR选择" Canvas.Top="10" Canvas.Left="13" FontSize="16"/>
                             <local:MarqueeRadioButton x:Name="localOCRRadioButton" MarqueeRadioButtonText="本地OCR" Canvas.Left="30" Canvas.Top="40"/>
                             <local:MarqueeRadioButton x:Name ="onlineOCRRadioButton" MarqueeRadioButtonText="在线OCR" Canvas.Left="160" Canvas.Top="40"/>
@@ -66,7 +66,17 @@
                         </Canvas>
                     </Border>
                 </Popup>
-                <local:MarqueeButton x:Name="windowOperatorButton" Grid.Column="5" MarqueeButtonText="窗口操作"/>
+                <local:MarqueeButton x:Name="windowOperatorButton" Grid.Column="5" MarqueeButtonText="窗口操作" Click="WindowOperatorButton_Click"/>
+                <Popup x:Name="windowOperatorPopup" Placement="Top" PlacementTarget="{Binding ElementName=selectTranslateModeButton}" AllowsTransparency="True">
+                    <Border x:Name="windowOperatorPopupMainBorder" Width="220" Height="100" Background="{StaticResource marqueeBackgroundColor}" CornerRadius="10">
+                        <Canvas Background="Transparent" Name="windowOperatorPopupMainCanvas">
+                            <local:MarqueeButton x:Name="removeUIButton" Canvas.Top="20" Canvas.Left="20" MarqueeButtonText="取消窗口UI" Click="RemoveUIButton_Click"/>
+                            <local:MarqueeButton x:Name="restoreUIButton" Canvas.Top="20" Canvas.Left="120" MarqueeButtonText="恢复窗口UI" Click="RestoreUIButton_Click"/>
+                            <local:MarqueeButton x:Name="maximizeAndFullscreenButton" Canvas.Top="60" Canvas.Left="20" MarqueeButtonText="窗口最大化" Click="MaximizeAndFullscreenButton_Click"/>
+                            <local:MarqueeButton x:Name="restoreToNormalWindow" Canvas.Top="60" Canvas.Left="120" MarqueeButtonText="窗口恢复" Click="RestoreToNormalWindow_Click"/>
+                        </Canvas>
+                    </Border>
+                </Popup>
                 <local:MarqueeButton x:Name="scanModeButton" Grid.Column="7" MarqueeButtonText="扫描模式"/>
                 <local:MarqueeAdjustSideButton x:Name="adjustSideButton" Grid.Column="9"/>
                 <local:MarqueeTranslateButton x:Name="translateButton" Grid.Column="11" Click="TranslateButton_Click"/>

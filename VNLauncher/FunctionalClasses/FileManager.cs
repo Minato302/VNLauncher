@@ -6,7 +6,7 @@ using System.Drawing;
 using System.IO;
 using VNLauncher.Windows;
 
-namespace VNLauncher.FuntionalClasses
+namespace VNLauncher.FunctionalClasses
 {
     public class FileManager
     {

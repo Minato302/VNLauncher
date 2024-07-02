@@ -8,7 +8,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 using VNLauncher.Controls;
-using VNLauncher.FuntionalClasses;
+using VNLauncher.FunctionalClasses;
 
 namespace VNLauncher.Windows
 {
@@ -149,7 +149,7 @@ namespace VNLauncher.Windows
 
         private void TranslateButton_Click(Object sender, RoutedEventArgs e)
         {
-            translateButton.Turn();
+            TranslateSwitch();
         }
         private void ShowMarquee()
         {
@@ -373,10 +373,20 @@ namespace VNLauncher.Windows
             tokenSource?.Cancel();
             if (translateButton.IsTranslating)
             {
+                adjustSideButton.IsEnabled = false;
+                marqueeStyleButton.IsEnabled = false;
+                selectTranslateModeButton.IsEnabled = false;
+                windowOperatorButton.IsEnabled = false;
+                scanModeButton.IsEnabled = false;
                 stateInfo.ChangeState(Controls.MarqueeStateInfo.State.Over);
             }
             else
             {
+                adjustSideButton.IsEnabled = true;
+                marqueeStyleButton.IsEnabled = true;
+                selectTranslateModeButton.IsEnabled = true;
+                windowOperatorButton.IsEnabled = true;
+                scanModeButton.IsEnabled = true;
                 stateInfo.ChangeState(Controls.MarqueeStateInfo.State.Closed);
             }
         }
@@ -488,6 +498,38 @@ namespace VNLauncher.Windows
         private void SelectTranslateModeButton_Click(Object sender, RoutedEventArgs e)
         {
             selectTranslateModePopup.IsOpen = true;
+            windowOperatorPopup.IsOpen = false;
+        }
+        private void WindowOperatorButton_Click(Object sender, RoutedEventArgs e)
+        {
+            windowOperatorPopup.IsOpen = true;
+            selectTranslateModePopup.IsOpen = false;
+        }
+
+        private void MainBorder_MouseRightButtonDown(Object sender, MouseButtonEventArgs e)
+        {
+            selectTranslateModePopup.IsOpen = false;
+            windowOperatorPopup.IsOpen = false;
+        }
+
+        private void RemoveUIButton_Click(Object sender, RoutedEventArgs e)
+        {
+            WindowsHandler.RemoveUI(gameWindowHwnd);
+        }
+
+        private void RestoreUIButton_Click(Object sender, RoutedEventArgs e)
+        {
+            WindowsHandler.RestoreUI(gameWindowHwnd);
+        }
+
+        private void RestoreToNormalWindow_Click(Object sender, RoutedEventArgs e)
+        {
+            WindowsHandler.RestoreToNormalWindow(gameWindowHwnd);
+        }
+
+        private void MaximizeAndFullscreenButton_Click(Object sender, RoutedEventArgs e)
+        {
+            WindowsHandler.MaximizeAndFullscreen(gameWindowHwnd);
         }
     }
 }

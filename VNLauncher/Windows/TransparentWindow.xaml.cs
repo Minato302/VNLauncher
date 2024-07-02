@@ -6,8 +6,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interop;
 using System.Windows.Media;
-using VNLauncher.FuntionalClasses;
-using static VNLauncher.FuntionalClasses.Game;
+using VNLauncher.FunctionalClasses;
+using static VNLauncher.FunctionalClasses.Game;
 
 namespace VNLauncher.Windows
 {

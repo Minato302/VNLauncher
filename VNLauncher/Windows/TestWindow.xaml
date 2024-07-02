@@ -6,15 +6,12 @@
         xmlns:local="clr-namespace:VNLauncher.Controls"
         mc:Ignorable="d"
         Title="TestWindow" Height="450" Width="800">
-    <Border Width="300" Height="170" Background="{StaticResource marqueePopupBackgroundColor}" CornerRadius="10">
-        <Canvas Background="Transparent">
-            <TextBlock Text="OCR选择" Canvas.Top="10" Canvas.Left="13" FontSize="16"/>
-            <local:MarqueeRadioButton MarqueeRadioButtonText="本地OCR" Canvas.Left="30" Canvas.Top="40"/>
-            <local:MarqueeRadioButton MarqueeRadioButtonText="在线OCR" Canvas.Left="160" Canvas.Top="40"/>
-            <TextBlock Text="翻译选择" Canvas.Top="70" Canvas.Left="13" FontSize="16"/>
-            <local:MarqueeRadioButton MarqueeRadioButtonText="百度翻译" Canvas.Left="30" Canvas.Top="100"/>
-            <local:MarqueeRadioButton MarqueeRadioButtonText="在线大模型" Canvas.Left="160" Canvas.Top="100"/>
-            <local:MarqueeRadioButton MarqueeRadioButtonText="本地模型" Canvas.Left="30" Canvas.Top="130"/>
+    <Border x:Name="scanModePopupMainBorder" Width="220" Height="100" Background="{StaticResource marqueeBackgroundColor}" CornerRadius="10">
+        <Canvas Background="Transparent" Name="scanModePopupMainCanvas">
+            <local:MarqueeButton Canvas.Top="20" Canvas.Left="20" MarqueeButtonText="取消窗口UI"/>
+            <local:MarqueeButton Canvas.Top="20" Canvas.Left="120" MarqueeButtonText="恢复窗口UI"/>
+            <local:MarqueeButton Canvas.Top="60" Canvas.Left="20" MarqueeButtonText="窗口最大化"/>
+            <local:MarqueeButton Canvas.Top="60" Canvas.Left="120" MarqueeButtonText="窗口恢复"/>
         </Canvas>
     </Border>
 </Window>

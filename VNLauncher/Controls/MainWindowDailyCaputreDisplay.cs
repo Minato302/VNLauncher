@@ -3,7 +3,7 @@
 using System.Windows;
 using System.IO;
 using System.Windows.Controls;
-using VNLauncher.FuntionalClasses;
+using VNLauncher.FunctionalClasses;
 using System.Windows.Media.Imaging;
 
 namespace VNLauncher.Controls

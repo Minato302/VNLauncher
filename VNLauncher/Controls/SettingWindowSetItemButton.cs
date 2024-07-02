@@ -5,7 +5,7 @@ using FontAwesome.WPF;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using VNLauncher.FuntionalClasses;
+using VNLauncher.FunctionalClasses;
 
 namespace VNLauncher.Controls
 {

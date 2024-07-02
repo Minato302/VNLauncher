@@ -3,7 +3,7 @@
 using System.Net.Http;
 using System.Text;
 
-namespace VNLauncher.FuntionalClasses
+namespace VNLauncher.FunctionalClasses
 {
     public abstract class Translator
     {

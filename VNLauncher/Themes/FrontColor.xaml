@@ -39,7 +39,7 @@
     <SolidColorBrush x:Key="addWindowOpenFileDialogButtonColor" Color="#FF434343"/>
     
     <SolidColorBrush x:Key="iconColor" Color="#FFCCCCCC"/>
-    <SolidColorBrush x:Key="iconColor_White" Color="#FFFFFFFF"/>
+    <SolidColorBrush x:Key="iconColor_White" Color="#FFFFFFFF"/> 
 
     <SolidColorBrush x:Key="marqueeBackgroundColor" Color="#99E4e4e4"/>
     <SolidColorBrush x:Key="marqueeIconColor" Color="#BB000000"/>

@@ -3,7 +3,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using VNLauncher.Controls;
-using VNLauncher.FuntionalClasses;
+using VNLauncher.FunctionalClasses;
 using VNLauncher.Windows;
 
 namespace VNLauncher.Pages

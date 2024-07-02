@@ -11,7 +11,7 @@ using System.Windows;
 using System.Windows.Controls;
 using VNLauncher.Windows;
 
-namespace VNLauncher.FuntionalClasses
+namespace VNLauncher.FunctionalClasses
 {
     public class GuidancePageParameter
     {

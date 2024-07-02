@@ -6,7 +6,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Input;
 using VNLauncher.Controls;
-using VNLauncher.FuntionalClasses;
+using VNLauncher.FunctionalClasses;
 
 namespace VNLauncher.Windows
 {

@@ -148,7 +148,6 @@
                             <TextBlock x:Name="tipsMomentTextBlock" Text="动态" Grid.Row="1" Foreground="{StaticResource iconColor}" FontSize="14"/>
                             <local:MainWindowOpenAlbumButton x:Name="button_OpenAlbum" Grid.Row="3"/>
                             <StackPanel x:Name="captureDisplayPanel" Grid.Row="5" Width="auto"/>
-                            <!--<local:MainWindowDailyCaputreDisplay x:Name="captrueDisplay" Grid.Row="5"/>-->
                         </Grid>
 
                         <Grid x:Name="coverBlockGrid" Grid.Column="3">

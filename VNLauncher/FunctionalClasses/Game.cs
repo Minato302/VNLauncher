@@ -10,7 +10,7 @@ using Newtonsoft.Json.Linq;
 using System.IO;
 using System.Diagnostics;
 
-namespace VNLauncher.FuntionalClasses
+namespace VNLauncher.FunctionalClasses
 {
     public class Game
     {

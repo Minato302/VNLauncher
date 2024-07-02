@@ -42,7 +42,6 @@ namespace VNLauncher.Controls
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
-            ApplyTemplate();
             mainTextBox = (Template.FindName("mainTextBox", this) as TextBox)!;
             starTextBlock = (Template.FindName("starTextBlock", this) as TextBlock)!;
             mainTextBox.TextChanged += (sender, e) => 

@@ -1,7 +1,7 @@
 ﻿#pragma warning disable IDE0049
 
 using System.Windows.Controls;
-using VNLauncher.FuntionalClasses;
+using VNLauncher.FunctionalClasses;
 using VNLauncher.Windows;
 
 namespace VNLauncher.Pages
