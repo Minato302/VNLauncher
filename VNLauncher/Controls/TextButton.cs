@@ -41,12 +41,13 @@ namespace VNLauncher.Controls
             resource = new LocalColorAcquirer();
             MouseEnter += (sender, e) =>
             {
-                mainTextBlock!.Foreground = resource.GetColor("signColor") as Brush;
+                mainTextBlock!.Foreground = resource.GetColor("signColor");
             };
             MouseLeave += (sender, e) =>
             {
-                mainTextBlock!.Foreground = resource.GetColor("iconColor") as Brush;
+                mainTextBlock!.Foreground = resource.GetColor("iconColor");
             };
+             
         }
         public override void OnApplyTemplate()
         {

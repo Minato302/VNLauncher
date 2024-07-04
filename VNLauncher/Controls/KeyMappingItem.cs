@@ -1,7 +1,6 @@
 ﻿#pragma warning disable IDE0049
 #pragma warning disable CS8618
 
-using System.Reflection.PortableExecutable;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -61,7 +60,7 @@ namespace VNLauncher.Controls
         }
         public void WaitForSettingKey()
         {
-            keyReader = new GlobalKeyReader((inputKey) => 
+            keyReader = new GlobalKeyReader((inputKey) =>
             {
                 SetKey(inputKey);
                 starTextBlock.Visibility = Visibility.Visible;
@@ -70,7 +69,7 @@ namespace VNLauncher.Controls
             Thread.Sleep(100);
             keyReader.ReadAKey();
             keyTextBlock.Text = "               ";
-            keyTextBorder!.Background = resource.GetColor("itemButtonColor_MouseEnter") as Brush;
+            keyTextBorder!.Background = resource.GetColor("itemButtonColor_MouseEnter");
         }
         public void SetKey(InputKey key)
         {
@@ -80,13 +79,16 @@ namespace VNLauncher.Controls
         }
         public void SetKey(String keyName)
         {
-            InputConverter converter=new InputConverter();
+            InputConverter converter = new InputConverter();
             SetKey(converter.ConvertToInputKey(keyName));
         }
-        public String GetKeyName()
+        public String KeyName
         {
-            starTextBlock.Visibility = Visibility.Hidden;
-            return keyTextBlock.Text;
+            get
+            {
+                starTextBlock.Visibility = Visibility.Hidden;
+                return keyTextBlock.Text; 
+            }
         }
 
     }

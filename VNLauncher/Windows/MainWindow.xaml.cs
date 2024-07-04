@@ -47,12 +47,14 @@ namespace VNLauncher.Windows
 
         private void MinimizeButton_Click(Object sender, RoutedEventArgs e)
         {
+            searchWayPopup.IsOpen = false;
             WindowState = WindowState.Minimized;
             searchWayPopup.IsOpen = false;
         }
 
         private void MaximizeButton_Click(Object sender, RoutedEventArgs e)
         {
+            searchWayPopup.IsOpen = false;
             WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
             if (WindowState == WindowState.Maximized)
             {
@@ -88,27 +90,29 @@ namespace VNLauncher.Windows
 
         private void LastOpenedTimeItem_Click(Object sender, RoutedEventArgs e)
         {
-
+            searchWayPopup.IsOpen = false;
         }
 
         private void LastJoinedTimeItem_Click(Object sender, RoutedEventArgs e)
         {
-
+            searchWayPopup.IsOpen = false;
         }
 
         private void PlayedTimeItem_Click(Object sender, RoutedEventArgs e)
         {
-
+            searchWayPopup.IsOpen = false;
         }
 
         private void AddGameButton_Click(Object sender, RoutedEventArgs e)
         {
+            searchWayPopup.IsOpen = false;
             AddGameWindow addGameWindow = new AddGameWindow(this);
             addGameWindow.ShowDialog();
         }
 
         private void GameStartButton_Click(Object sender, RoutedEventArgs e)
         {
+            searchWayPopup.IsOpen = false;
             foreach (MainWindowGameButton gameButton in gameListStackPanel.Children)
             {
                 if (gameButton.IsSelected)
@@ -128,11 +132,17 @@ namespace VNLauncher.Windows
                 }
             }
         }
-
         private void SettingButton_Click(Object sender, RoutedEventArgs e)
         {
             SettingWindow settingWindow = new SettingWindow();
-            settingWindow.ShowDialog();
+            settingWindow.Show();
+        }
+        private void Window_KeyDown(Object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Tab)
+            {
+                e.Handled = true;
+            }
         }
     }
 }

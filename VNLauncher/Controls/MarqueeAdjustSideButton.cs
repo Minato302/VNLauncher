@@ -43,11 +43,11 @@ namespace VNLauncher.Controls
             side = AdjustSide.LeftUp;
             MouseEnter += (sender, e) =>
             {
-                mainTextBlock!.Foreground = resource.GetColor("marqueeTranslateButtonColor_MouseEnter") as Brush;
+                mainTextBlock!.Foreground = resource.GetColor("marqueeIconButtonColor_MouseEnter");
             };
             MouseLeave += (sender, e) =>
             {
-                mainTextBlock!.Foreground = resource.GetColor("marqueeTranslateButtonColor") as Brush;
+                mainTextBlock!.Foreground = resource.GetColor("marqueeIconButtonColor");
             };
             PreviewMouseUp += (sender, e) =>
             {

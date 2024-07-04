@@ -86,5 +86,11 @@ namespace VNLauncher.Windows
         {
             DragMove();
         }
+
+        private void Window_Loaded(Object sender, RoutedEventArgs e)
+        {
+            keymappingButton.BeingSelected();
+            settingInfoFrame.Navigate(new Pages.KeymappingPage());
+        }
     }
 }

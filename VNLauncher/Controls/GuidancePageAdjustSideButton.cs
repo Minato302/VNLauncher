@@ -34,7 +34,7 @@ namespace VNLauncher.Controls
             MouseEnter += (e, sender) =>
             {
                 Cursor = Cursors.Hand;
-                mainBorder_LeftUp!.Background = resource.GetColor("itemButtonColor_MouseEnter") as Brush;
+                mainBorder_LeftUp!.Background = resource.GetColor("itemButtonColor_MouseEnter");
             };
             MouseLeave += (e, sender) =>
             {
@@ -57,10 +57,10 @@ namespace VNLauncher.Controls
             {
                 side = AdjustSide.RightDown;
                 mainBorder_LeftUp.BorderThickness = new Thickness(1, 1, 0, 0);
-                mainBorder_LeftUp.BorderBrush = resource.GetColor("iconColor") as Brush;
+                mainBorder_LeftUp.BorderBrush = resource.GetColor("iconColor");
 
                 mainBorder_RightDown.BorderThickness = new Thickness(0, 0, 3.5, 3.5);
-                mainBorder_RightDown.BorderBrush = resource.GetColor("signColor") as Brush;
+                mainBorder_RightDown.BorderBrush = resource.GetColor("signColor");
 
                 adjustSideTextBlock.Text = "右下";
             }
@@ -69,10 +69,10 @@ namespace VNLauncher.Controls
                 side = AdjustSide.LeftUp;
 
                 mainBorder_RightDown.BorderThickness = new Thickness(0, 0, 1, 1);
-                mainBorder_RightDown.BorderBrush = resource.GetColor("iconColor") as Brush;
+                mainBorder_RightDown.BorderBrush = resource.GetColor("iconColor");
 
                 mainBorder_LeftUp.BorderThickness = new Thickness(3.5, 3.5, 0, 0);
-                mainBorder_LeftUp.BorderBrush = resource.GetColor("signColor") as Brush;
+                mainBorder_LeftUp.BorderBrush = resource.GetColor("signColor");
 
                 adjustSideTextBlock.Text = "左上";
             }

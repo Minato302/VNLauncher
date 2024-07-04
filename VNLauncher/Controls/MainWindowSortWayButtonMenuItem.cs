@@ -38,13 +38,13 @@ namespace VNLauncher.Controls
             MouseEnter += (sender, e) =>
             {
 
-                mainBorder!.Background = resource.GetColor("signColor") as Brush;
+                mainBorder!.Background = resource.GetColor("signColor");
 
 
             };
             MouseLeave += (sender, e) =>
             {
-                mainBorder!.Background = resource.GetColor("mainWindowSortWayButtonMenuColor") as Brush;
+                mainBorder!.Background = resource.GetColor("mainWindowSortWayButtonMenuColor");
             };
 
         }

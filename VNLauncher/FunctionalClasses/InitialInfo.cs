@@ -1,11 +1,6 @@
 ﻿#pragma warning disable IDE0049
 
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace VNLauncher.FunctionalClasses
 {
@@ -80,11 +75,23 @@ namespace VNLauncher.FunctionalClasses
                 ["prompt"] = "将这段文本直接翻译成中文，不要进行任何额外的格式修改，如果遇到大量语气词，请直接将语气词保留，注意连接上下文，这里是你需要翻译的文本："
             };
 
+            JObject marquee = new JObject
+            {
+                ["bilingual"] = true,
+                ["isAutoWait"] = true,
+                ["backgroundTransparency"] = 0x99,
+                ["textTransparency"] = 0xBB,
+                ["fontSize"] = 20,
+                ["waitTime"] = 20
+
+            };
+
             initialSettings["keyMapping"] = keyMapping;
             initialSettings["ocr"] = OCR;
             initialSettings["baiduTranslate"] = baiduTranslate;
             initialSettings["onlineModelTranslate"] = onlineModelTranslate;
             initialSettings["localTranslate"] = localTranslate;
+            initialSettings["marquee"] = marquee;
 
             System.IO.File.WriteAllText(path, initialSettings.ToString());
         }

@@ -48,7 +48,7 @@ namespace VNLauncher.Controls
             MouseEnter += (sender, e) =>
             {
                 Cursor = Cursors.Hand;
-                mainBorder!.Background = resource.GetColor("mainWindowControlBarButtonColor_MouseEnter") as Brush;
+                mainBorder!.Background = resource.GetColor("mainWindowControlBarButtonColor_MouseEnter");
             };
             MouseLeave += (sender, e) =>
             {
@@ -57,11 +57,11 @@ namespace VNLauncher.Controls
             };
             PreviewMouseLeftButtonDown += (sender, e) =>
             {
-                mainBorder!.Background = resource.GetColor("signColor") as Brush;
+                mainBorder!.Background = resource.GetColor("signColor");
             };
             PreviewMouseLeftButtonUp += (sender, e) =>
             {
-                mainBorder!.Background = resource.GetColor("mainWindowControlBarButtonColor_MouseEnter") as Brush;
+                mainBorder!.Background = resource.GetColor("mainWindowControlBarButtonColor_MouseEnter");
             };
         }
         public override void OnApplyTemplate()

@@ -1,22 +1,11 @@
 ﻿#pragma warning disable IDE0049
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using VNLauncher.FunctionalClasses;
-using Newtonsoft.Json.Linq;
-using System.IO;   
 
 namespace VNLauncher.Pages
 {
@@ -34,20 +23,19 @@ namespace VNLauncher.Pages
         {
             JObject keyMapping = new JObject
             {
-                ["translateSwitch"] = translateSwitchItem.GetKeyName(),
-                ["showMarquee"] = showMarqueeItem.GetKeyName(),
-                ["screenshot"] = screenShotItem.GetKeyName(),
-                ["retranslate"] = retranslateItem.GetKeyName(),
-                ["captureSideUpMove"] = captureSideUpMoveItem.GetKeyName(),
-                ["captureSideDownMove"] = captureSideDownMoveItem.GetKeyName(),
-                ["captureSideLeftMove"] = captureSideLeftMoveItem.GetKeyName(),
-                ["captureSideRightMove"] = captureSideRightMoveItem.GetKeyName()
+                ["translateSwitch"] = translateSwitchItem.KeyName,
+                ["showMarquee"] = showMarqueeItem.KeyName,
+                ["screenShot"] = screenShotItem.KeyName,
+                ["retranslate"] = retranslateItem.KeyName,
+                ["captureSideUpMove"] = captureSideUpMoveItem.KeyName,
+                ["captureSideDownMove"] = captureSideDownMoveItem.KeyName,
+                ["captureSideLeftMove"] = captureSideLeftMoveItem.KeyName,
+                ["captureSideRightMove"] = captureSideRightMoveItem.KeyName
             };
             String jsonContent = File.ReadAllText(fileManager.UserDataJsonPath);
             dynamic responseData = Newtonsoft.Json.JsonConvert.DeserializeObject(jsonContent)!;
             responseData.keyMapping = keyMapping;
             File.WriteAllText(fileManager.UserDataJsonPath, responseData.ToString());
-
         }
 
         private void Page_Loaded(Object sender, RoutedEventArgs e)
@@ -58,7 +46,7 @@ namespace VNLauncher.Pages
             translateSwitchItem.SetKey(tanslateSwitch);
             String showMarquee = responseData.keyMapping.showMarquee;
             showMarqueeItem.SetKey(showMarquee);
-            String screenshot = responseData.keyMapping.screenshot;
+            String screenshot = responseData.keyMapping.screenShot;
             screenShotItem.SetKey(screenshot);
             String retranslate = responseData.keyMapping.retranslate;
             retranslateItem.SetKey(retranslate);

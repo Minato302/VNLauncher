@@ -57,11 +57,11 @@ namespace VNLauncher.Controls
             };
             PreviewMouseLeftButtonDown += (sender, e) =>
             {
-                mainBorer!.Background = resource.GetColor("marqueeButtonColor_MouseDown") as Brush;
+                mainBorer!.Background = resource.GetColor("marqueeButtonColor_MouseDown");
             };
             PreviewMouseLeftButtonUp += (sender, e) =>
             {
-                mainBorer!.Background = resource.GetColor("marqueeButtonColor") as Brush;
+                mainBorer!.Background = resource.GetColor("marqueeButtonColor");
             };
         }
         public override void OnApplyTemplate()

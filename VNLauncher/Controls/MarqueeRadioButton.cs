@@ -74,6 +74,7 @@ namespace VNLauncher.Controls
                 rb.changedAction = changedAction;
             }
             radioButton.SetChecked();
+            changedAction.Invoke();
         }
         static public void SetGroup(List<MarqueeRadioButton> group, Action changedAction)
         {
@@ -84,6 +85,7 @@ namespace VNLauncher.Controls
                 rb.ApplyTemplate();
                 rb.changedAction = changedAction;
             }
+            changedAction.Invoke();
         }
         public override void OnApplyTemplate()
         {

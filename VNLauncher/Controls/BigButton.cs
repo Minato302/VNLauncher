@@ -35,7 +35,7 @@ namespace VNLauncher.Controls
                 if (!isRunning)
                 {
                     Cursor = Cursors.Hand;
-                    mainBorder!.Background = resource.GetColor("signColor_Dark") as Brush;
+                    mainBorder!.Background = resource.GetColor("signColor_Dark");
                 }
             };
             MouseLeave += (sender, e) =>
@@ -43,21 +43,21 @@ namespace VNLauncher.Controls
                 if (!isRunning)
                 {
                     Cursor = Cursors.Arrow;
-                    mainBorder!.Background = resource.GetColor("signColor") as Brush;
+                    mainBorder!.Background = resource.GetColor("signColor");
                 }
             };
             PreviewMouseLeftButtonDown += (sender, e) =>
             {
                 if (!isRunning)
                 {
-                    mainBorder!.Background = resource.GetColor("signColor_Light") as Brush;
+                    mainBorder!.Background = resource.GetColor("signColor_Light");
                 }
             };
             PreviewMouseLeftButtonUp += (sender, e) =>
             {
                 if (!isRunning)
                 {
-                    mainBorder!.Background = resource.GetColor("signColor_Dark") as Brush;
+                    mainBorder!.Background = resource.GetColor("signColor_Dark");
                 }
             };
         }
@@ -71,13 +71,13 @@ namespace VNLauncher.Controls
         public void StartRunning(String runningInfo)
         {
             isRunning = true;
-            mainBorder.Background = resource.GetColor("bigButtonColor_Running") as Brush;
+            mainBorder.Background = resource.GetColor("bigButtonColor_Running");
             functionTextBlock.Text = runningInfo;
         }
         public void StopRunning(String originInfo)
         {
             isRunning = false;
-            mainBorder.Background = resource.GetColor("signColor") as Brush;
+            mainBorder.Background = resource.GetColor("signColor");
             functionTextBlock.Text = originInfo;
         }
     }

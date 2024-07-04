@@ -58,7 +58,7 @@ namespace VNLauncher.Controls
             {
                 if (!isSelected)
                 {
-                    mainBorder!.Background = resource.GetColor("mainWindowGameButtonColor_MouseEnter") as Brush;
+                    mainBorder!.Background = resource.GetColor("mainWindowGameButtonColor_MouseEnter");
                 }
             };
             MouseLeave += (sender, e) =>
@@ -77,7 +77,7 @@ namespace VNLauncher.Controls
         public void BeingSelected()
         {
             isSelected = true;
-            mainBorder!.Background = resource.GetColor("settingWindowSetItemColor_Selected") as Brush;
+            mainBorder!.Background = resource.GetColor("settingWindowSetItemColor_Selected");
         }
     }
 }

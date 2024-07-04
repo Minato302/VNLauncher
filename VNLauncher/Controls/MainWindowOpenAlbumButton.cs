@@ -33,12 +33,12 @@ namespace VNLauncher.Controls
             MouseEnter += (sender, e) =>
             {
                 Cursor = Cursors.Hand;
-                mainBorder!.Background = resource.GetColor("mainWindowOpenAlbumButtonColor_MouseEnter") as Brush;
+                mainBorder!.Background = resource.GetColor("mainWindowOpenAlbumButtonColor_MouseEnter");
             };
             MouseLeave += (sender, e) =>
             {
                 Cursor = Cursors.Arrow;
-                mainBorder!.Background = resource.GetColor("mainWindowOpenAlbumButtonColor") as Brush;
+                mainBorder!.Background = resource.GetColor("mainWindowOpenAlbumButtonColor");
             };
         }
         public override void OnApplyTemplate()

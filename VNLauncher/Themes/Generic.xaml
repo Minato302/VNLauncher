@@ -308,7 +308,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:MarqueeTranslateButton}">
-                    <fa:FontAwesome Name="mainFont" FontSize="24" Foreground="{StaticResource marqueeTranslateButtonColor}" Focusable="False" VerticalAlignment="Center" HorizontalAlignment="Center" Icon="PlayCircleOutline"/>
+                    <fa:FontAwesome Name="mainFont" FontSize="24" Foreground="{StaticResource marqueeIconButtonColor}" Focusable="False" VerticalAlignment="Center" HorizontalAlignment="Center" Icon="PlayCircleOutline"/>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -318,7 +318,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:MarqueeAdjustSideButton}">
-                    <TextBlock Name="mainTextBlock" FontSize="24" Foreground="{StaticResource marqueeTranslateButtonColor}" Focusable="False" VerticalAlignment="Center" HorizontalAlignment="Center" Text="↖"/>
+                    <TextBlock Name="mainTextBlock" FontSize="24" Foreground="{StaticResource marqueeIconButtonColor}" Focusable="False" VerticalAlignment="Center" HorizontalAlignment="Center" Text="↖"/>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -433,7 +433,6 @@
             </Setter.Value>
         </Setter>
     </Style>
-
 
     <Style TargetType="{x:Type local:MarqueeRadioButton}">
         <Setter Property="Template">

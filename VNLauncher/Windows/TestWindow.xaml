@@ -6,12 +6,20 @@
         xmlns:local="clr-namespace:VNLauncher.Controls"
         mc:Ignorable="d"
         Title="TestWindow" Height="450" Width="800">
-    <Border x:Name="scanModePopupMainBorder" Width="220" Height="100" Background="{StaticResource marqueeBackgroundColor}" CornerRadius="10">
-        <Canvas Background="Transparent" Name="scanModePopupMainCanvas">
-            <local:MarqueeButton Canvas.Top="20" Canvas.Left="20" MarqueeButtonText="取消窗口UI"/>
-            <local:MarqueeButton Canvas.Top="20" Canvas.Left="120" MarqueeButtonText="恢复窗口UI"/>
-            <local:MarqueeButton Canvas.Top="60" Canvas.Left="20" MarqueeButtonText="窗口最大化"/>
-            <local:MarqueeButton Canvas.Top="60" Canvas.Left="120" MarqueeButtonText="窗口恢复"/>
+
+    <Border x:Name="marqueeStylePopupMainBorder" Width="300" Height="300" Background="{StaticResource marqueeBackgroundColor}" CornerRadius="10">
+        <Canvas Background="Transparent" Name="marqueeStylePopupMainCanvas">
+            <TextBlock Text="字幕内容" Canvas.Top="10" Canvas.Left="13" FontSize="16" Foreground="{StaticResource marqueeButtonColor_Text}"/>
+            <local:MarqueeRadioButton x:Name="localOCRRadioButton" MarqueeRadioButtonText="日文+中文" Canvas.Left="30" Canvas.Top="40"/>
+            <local:MarqueeRadioButton x:Name ="onlineOCRRadioButton" MarqueeRadioButtonText="仅中文" Canvas.Left="160" Canvas.Top="40"/>
+            <TextBlock Text="背景透明度" Canvas.Top="70" Canvas.Left="13" FontSize="16" Foreground="{StaticResource marqueeButtonColor_Text}"/>
+            <Slider Width="180" Minimum="0" Maximum="255" Canvas.Left="33" Canvas.Top="100"/>
+            <TextBlock Text="文字设置" Canvas.Top="140" Canvas.Left="13" FontSize="16" Foreground="{StaticResource marqueeButtonColor_Text}"/>
+            <Slider Width="180" Minimum="0" Maximum="255" Canvas.Left="83" Canvas.Top="180"/>
+            <Slider Width="180" Minimum="0" Maximum="255" Canvas.Left="83" Canvas.Top="230"/>
+            <TextBlock Text="文字透明度" Canvas.Top="180" Canvas.Left="5" FontSize="13" Foreground="{StaticResource marqueeButtonColor_Text}"/>
+            <TextBlock Text="文字大小" Canvas.Top="230" Canvas.Left="15" FontSize="13" Foreground="{StaticResource marqueeButtonColor_Text}"/>
         </Canvas>
     </Border>
+
 </Window>

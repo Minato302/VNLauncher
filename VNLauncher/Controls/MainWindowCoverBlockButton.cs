@@ -50,14 +50,14 @@ namespace VNLauncher.Controls
             MouseEnter += (sender, e) =>
             {
                 Cursor = Cursors.Hand;
-                mainBorder!.Background = resource.GetColor("mainWindowCoverBlockColor_ButtonMouseEnter") as Brush;
-                itemTextBlock!.Foreground = resource.GetColor("iconColor") as Brush;
+                mainBorder!.Background = resource.GetColor("mainWindowCoverBlockColor_ButtonMouseEnter");
+                itemTextBlock!.Foreground = resource.GetColor("iconColor");
             };
             MouseLeave += (sender, e) =>
             {
                 Cursor = Cursors.Arrow;
                 mainBorder!.Background = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
-                itemTextBlock!.Foreground = resource.GetColor("mainWindowCoverBlockColor_ButtonText") as Brush;
+                itemTextBlock!.Foreground = resource.GetColor("mainWindowCoverBlockColor_ButtonText");
             };
         }
         public override void OnApplyTemplate()

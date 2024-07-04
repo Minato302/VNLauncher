@@ -32,12 +32,12 @@ namespace VNLauncher.Controls
             resource = new LocalColorAcquirer();
             MouseEnter += (sender, e) =>
             {
-                mainFont!.Foreground = resource.GetColor("marqueeTranslateButtonColor_MouseEnter") as Brush;
+                mainFont!.Foreground = resource.GetColor("marqueeIconButtonColor_MouseEnter");
 
             };
             MouseLeave += (sender, e) =>
             {
-                mainFont!.Foreground = resource.GetColor("marqueeTranslateButtonColor") as Brush;
+                mainFont!.Foreground = resource.GetColor("marqueeIconButtonColor");
             };
         }
         public override void OnApplyTemplate()

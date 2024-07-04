@@ -4,11 +4,9 @@
 
     <SolidColorBrush x:Key="backgroundColor_Dark" Color="#FF151515"/>
     <SolidColorBrush x:Key="backgroundColor_Light" Color="#FF353535"/>
-    
-    <SolidColorBrush x:Key="mainWindowTitleBarButtonColor_MouseEnter" Color="#FF777777"/>
-    
-    <SolidColorBrush x:Key="mainWindowControlBarButtonColor_MouseEnter" Color="#FF888888"/>
 
+    <SolidColorBrush x:Key="mainWindowTitleBarButtonColor_MouseEnter" Color="#FF777777"/>
+    <SolidColorBrush x:Key="mainWindowControlBarButtonColor_MouseEnter" Color="#FF888888"/>
     <SolidColorBrush x:Key="mainWindowControlBarColor" Color="#F3191919"/>
     <SolidColorBrush x:Key="mainWindowGameListScrollColor" Color="#FF777777"/>
     <SolidColorBrush x:Key="mainWindowGameListScrollColor_Drag" Color="#FFAAAAAA"/>
@@ -39,23 +37,27 @@
     <SolidColorBrush x:Key="addWindowOpenFileDialogButtonColor" Color="#FF434343"/>
     
     <SolidColorBrush x:Key="iconColor" Color="#FFCCCCCC"/>
-    <SolidColorBrush x:Key="iconColor_White" Color="#FFFFFFFF"/> 
+    <SolidColorBrush x:Key="iconColor_White" Color="#FFFFFFFF"/>
 
-    <SolidColorBrush x:Key="marqueeBackgroundColor" Color="#99E4e4e4"/>
-    <SolidColorBrush x:Key="marqueeIconColor" Color="#BB000000"/>
+    <SolidColorBrush x:Key="marqueeTextColor" Color="#FF060606"/>
+    <SolidColorBrush x:Key="marqueeBackgroundColor" Color="#FFE4E4E4"/>
+    <SolidColorBrush x:Key="marqueeIconColor" Color="#DD000000"/>
     <SolidColorBrush x:Key="marqueeButtonColor" Color="#99FAF8F8"/>
     <SolidColorBrush x:Key="marqueeButtonColor_Border" Color="#FF666666"/>
     <SolidColorBrush x:Key="marqueeButtonColor_MouseDown" Color="#AA999999"/>
-    <SolidColorBrush x:Key="marqueeButtonColor_Text" Color="#FF000000"/>
+    <SolidColorBrush x:Key="marqueeButtonColor_Text" Color="#FF333333"/>
 
     <SolidColorBrush x:Key="marqueeButtonColor_Text_Unenabled" Color="#FF666666"/>
 
-    <SolidColorBrush x:Key="marqueeTranslateButtonColor" Color="#BA444444"/>
-    <SolidColorBrush x:Key="marqueeTranslateButtonColor_MouseEnter" Color="#DD222222"/>
+    <SolidColorBrush x:Key="marqueeIconButtonColor" Color="#D0444444"/>
+    <SolidColorBrush x:Key="marqueeIconButtonColor_MouseEnter" Color="#F0222222"/>
 
     <SolidColorBrush x:Key="settingWindowSetItemColor_Selected" Color="#FF464646"/>
     <SolidColorBrush x:Key="settingWindowSetItemColor_MouseEnter" Color="#FF252525"/>
 
     <SolidColorBrush x:Key="marqueePopupBackgroundColor" Color="#88BBBB88"/>
 
+    <SolidColorBrush x:Key="marqueeSliderColor_ButtonBackgrount" Color="#FF333333"/>
+    <SolidColorBrush x:Key="marqueeSliderColor_Bar" Color="#FFCCCCCC"/>
+    
 </ResourceDictionary>
