@@ -58,12 +58,12 @@
                             <TextBlock Text="字幕内容" Canvas.Top="10" Canvas.Left="13" FontSize="16" Foreground="{StaticResource marqueeButtonColor_Text}"/>
                             <local:MarqueeRadioButton x:Name="jpnChsRadioButton" MarqueeRadioButtonText="日文+中文" Canvas.Left="30" Canvas.Top="40"/>
                             <local:MarqueeRadioButton x:Name ="chsOnlyRadioButton" MarqueeRadioButtonText="仅中文" Canvas.Left="160" Canvas.Top="40"/>
-                            <TextBlock Text="背景不透明度" Canvas.Top="70" Canvas.Left="13" FontSize="16" Foreground="{StaticResource marqueeButtonColor_Text}"/>
+                            <TextBlock Text="背景透明度" Canvas.Top="70" Canvas.Left="13" FontSize="16" Foreground="{StaticResource marqueeButtonColor_Text}"/>
                             <Slider  Name="backgroundTransparencySlider"  Style="{StaticResource MarqueeSliderStyle}" Width="180" Minimum="0" Maximum="255" Canvas.Left="33" Canvas.Top="100" ValueChanged="BackgroundTransparencySlider_ValueChanged"/>
                             <TextBlock Text="文字设置" Canvas.Top="140" Canvas.Left="13" FontSize="16" Foreground="{StaticResource marqueeButtonColor_Text}"/>
                             <Slider Name="textTransparencySlider" Style="{StaticResource MarqueeSliderStyle}" Width="180" Minimum="0" Maximum="255" Canvas.Left="83" Canvas.Top="180" ValueChanged="TextTransparencySlider_ValueChanged"/>
                             <Slider Name="fontSizeSlider" Style="{StaticResource MarqueeSliderStyle}" Width="180" Minimum="15" Maximum="25" Canvas.Left="83" Canvas.Top="230" ValueChanged="FontSizeSlider_ValueChanged"/>
-                            <TextBlock Text="文字不透明度" Canvas.Top="180" Canvas.Left="5" FontSize="13" Foreground="{StaticResource marqueeButtonColor_Text}"/>
+                            <TextBlock Text="文字透明度" Canvas.Top="180" Canvas.Left="5" FontSize="13" Foreground="{StaticResource marqueeButtonColor_Text}"/>
                             <TextBlock Text="文字大小" Canvas.Top="230" Canvas.Left="15" FontSize="13" Foreground="{StaticResource marqueeButtonColor_Text}"/>
                         </Canvas>
                     </Border>

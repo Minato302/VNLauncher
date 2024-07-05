@@ -258,7 +258,7 @@ namespace VNLauncher.FunctionalClasses
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        private static extern Boolean UnhookWindowsHookEx(IntPtr hhk);
+        private static extern bool UnhookWindowsHookEx(IntPtr hhk);
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern IntPtr CallNextHookEx(IntPtr hhk, Int32 nCode, IntPtr wParam, IntPtr lParam);
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]

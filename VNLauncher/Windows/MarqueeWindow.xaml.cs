@@ -43,8 +43,6 @@ namespace VNLauncher.Windows
             windowMonitoringTimer.AutoReset = true;
             windowMonitoringTimer.Enabled = true;
 
-            ocrActionId = 0;
-
             tWindowTimer = new System.Timers.Timer(2000);
             tWindowTimer.Elapsed += (sender, e) =>
             {
@@ -78,7 +76,7 @@ namespace VNLauncher.Windows
                 (((String)settingResponseData.keyMapping.captureSideDownMove),CaptureSideDownMove),
                 (((String)settingResponseData.keyMapping.captureSideLeftMove),CaptureSideLeftMove),
                 (((String)settingResponseData.keyMapping.captureSideRightMove),CaptureSideRightMove),
-                ("鼠标左键",WaitAndScanAndTranslate)
+                ("鼠标左键",WaitAndScan)
             });
         }
         private void TranslateModePopupInit()
@@ -242,15 +240,17 @@ namespace VNLauncher.Windows
             }
         }
 
-        private UInt64 ocrActionId;
+        private CancellationTokenSource tokenSource;
+        private CancellationToken token;
 
-        private async void WaitAndScanAndTranslate()
+        private async void WaitAndScan()
         {
             if (translateButton.IsTranslating)
             {
                 LocalOCR.OCRResult result = null;
-
-                UInt64 id = ++ocrActionId;
+                tokenSource?.Cancel();
+                tokenSource = new CancellationTokenSource();
+                token = tokenSource.Token;
 
                 Application.Current.Dispatcher.Invoke(() =>
                 {
@@ -261,7 +261,7 @@ namespace VNLauncher.Windows
                 {
                     if (autoWaitRadioButton.IsChecked)
                     {
-                        result = await Task.Run(() => AutoWaitAndScan(id));
+                        result = await Task.Run(AutoWaitAndScan, token);
                     }
                     else
                     {
@@ -292,23 +292,17 @@ namespace VNLauncher.Windows
             }
         }
 
-        private async Task<LocalOCR.OCRResult> AutoWaitAndScan(UInt64 id)
+        private async Task<LocalOCR.OCRResult> AutoWaitAndScan()
         {
             while (true)
             {
-                if (ocrActionId != id)
-                {
-                    throw new OperationCanceledException();
-                }
+                token.ThrowIfCancellationRequested();
                 Bitmap lastCapture = GetGameShot(game.Loaction);
                 List<Int32> historySimilarities = new List<Int32>();
                 for (Int32 i = 0; i < 10; i++)
                 {
+                    token.ThrowIfCancellationRequested();
                     await Task.Delay(200);
-                    if (ocrActionId != id)
-                    {
-                        throw new OperationCanceledException();
-                    }
                     Bitmap capture = GetGameShot(game.Loaction);
                     Int32 similarity = ImageHandler.CalculateWhiteIntersections(BitmapConverter.ToMat(capture));
 
@@ -345,7 +339,6 @@ namespace VNLauncher.Windows
                     return result;
                 }
             }
-
         }
         private async Task<LocalOCR.OCRResult> WaitFixTimeAndScan()
         {
@@ -455,6 +448,7 @@ namespace VNLauncher.Windows
         private void TranslateSwitch()
         {
             translateButton.Turn();
+            tokenSource?.Cancel();
             if (translateButton.IsTranslating)
             {
                 adjustSideButton.IsEnabled = false;
@@ -575,10 +569,10 @@ namespace VNLauncher.Windows
                 ["bilingual"] = jpnChsRadioButton.IsChecked,
                 ["isAutoWait"] = autoWaitRadioButton.IsChecked,
                 ["backgroundTransparency"] = (Int32)backgroundTransparencySlider.Value,
-                ["textTransparency"] = (Int32)textTransparencySlider.Value,
-                ["fontSize"] = (Int32)fontSizeSlider.Value,
-                ["waitTime"] = (Int32)waitTimeSlider.Value,
-
+                ["textTransparency"] =  (Int32)textTransparencySlider.Value,
+                ["fontSize"] =  (Int32)fontSizeSlider.Value,
+                ["waitTime"] = (Int32) waitTimeSlider.Value,
+           
             };
             String jsonContent = File.ReadAllText(fileManager.UserDataJsonPath);
             dynamic responseData = Newtonsoft.Json.JsonConvert.DeserializeObject(jsonContent)!;

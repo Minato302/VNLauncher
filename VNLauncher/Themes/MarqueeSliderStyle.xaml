@@ -17,6 +17,7 @@
 
     <ControlTemplate x:Key="SliderThumb" TargetType="{x:Type Thumb}">
         <Grid HorizontalAlignment="Center" UseLayoutRounding="True" VerticalAlignment="Center">
+
             <Border x:Name="grip" BorderThickness="0" 
                     Background="{StaticResource marqueeSliderColor_ButtonBackgrount}" Width="12" Height="12" CornerRadius="6" SnapsToDevicePixels="True" UseLayoutRounding="True" VerticalAlignment="Center"/>
         </Grid>
