@@ -1,6 +1,7 @@
 ﻿#pragma warning disable IDE0049
 
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 
 namespace VNLauncher.FunctionalClasses
@@ -140,19 +141,15 @@ namespace VNLauncher.FunctionalClasses
                     { "messages", text }
                 };
             StringContent jsonContent = new StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(requestData), Encoding.UTF8, "application/json");
+            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", apiKey);
             httpClient.DefaultRequestHeaders.UserAgent.ParseAdd(userAgent);
 
             HttpResponseMessage response = await httpClient.PostAsync(url, jsonContent);
-
             response.EnsureSuccessStatusCode();
-
             String responseContent = await response.Content.ReadAsStringAsync();
             dynamic responseData = Newtonsoft.Json.JsonConvert.DeserializeObject(responseContent)!;
-
             String assistantMessage = responseData.choices[0].message.content;
-
-
             return assistantMessage;
         }
     }
