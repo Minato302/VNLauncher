@@ -23,7 +23,6 @@ namespace VNLauncher.Pages
             cover = new Bitmap(1, 1);
             hook = new GlobalHook(new List<(String, Action)> { ("键盘按键回车", GetCover) });
             getCover = false;
-            WindowsHandler.RemoveUI(parameter.GameInfo.GameWindow);
         }
 
         private void CloseButton_Click(Object sender, RoutedEventArgs e)

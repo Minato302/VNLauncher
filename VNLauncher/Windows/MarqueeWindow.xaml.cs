@@ -30,6 +30,7 @@ namespace VNLauncher.Windows
         private Translator translator;
 
         private UInt64 scanActionID;
+        private MarqueeHidder hidder;
 
 
         public MarqueeWindow(IntPtr gameWindowHwnd, Game game, MainWindow mainWindow)
@@ -60,6 +61,7 @@ namespace VNLauncher.Windows
             tWindow.Show();
             tWindow.Visibility = Visibility.Hidden;
             scanActionID = 0;
+            hidder = new MarqueeHidder(this);
             SettingInit();
         }
 
@@ -267,45 +269,40 @@ namespace VNLauncher.Windows
         {
             if (translateButton.IsTranslating)
             {
-                LocalOCR.OCRResult result = null;
+                OCR.OCRResult result = null;
 
                 Application.Current.Dispatcher.Invoke(() =>
                 {
                     stateInfo.ChangeState(Controls.MarqueeStateInfo.State.Waiting);
                 });
 
-                try
+
+                if (autoWaitRadioButton.IsChecked)
                 {
-                    if (autoWaitRadioButton.IsChecked)
+                    result = await Task.Run(AutoWaitAndScan);
+                }
+                else
+                {
+                    result = await Task.Run(WaitFixTimeAndScan);
+
+                }
+                String oriJpSentence = "";
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    if (result.HasContent)
                     {
-                        result = await Task.Run(AutoWaitAndScan);
+                        oriJpSentence = TextModifier.Modify(result.ResultText);
+                        marqueeTextBlock.Text = oriJpSentence;
+                        stateInfo.ChangeState(MarqueeStateInfo.State.Translating);
+                        Translate(oriJpSentence);
                     }
                     else
                     {
-                        result = await Task.Run(WaitFixTimeAndScan);
-
+                        marqueeTextBlock.Text = "未识别到内容";
+                        stateInfo.ChangeState(MarqueeStateInfo.State.Over);
                     }
-                    String oriJpSentence = "";
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        if (result.HasContent)
-                        {
-                            oriJpSentence = TextModifier.Modify(result.ResultText);
-                            marqueeTextBlock.Text = oriJpSentence;
-                            stateInfo.ChangeState(Controls.MarqueeStateInfo.State.Translating);
-                            Translate(oriJpSentence);
-                        }
-                        else
-                        {
-                            marqueeTextBlock.Text = "未识别到内容";
-                            stateInfo.ChangeState(Controls.MarqueeStateInfo.State.Over);
-                        }
-                    });
-                }
-                catch (OperationCanceledException)
-                {
+                });
 
-                }
             }
         }
 
@@ -317,6 +314,14 @@ namespace VNLauncher.Windows
             {
                 while (true)
                 {
+                    if (!game.IsWindowShot)
+                    {
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            Visibility = Visibility.Hidden;
+                        });
+                    }
+
                     Bitmap lastCapture = GetGameShot(game.Loaction);
                     List<Int32> historySimilarities = new List<Int32>();
                     for (Int32 i = 0; i < 10; i++)
@@ -352,18 +357,29 @@ namespace VNLauncher.Windows
                     }
                     Application.Current.Dispatcher.Invoke(() =>
                     {
-                        stateInfo.ChangeState(Controls.MarqueeStateInfo.State.Identifying);
+                        stateInfo.ChangeState(MarqueeStateInfo.State.Identifying);
                     });
+
+                    if (!game.IsWindowShot)
+                    {
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            Visibility = Visibility.Visible;
+                        });
+                    }
 
                     OCR.OCRResult result = await scanner.Scan(lastCapture);
                     if (result.HasContent)
                     {
                         return result;
                     }
-                    stateInfo.ChangeState(Controls.MarqueeStateInfo.State.Waiting);
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        stateInfo.ChangeState(Controls.MarqueeStateInfo.State.Waiting);
+                    });
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 OCR.OCRResult result = new OCR.OCRResult(false);
                 return result;
@@ -387,7 +403,26 @@ namespace VNLauncher.Windows
                     throw new OperationCanceledException();
                 }
 
+
+                if (!game.IsWindowShot)
+                {
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        Visibility = Visibility.Hidden;
+                    });
+                    Thread.Sleep(100);
+                }
                 Bitmap capture = GetGameShot(game.Loaction);
+
+                if (!game.IsWindowShot)
+                {
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        Visibility = Visibility.Visible;
+                    });
+                }
+
+
                 Application.Current.Dispatcher.Invoke(() =>
                 {
                     stateInfo.ChangeState(Controls.MarqueeStateInfo.State.Identifying);
@@ -395,7 +430,7 @@ namespace VNLauncher.Windows
                 OCR.OCRResult result = await scanner.Scan(capture);
                 return result;
             }
-            catch(Exception)
+            catch (Exception)
             {
                 OCR.OCRResult result = new OCR.OCRResult(false);
                 return result;
@@ -404,7 +439,17 @@ namespace VNLauncher.Windows
         }
         private async void Retranslate()
         {
+
             Bitmap capture = GetGameShot(game.Loaction);
+
+            if (!game.IsWindowShot)
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    Visibility = Visibility.Visible;
+                });
+            }
+
             OCR.OCRResult result = null;
             await Task.Run(async () =>
             {
@@ -435,7 +480,16 @@ namespace VNLauncher.Windows
 
             String time = DateTime.Now.ToString("yyyyMMddHHmmssffffff");
 
-            Bitmap capture = GetGameShot();
+            Bitmap capture = new Bitmap(1, 1);
+            if (!game.IsWindowShot)
+            {
+                capture = GetGameShot();
+            }
+            else
+            {
+                capture = GetGameShot();
+            }
+
             fileManager.SaveCapture(game.Name, capture, time);
             ScreenShotWindow sWindow = new ScreenShotWindow(ImageHandler.ConvertBitmapToBitmapSource(capture));
             sWindow.Show();
@@ -445,15 +499,9 @@ namespace VNLauncher.Windows
             Bitmap capture;
             if (!game.IsWindowShot)
             {
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    Visibility = Visibility.Hidden;
-                });
+                hidder.Hide();
                 capture = WindowCapture.Shot(gameWindowHwnd, WindowCapture.CaptureMode.FullScreenCut);
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    Visibility = Visibility.Visible;
-                });
+                hidder.Restore();
             }
             else
             {
@@ -466,15 +514,9 @@ namespace VNLauncher.Windows
             Bitmap capture;
             if (!game.IsWindowShot)
             {
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    Visibility = Visibility.Hidden;
-                });
+                hidder.Hide();
                 capture = WindowCapture.Shot(gameWindowHwnd, WindowCapture.CaptureMode.FullScreenCut, location);
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    Visibility = Visibility.Visible;
-                });
+                hidder.Restore();
             }
             else
             {
@@ -708,6 +750,46 @@ namespace VNLauncher.Windows
         private void FontSizeSlider_ValueChanged(Object sender, RoutedPropertyChangedEventArgs<Double> e)
         {
             marqueeTextBlock.FontSize = e.NewValue;
+        }
+
+    }
+    public class MarqueeHidder
+    {
+        private Double minWidth;
+        private Double minHeight;
+        private Double nowWidth;
+        private Double nowHeight;
+        private MarqueeWindow marquee;
+        public MarqueeHidder(MarqueeWindow marquee)
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                minWidth = marquee.MinWidth;
+                minHeight = marquee.MinHeight;
+                nowWidth = marquee.Width;
+                nowHeight = marquee.Height;
+                this.marquee = marquee;
+            });
+        }
+        public void Hide()
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                marquee.MinHeight = 0;
+                marquee.MinWidth = 0;
+                marquee.Height = 0;
+                marquee.Width = 0;
+            });
+        }
+        public void Restore()
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                marquee.MinHeight = minHeight;
+                marquee.MinWidth = minWidth;
+                marquee.Height = nowHeight;
+                marquee.Width = nowWidth;
+            });
         }
     }
 }
