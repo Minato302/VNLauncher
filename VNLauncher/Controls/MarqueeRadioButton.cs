@@ -33,8 +33,8 @@ namespace VNLauncher.Controls
         {
             ApplyTemplate();
             IsEnabled = false;
-            boxBorder.BorderBrush = resource.GetColor("marqueeButtonColor_Text_Unenabled") as System.Windows.Media.Brush;
-            checkNameTextBlock.Foreground = resource.GetColor("marqueeButtonColor_Text_Unenabled") as System.Windows.Media.Brush;
+            boxBorder.BorderBrush = resource.GetColor("marqueeButtonColor_Text_Unenabled");
+            checkNameTextBlock.Foreground = resource.GetColor("marqueeButtonColor_Text_Unenabled");
         }
         public void SetChecked()
         {
@@ -107,8 +107,8 @@ namespace VNLauncher.Controls
 
             if (!IsEnabled)
             {
-                boxBorder.BorderBrush = resource.GetColor("marqueeButtonColor_Text_Unenabled") as System.Windows.Media.Brush;
-                checkNameTextBlock.Foreground = resource.GetColor("marqueeButtonColor_Text_Unenabled") as System.Windows.Media.Brush;
+                boxBorder.BorderBrush = resource.GetColor("marqueeButtonColor_Text_Unenabled");
+                checkNameTextBlock.Foreground = resource.GetColor("marqueeButtonColor_Text_Unenabled");
             }
         }
     }

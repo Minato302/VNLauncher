@@ -6,6 +6,7 @@ using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Windows.Media.Imaging;
 using System.Windows.Interop;
+using System.IO;
 
 namespace VNLauncher.FunctionalClasses
 {
@@ -233,6 +234,23 @@ namespace VNLauncher.FunctionalClasses
 
             image.UnlockBits(bitmapData);
             return new System.Drawing.Rectangle(minX, minY, maxX - minX + 1, maxY - minY + 1);
+        }
+
+        public static BitmapImage GetImage(String imagePath)
+        {
+            BitmapImage bitmap = new BitmapImage();
+            if (File.Exists(imagePath))
+            {
+                bitmap.BeginInit();
+                bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                using (Stream ms = new MemoryStream(File.ReadAllBytes(imagePath)))
+                {
+                    bitmap.StreamSource = ms;
+                    bitmap.EndInit();
+                    bitmap.Freeze();
+                }
+            }
+            return bitmap;
         }
     }
 }

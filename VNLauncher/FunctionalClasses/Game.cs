@@ -127,6 +127,8 @@ namespace VNLauncher.FunctionalClasses
         public String WindowClass => windowClass;
         private DateTime lastStartTime;
         public DateTime LastStartTime => lastStartTime;
+        private DateTime joinTime;
+        public DateTime JoinTime => joinTime;
         private System.Timers.Timer timer;
 
         public Game(String name, FileManager reader)
@@ -142,6 +144,7 @@ namespace VNLauncher.FunctionalClasses
             windowTitle = responseData.windowTitle;
             windowClass = responseData.windowClass;
             lastStartTime = responseData.lastStartTime;
+            joinTime = responseData.joinTime;
             Double d1 = responseData.gameCaptionLocation.leftRate;
             Double d2 = responseData.gameCaptionLocation.rightRate;
             Double d3 = responseData.gameCaptionLocation.upRate;
@@ -172,6 +175,7 @@ namespace VNLauncher.FunctionalClasses
             gameData["isWindowShot"] = isWindowShot;
             gameData["playTimeMinute"] = playTimeMinute;
             gameData["lastStartTime"] = date;
+            gameData["joinTime"] = joinTime;
 
             captionLoaction["leftRate"] = location.LeftRate;
             captionLoaction["rightRate"] = location.RightRate;

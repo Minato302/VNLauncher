@@ -53,6 +53,7 @@ namespace VNLauncher
                     timer.Stop();
                     timer.Dispose();
                     MarqueeWindow marquee = new MarqueeWindow(((WindowInfo)window).Hwnd, game, mainWindow);
+                    mainWindow.SetStartButton(true);
                     marquee.Show();
                     Close();
                 });

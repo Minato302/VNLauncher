@@ -14,16 +14,20 @@ namespace VNLauncher.FunctionalClasses
         private String userDataFolder;
         private String userDataJson;
         private String gamesFolder;
+        private String gamesOrderPath;
         public FileManager()
         {
-            appDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            appDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "VNLauncher");
+
             userDataFolder = Path.Combine(appDirectory, "userdata");
             userDataJson = Path.Combine(userDataFolder, "userdata.json");
             gamesFolder = Path.Combine(userDataFolder, "games");
+            gamesOrderPath = Path.Combine(gamesFolder, "gamesOrder.txt");
         }
         public String UserDataJsonPath => userDataJson;
         public String UserDataFolderPath => userDataFolder;
         public String GamesFolderPath => gamesFolder;
+        public String GamesOrderPath => gamesOrderPath;
 
         public String? GetGameFolderPath(String gameName)
         {
@@ -108,6 +112,7 @@ namespace VNLauncher.FunctionalClasses
             gameData["isWindowShot"] = isWindowShot;
             gameData["playTimeMinute"] = 0;
             gameData["lastStartTime"] = date;
+            gameData["joinTime"] = date;
 
             captionLoaction["leftRate"] = gameCaptionLocation.LeftRate;
             captionLoaction["rightRate"] = gameCaptionLocation.RightRate;

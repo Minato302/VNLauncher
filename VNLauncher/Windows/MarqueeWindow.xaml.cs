@@ -20,7 +20,7 @@ namespace VNLauncher.Windows
         private System.Timers.Timer windowMonitoringTimer;
         private System.Timers.Timer tWindowTimer;
         private GlobalHook hook;
-        private LocalOCR scanner;
+        private OCR scanner;
         private TransparentWindow tWindow;
         private FileManager fileManager;
         private MainWindow mainWindow;
@@ -28,6 +28,8 @@ namespace VNLauncher.Windows
         private dynamic settingResponseData;
 
         private Translator translator;
+
+        private UInt64 scanActionID;
 
 
         public MarqueeWindow(IntPtr gameWindowHwnd, Game game, MainWindow mainWindow)
@@ -57,26 +59,28 @@ namespace VNLauncher.Windows
             tWindow = new TransparentWindow(gameWindowHwnd, game.Loaction);
             tWindow.Show();
             tWindow.Visibility = Visibility.Hidden;
+            scanActionID = 0;
             SettingInit();
         }
 
         private void OCRInit()
         {
             scanner = new LocalOCR((Boolean)settingResponseData.ocr.localOCR.isV4Model, (Boolean)settingResponseData.ocr.localOCR.usingGPU);
+
         }
         private void HookInit()
         {
             hook = new GlobalHook(new List<(String, Action)>
             {
-                (((String)settingResponseData.keyMapping.translateSwitch),TranslateSwitch),
-                (((String)settingResponseData.keyMapping.retranslate),Retranslate),
-                (((String)settingResponseData.keyMapping.screenShot),ScreenShot),
-                (((String)settingResponseData.keyMapping.showMarquee),ShowMarquee),
-                (((String)settingResponseData.keyMapping.captureSideUpMove),CaptureSideUpMove),
-                (((String)settingResponseData.keyMapping.captureSideDownMove),CaptureSideDownMove),
-                (((String)settingResponseData.keyMapping.captureSideLeftMove),CaptureSideLeftMove),
-                (((String)settingResponseData.keyMapping.captureSideRightMove),CaptureSideRightMove),
-                ("鼠标左键",WaitAndScan)
+                ((String)settingResponseData.keyMapping.translateSwitch,TranslateSwitch),
+                ((String)settingResponseData.keyMapping.retranslate,Retranslate),
+                ((String)settingResponseData.keyMapping.screenShot,ScreenShot),
+                ((String)settingResponseData.keyMapping.showMarquee,ShowMarquee),
+                ((String)settingResponseData.keyMapping.captureSideUpMove,CaptureSideUpMove),
+                ((String)settingResponseData.keyMapping.captureSideDownMove,CaptureSideDownMove),
+                ((String)settingResponseData.keyMapping.captureSideLeftMove,CaptureSideLeftMove),
+                ((String)settingResponseData.keyMapping.captureSideRightMove,CaptureSideRightMove),
+                ("鼠标左键",WaitAndScanAndTranslate)
             });
         }
         private void TranslateModePopupInit()
@@ -100,21 +104,32 @@ namespace VNLauncher.Windows
 
             Action ocrChangedAction = () =>
             {
-
+                if (onlineOCRRadioButton.IsChecked)
+                {
+                    scanner = new BaiduOCR((String)settingResponseData.ocr.onlineOCR.apiKey, (String)settingResponseData.ocr.onlineOCR.secretKey);
+                }
+                else
+                {
+                    scanner = new LocalOCR((Boolean)settingResponseData.ocr.localOCR.isV4Model, (Boolean)settingResponseData.ocr.localOCR.usingGPU);
+                }
             };
 
             Action translateChangedAction = () =>
             {
-                if (translator is LocalTranslator)
+                if (localTranslateRadioButton.IsChecked)
+                {
+                    translator = new LocalTranslator((String)settingResponseData.localTranslate.url, (Int32)settingResponseData.localTranslate.context, (String)settingResponseData.localTranslate.prompt);
+                }
+                else if (onlineModelTranslateRadioButton.IsChecked)
                 {
                     translator = new OnlineModelTranslator((String)settingResponseData.onlineModelTranslate.apiKey, (String)settingResponseData.onlineModelTranslate.url,
                     new OnlineModelTranslator.Prompt((Boolean)settingResponseData.onlineModelTranslate.prompt.hasContext, (Boolean)settingResponseData.onlineModelTranslate.prompt.contextFirst,
-                    (String)settingResponseData.onlineModelTranslate.prompt.prompt1, (String)settingResponseData.onlineModelTranslate.prompt.prompt2, (String)settingResponseData.onlineModelTranslate.prompt.prompt3),
-                    (Int32)settingResponseData.onlineModelTranslate.context, (String)settingResponseData.onlineModelTranslate.model);
+                        (String)settingResponseData.onlineModelTranslate.prompt.prompt1, (String)settingResponseData.onlineModelTranslate.prompt.prompt2, (String)settingResponseData.onlineModelTranslate.prompt.prompt3),
+                        (Int32)settingResponseData.onlineModelTranslate.context, (String)settingResponseData.onlineModelTranslate.model);
                 }
-                else
+                else if (baiduTranslateRadioButton.IsChecked)
                 {
-                    translator = new LocalTranslator((String)settingResponseData.localTranslate.url, (Int32)settingResponseData.localTranslate.context, (String)settingResponseData.localTranslate.prompt);
+                    translator = new BaiduTranslator((String)settingResponseData.baiduTranslate.apiKey, (String)settingResponseData.baiduTranslate.secretKey);
                 }
             };
             MarqueeRadioButton.SetGroup(new List<MarqueeRadioButton> { onlineOCRRadioButton, localOCRRadioButton }, ocrChangedAction, localOCRRadioButton);
@@ -137,6 +152,11 @@ namespace VNLauncher.Windows
             else if (baiduTranslateRadioButton.IsEnabled)
             {
                 baiduTranslateRadioButton.SetChecked();
+                translator = new BaiduTranslator((String)settingResponseData.baiduTranslate.apiKey, (String)settingResponseData.baiduTranslate.secretKey);
+            }
+            else
+            {
+                translator = new Translator();
             }
         }
         public void WaitModePopupInit()
@@ -215,6 +235,7 @@ namespace VNLauncher.Windows
                     game.EndGame();
                     tWindow.Close();
                     windowMonitoringTimer.Stop();
+                    mainWindow.SetStartButton(false);
                     Close();
 
                 });
@@ -240,17 +261,13 @@ namespace VNLauncher.Windows
             }
         }
 
-        private CancellationTokenSource tokenSource;
-        private CancellationToken token;
 
-        private async void WaitAndScan()
+
+        private async void WaitAndScanAndTranslate()
         {
             if (translateButton.IsTranslating)
             {
                 LocalOCR.OCRResult result = null;
-                tokenSource?.Cancel();
-                tokenSource = new CancellationTokenSource();
-                token = tokenSource.Token;
 
                 Application.Current.Dispatcher.Invoke(() =>
                 {
@@ -261,7 +278,7 @@ namespace VNLauncher.Windows
                 {
                     if (autoWaitRadioButton.IsChecked)
                     {
-                        result = await Task.Run(AutoWaitAndScan, token);
+                        result = await Task.Run(AutoWaitAndScan);
                     }
                     else
                     {
@@ -292,79 +309,106 @@ namespace VNLauncher.Windows
             }
         }
 
-        private async Task<LocalOCR.OCRResult> AutoWaitAndScan()
+        private async Task<OCR.OCRResult> AutoWaitAndScan()
         {
-            while (true)
+            scanActionID++;
+            UInt64 key = scanActionID;
+            try
             {
-                token.ThrowIfCancellationRequested();
-                Bitmap lastCapture = GetGameShot(game.Loaction);
-                List<Int32> historySimilarities = new List<Int32>();
-                for (Int32 i = 0; i < 10; i++)
+                while (true)
                 {
-                    token.ThrowIfCancellationRequested();
-                    await Task.Delay(200);
-                    Bitmap capture = GetGameShot(game.Loaction);
-                    Int32 similarity = ImageHandler.CalculateWhiteIntersections(BitmapConverter.ToMat(capture));
-
-                    Int32 sameCount = 0;
-
-                    foreach (Int32 historySimilarity in historySimilarities)
+                    Bitmap lastCapture = GetGameShot(game.Loaction);
+                    List<Int32> historySimilarities = new List<Int32>();
+                    for (Int32 i = 0; i < 10; i++)
                     {
-                        if (similarity != 0)
+                        if (scanActionID != key)
                         {
-                            if (historySimilarity >= similarity)
+                            throw new OperationCanceledException();
+                        }
+                        await Task.Delay(200);
+
+                        Bitmap capture = GetGameShot(game.Loaction);
+                        Int32 similarity = ImageHandler.CalculateWhiteIntersections(BitmapConverter.ToMat(capture));
+                        Int32 sameCount = 0;
+                        foreach (Int32 historySimilarity in historySimilarities)
+                        {
+                            if (similarity != 0)
                             {
-                                sameCount++;
+                                if (historySimilarity >= similarity)
+                                {
+                                    sameCount++;
+                                }
                             }
                         }
+                        if (sameCount < 2)
+                        {
+                            historySimilarities.Add(similarity);
+                            lastCapture = new Bitmap(capture);
+                        }
+                        else
+                        {
+                            break;
+                        }
                     }
-                    if (sameCount < 2)
+                    Application.Current.Dispatcher.Invoke(() =>
                     {
-                        historySimilarities.Add(similarity);
-                        lastCapture = new Bitmap(capture);
-                    }
-                    else
+                        stateInfo.ChangeState(Controls.MarqueeStateInfo.State.Identifying);
+                    });
+
+                    OCR.OCRResult result = await scanner.Scan(lastCapture);
+                    if (result.HasContent)
                     {
-                        break;
+                        return result;
                     }
+                    stateInfo.ChangeState(Controls.MarqueeStateInfo.State.Waiting);
                 }
+            }
+            catch (Exception)
+            {
+                OCR.OCRResult result = new OCR.OCRResult(false);
+                return result;
+            }
+        }
+        private async Task<OCR.OCRResult> WaitFixTimeAndScan()
+        {
+            try
+            {
+                scanActionID++;
+                UInt64 key = scanActionID;
+
+                Int32 ms = 0;
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    ms = Convert.ToInt32(waitTimeSlider.Value * 100);
+                });
+                await Task.Delay(ms);
+                if (key != scanActionID)
+                {
+                    throw new OperationCanceledException();
+                }
+
+                Bitmap capture = GetGameShot(game.Loaction);
                 Application.Current.Dispatcher.Invoke(() =>
                 {
                     stateInfo.ChangeState(Controls.MarqueeStateInfo.State.Identifying);
                 });
-
-                LocalOCR.OCRResult result = scanner.Scan(lastCapture);
-                if (result.HasContent)
-                {
-                    return result;
-                }
+                OCR.OCRResult result = await scanner.Scan(capture);
+                return result;
             }
-        }
-        private async Task<LocalOCR.OCRResult> WaitFixTimeAndScan()
-        {
-            Int32 ms = 0;
-            Application.Current.Dispatcher.Invoke(() =>
+            catch(Exception)
             {
-                ms = Convert.ToInt32(waitTimeSlider.Value * 100);
-            });
-            await Task.Delay(ms);
-
-            Bitmap capture = GetGameShot(game.Loaction);
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                stateInfo.ChangeState(Controls.MarqueeStateInfo.State.Identifying);
-            });
-            LocalOCR.OCRResult result = scanner.Scan(capture);
-            return result;
+                OCR.OCRResult result = new OCR.OCRResult(false);
+                return result;
+            }
 
         }
         private async void Retranslate()
         {
             Bitmap capture = GetGameShot(game.Loaction);
-            LocalOCR.OCRResult result = null;
+            OCR.OCRResult result = null;
             await Task.Run(async () =>
             {
-                result = scanner.Scan(capture);
+                result = await scanner.Scan(capture);
                 Application.Current.Dispatcher.Invoke(() =>
                  {
                      stateInfo.ChangeState(Controls.MarqueeStateInfo.State.Identifying);
@@ -448,7 +492,6 @@ namespace VNLauncher.Windows
         private void TranslateSwitch()
         {
             translateButton.Turn();
-            tokenSource?.Cancel();
             if (translateButton.IsTranslating)
             {
                 adjustSideButton.IsEnabled = false;
@@ -569,18 +612,21 @@ namespace VNLauncher.Windows
                 ["bilingual"] = jpnChsRadioButton.IsChecked,
                 ["isAutoWait"] = autoWaitRadioButton.IsChecked,
                 ["backgroundTransparency"] = (Int32)backgroundTransparencySlider.Value,
-                ["textTransparency"] =  (Int32)textTransparencySlider.Value,
-                ["fontSize"] =  (Int32)fontSizeSlider.Value,
-                ["waitTime"] = (Int32) waitTimeSlider.Value,
-           
+                ["textTransparency"] = (Int32)textTransparencySlider.Value,
+                ["fontSize"] = (Int32)fontSizeSlider.Value,
+                ["waitTime"] = (Int32)waitTimeSlider.Value,
+
             };
             String jsonContent = File.ReadAllText(fileManager.UserDataJsonPath);
             dynamic responseData = Newtonsoft.Json.JsonConvert.DeserializeObject(jsonContent)!;
             responseData.marquee = marquee;
             File.WriteAllText(fileManager.UserDataJsonPath, responseData.ToString());
 
+            if (MainWindowGameButton.SelectedGameButton?.Game == game)
+            {
+                mainWindow.UpdateGameInfo(game);
+            }
 
-            mainWindow.UpdateSelectedGameInfo();
             hook.UninstallHook();
         }
 

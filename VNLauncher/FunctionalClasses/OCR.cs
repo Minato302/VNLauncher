@@ -6,6 +6,8 @@ using Sdcb.PaddleInference;
 using Sdcb.PaddleOCR;
 using Sdcb.PaddleOCR.Models;
 using Sdcb.PaddleOCR.Models.Local;
+using System.Net.Http;
+using System.Text;
 
 namespace VNLauncher.FunctionalClasses
 {
@@ -141,10 +143,8 @@ namespace VNLauncher.FunctionalClasses
 
         }
     }
-    public class LocalOCR
+    public abstract class OCR
     {
-        private FullOcrModel model;
-        private PaddleOcrAll all;
         public class OCRResult
         {
             private Boolean hasContent;
@@ -157,7 +157,14 @@ namespace VNLauncher.FunctionalClasses
             public Boolean HasContent => hasContent;
             public String ResultText => resultText!;
         }
-        public LocalOCR(Boolean isV4Model,Boolean usingGPU)
+        public abstract Task<OCRResult> Scan(System.Drawing.Bitmap pic);
+    }
+    public class LocalOCR : OCR
+    {
+        private FullOcrModel model;
+        private PaddleOcrAll all;
+
+        public LocalOCR(Boolean isV4Model, Boolean usingGPU)
         {
             if (isV4Model)
             {
@@ -184,7 +191,7 @@ namespace VNLauncher.FunctionalClasses
                 };
             }
         }
-        public OCRResult Scan(System.Drawing.Bitmap pic)
+        public async override Task<OCRResult> Scan(System.Drawing.Bitmap pic)
         {
             List<WordBlock> blocks = new List<WordBlock>();
             Mat src = BitmapConverter.ToMat(pic);
@@ -208,7 +215,7 @@ namespace VNLauncher.FunctionalClasses
             }
             mat.Dispose();
             src.Dispose();
-            if (blocks.Count > 0) 
+            if (blocks.Count > 0)
             {
                 return new OCRResult(true, WordBlock.Splicing(blocks).Words);
             }
@@ -217,5 +224,79 @@ namespace VNLauncher.FunctionalClasses
                 return new OCRResult(false);
             }
         }
+    }
+    public class BaiduOCR : OCR
+    {
+        private String apiKey;
+        private String secretKey;
+        public BaiduOCR(String apiKey, String secretKey)
+        {
+            this.apiKey = apiKey;
+            this.secretKey = secretKey;
+        }
+        public async override Task<OCRResult> Scan(System.Drawing.Bitmap pic)
+        {
+            String token = await GetToken();
+
+            String url = "https://aip.baidubce.com/rest/2.0/ocr/v1/general_basic?access_token=" + token;
+            String base64 = BitmapToByte(pic);
+            Dictionary<String, String> requestData = new Dictionary<String, String>
+            {
+                { "image", base64 },
+                { "language_type", "JAP"}
+            };
+            FormUrlEncodedContent formContent = new FormUrlEncodedContent(requestData);
+            HttpClient httpClient = new HttpClient();
+            HttpResponseMessage response = await httpClient.PostAsync(url, formContent);
+            response.EnsureSuccessStatusCode();
+            String responseContent = await response.Content.ReadAsStringAsync();
+            dynamic responseData = Newtonsoft.Json.JsonConvert.DeserializeObject(responseContent)!;
+            Int32 lineCount = responseData.words_result_num;
+            String result = "";
+            for (Int32 i = 0; i < lineCount; i++)
+            {
+                 result += responseData.words_result[i].words;
+            }
+          
+
+            if (responseContent != "")
+            {
+                return new OCRResult(true, result);
+            }
+            else
+            {
+                return new OCRResult(false);
+            }
+
+        }
+        private String BitmapToByte(System.Drawing.Bitmap bitmap)
+        {
+            System.IO.MemoryStream ms = new System.IO.MemoryStream();
+            bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
+            ms.Seek(0, System.IO.SeekOrigin.Begin);
+            Byte[] bytes = new Byte[ms.Length];
+            ms.Read(bytes, 0, bytes.Length);
+            ms.Dispose();
+            return Convert.ToBase64String(bytes);
+        }
+        private async Task<String> GetToken()
+        {
+            String url = "https://aip.baidubce.com/oauth/2.0/token?client_id=" + apiKey + "&client_secret=" + secretKey + "&grant_type=client_credentials";
+            Dictionary<String, Object> requestData = new Dictionary<String, Object>();
+            StringContent jsonContent = new StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(requestData), Encoding.UTF8, "application/json");
+            HttpClient httpClient = new HttpClient();
+
+            httpClient.Timeout = TimeSpan.FromMinutes(3);
+            httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
+            HttpResponseMessage response = await httpClient.PostAsync(url, jsonContent);
+            response.EnsureSuccessStatusCode();
+            String responseContent = await response.Content.ReadAsStringAsync();
+            dynamic responseData = Newtonsoft.Json.JsonConvert.DeserializeObject(responseContent)!;
+
+            String token = responseData.access_token;
+            return token;
+        }
+
     }
 }

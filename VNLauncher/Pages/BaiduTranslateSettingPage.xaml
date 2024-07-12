@@ -16,5 +16,6 @@
         <TextBlock Foreground="{StaticResource iconColor}" Text="Secret Key：" FontSize="16" Canvas.Left="35" Canvas.Top="250"/>
         <local:SettingPageTextBox x:Name="secretKeyTextBox" Width="400" Height="25" FontSize="16" Canvas.Left="190" Canvas.Top="248" SettingPageTextBoxTextWrapping="NoWrap"/>
         <local:BigButton x:Name="saveButton" Canvas.Left="550" Canvas.Top="330" Width="80" Height="50" BigButtonText="保存" Click="SaveButton_Click"/>
+        <local:QuestionButton x:Name="baiduTranslateQuestionButton" Canvas.Left="190" Canvas.Top="38"/>
     </Canvas>
 </Page>

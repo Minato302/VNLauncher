@@ -107,7 +107,7 @@
                 </Popup>
                 <local:MarqueeAdjustSideButton x:Name="adjustSideButton" Grid.Column="9"/>
                 <local:MarqueeTranslateButton x:Name="translateButton" Grid.Column="11" Click="TranslateButton_Click"/>
-                <local:MarqueeStateInfo x:Name="stateInfo" Grid.Column="13"/>
+                <local:MarqueeStateInfo x:Name="stateInfo" Grid.Column="13" Focusable="False"/>
             </Grid>
         </Grid>
     </Border>

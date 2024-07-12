@@ -56,8 +56,8 @@
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Image x:Name="image" Source="{TemplateBinding MainWindowGameButtonItemSource}" Grid.Column="0" Margin="10"/>
-                            <TextBlock x:Name="textBlock" Text="{TemplateBinding MainWindowGameButtonText}" Foreground="{StaticResource mainWindowGameButtonColor_Text}"  Grid.Column="1" VerticalAlignment="Center"/>
+                            <Image x:Name="iconImage" Grid.Column="0" Margin="10"/>
+                            <TextBlock x:Name="gameNameTextBlock"  Foreground="{StaticResource mainWindowGameButtonColor_Text}"  Grid.Column="1" VerticalAlignment="Center"/>
                         </Grid>
                     </Border>
                 </ControlTemplate>

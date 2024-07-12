@@ -13,133 +13,83 @@ namespace VNLauncher.Controls
 {
     public class MainWindowGameButton : Button
     {
+
         static MainWindowGameButton()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(MainWindowGameButton), new FrameworkPropertyMetadata(typeof(MainWindowGameButton)));
         }
         private FileManager fileManager;
-        private Windows.MainWindow mainWindow;
         private LocalColorAcquirer resource;
-        private Boolean isSelected;
-        public Boolean IsSelected => isSelected;
+        private Image iconImage;
+        private TextBlock gameNameTextBlock;
 
-        public static readonly DependencyProperty MainWindowGameButtonTextProperty =
-                DependencyProperty.Register("MainWindowGameButtonText", typeof(String), typeof(MainWindowGameButton));
-        public static readonly DependencyProperty MainWindowGameButtonItemSourceProperty =
-                DependencyProperty.Register("MainWindowGameButtonItemSource", typeof(ImageSource), typeof(MainWindowGameButton));
         private Game game;
         public Game Game => game;
-        private Border mainBorder;
 
-        public MainWindowGameButton(String gameName, Windows.MainWindow mainWindow)
+        private static MainWindowGameButton? selectedGameButton;
+        public static MainWindowGameButton? SelectedGameButton => selectedGameButton;
+
+        private Border mainBorder;
+        private Action action;
+
+        public MainWindowGameButton(String gameName)
         {
+            
             fileManager = new FileManager();
             game = new Game(gameName, fileManager);
-            this.mainWindow = mainWindow;
-            SetValue(MainWindowGameButtonTextProperty, gameName);
-            SetValue(MainWindowGameButtonItemSourceProperty, new BitmapImage(new Uri(fileManager.GetGameIconPath(gameName)!)));
+
             resource = new LocalColorAcquirer();
-            isSelected = false;
             PreviewMouseLeftButtonDown += (sender, e) =>
             {
-                foreach (MainWindowGameButton gameButton in mainWindow.gameListStackPanel.Children)
-                {
-                    gameButton.RelieveSelected();
-                }
                 BeingSelected();
             };
             MouseEnter += (sender, e) =>
             {
-                if (!isSelected)
+                if (this != selectedGameButton)
                 {
                     mainBorder!.Background = resource.GetColor("mainWindowGameButtonColor_MouseEnter");
                 }
             };
             MouseLeave += (sender, e) =>
             {
-                if (!isSelected)
+                if (this != selectedGameButton)
                 {
                     mainBorder!.Background = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
                 }
             };
 
         }
+        public void BeingSelected()
+        {
+            ApplyTemplate();
+
+            selectedGameButton = this;
+            action?.Invoke();
+            mainBorder!.Background = resource.GetColor("mainWindowGameButtonColor_Selected");
+        }
 
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
+            ApplyTemplate();
             mainBorder = (Template.FindName("mainBorder", this) as Border)!;
+            iconImage = (Template.FindName("iconImage", this) as Image)!;
+            gameNameTextBlock = (Template.FindName("gameNameTextBlock", this) as TextBlock)!;
+            iconImage.Source = ImageHandler.GetImage((fileManager.GetGameIconPath(game.Name)!));         
+         
+            gameNameTextBlock.Text = game.Name ;
         }
-        public String MainWindowGameButtonText
+        public void SetSelectedAction(Action action)
         {
-            get
-            {
-                return (String)GetValue(MainWindowGameButtonTextProperty);
-            }
-            set
-            {
-                SetValue(MainWindowGameButtonTextProperty, value);
-            }
+            ApplyTemplate();
+            this.action = action;
         }
-        public ImageSource MainWindowGameButtonItemSource
-        {
-            get
-            {
-                return (ImageSource)GetValue(MainWindowGameButtonItemSourceProperty);
-            }
-            set
-            {
-                SetValue(MainWindowGameButtonItemSourceProperty, value);
-            }
-        }
-        public void UpdateInfo()
-        {
-            mainWindow.captureDisplayPanel.Children.Clear();
-            String[] captureNames = Directory.GetFiles(fileManager.GetGameCapturesPath(Game.Name)!);
-            Random rand = new Random();
-            Int32 index = rand.Next(captureNames.Length + 1);
-            if (index == captureNames.Length)
-            {
-                mainWindow.coverBlock.MainWindowCoverBlockImage = new BitmapImage(new Uri(fileManager.GetGameCoverPath(Game.Name)!));
-            }
-            else
-            {
-                mainWindow.coverBlock.MainWindowCoverBlockImage = new BitmapImage(new Uri(captureNames[index]));
-            }
-            mainWindow.coverBlock.SetImageCount(captureNames.Length);
-            List<List<String>> groups = fileManager.GroupCaptureNamesByPrefix(Game.Name).Values.ToList();
-            groups.Sort((List<String> x, List<String> y) =>
-            {
-                return -Convert.ToInt64(x[0][..8]).CompareTo(Convert.ToInt64(y[0][..8]));
-            });
-            foreach (List<String> group in groups)
-            {
-                mainWindow.captureDisplayPanel.Children.Add(new MainWindowDailyCaputreDisplay(group, Game.Name));
-            }
-            if (game.PlayTimeMinute >= 120)
-            {
-                mainWindow.gameTotalTimeInfo.SetInfo((game.PlayTimeMinute / 60.0).ToString("0.0") + "小时");
-            }
-            else
-            {
-                mainWindow.gameTotalTimeInfo.SetInfo(game.PlayTimeMinute.ToString() + "分钟");
-            }
 
-            mainWindow.gameLastStartTimeInfo.SetInfo(game.LastStartTime.ToString("d"));
-        }
-        public void BeingSelected()
-        {
-            isSelected = true;
-            mainBorder.Background = resource.GetColor("mainWindowGameButtonColor_Selected");
-            mainWindow.coverPicture.Source = new BitmapImage(new Uri(fileManager.GetGameCoverPath(Game.Name)!));
-            UpdateInfo();
-        }
+
         public void RelieveSelected()
         {
-            isSelected = false;
-            mainWindow.captureDisplayPanel.Children.Clear();
+            ApplyTemplate();
             mainBorder.Background = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
         }
-
     }
 }

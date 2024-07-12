@@ -14,8 +14,8 @@ namespace VNLauncher.FunctionalClasses
             {
                 ["translateSwitch"] = "键盘按键Tab",
                 ["showMarquee"] = "键盘按键左Shift",
-                ["screenShot"] = "键盘按键F8",
-                ["retranslate"] = "键盘按键F7",
+                ["screenShot"] = "键盘按键F12",
+                ["retranslate"] = "键盘按键R",
                 ["captureSideUpMove"] = "键盘按键↑",
                 ["captureSideDownMove"] = "键盘按键↓",
                 ["captureSideLeftMove"] = "键盘按键←",
@@ -70,7 +70,7 @@ namespace VNLauncher.FunctionalClasses
             JObject localTranslate = new JObject
             {
                 ["enabled"] = false,
-                ["port"] = "http://127.0.0.1:5000",
+                ["url"] = "http://127.0.0.1:5000",
                 ["context"] = 22,
                 ["prompt"] = "将这段文本直接翻译成中文，不要进行任何额外的格式修改，如果遇到大量语气词，请直接将语气词保留，注意连接上下文，这里是你需要翻译的文本："
             };

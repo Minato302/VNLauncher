@@ -32,7 +32,9 @@ namespace VNLauncher.Pages
         {
             fileManager.CreateNewGameToFile(parameter.GameInfo.GameName, parameter.GameInfo.GameExePath, parameter.GameInfo.GameCover,
                 parameter.GameInfo.IsAutoStart, parameter.GameInfo.IsWindowShot, parameter.GameInfo.GameWindowTitle, parameter.GameInfo.GameWindowClass, tWindow.GameCaptionLocation);
-            parameter.MainWindow.gameListStackPanel.Children.Add(new MainWindowGameButton(parameter.GameInfo.GameName, parameter.MainWindow));
+
+            parameter.MainWindow.AddGame(parameter.GameInfo.GameName);
+
             Page_Unloaded(sender, e);
             parameter.BaseWindow.GoAway(null);
             WindowsHandler.Close(parameter.GameInfo.GameWindow);

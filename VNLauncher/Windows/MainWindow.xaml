@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:VNLauncher.Controls"    
         xmlns:fa="http://schemas.fontawesome.io/icons/"
-        ResizeMode="CanResizeWithGrip"
+        ResizeMode="CanResizeWithGrip" Closing="Window_Closing"
         Title="VNLauncher" Height="800" Width="1200" MinHeight="600" MinWidth="1050"
-        WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True"
+        WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True" 
         MouseLeftButtonDown="Window_MouseLeftButtonDown" MouseRightButtonDown="Window_MouseRightButtonDown" Loaded="Window_Loaded" KeyDown="Window_KeyDown">
 
     <Grid Name="mainGrid" Background="Transparent">
@@ -86,25 +86,33 @@
                                 <local:MainWindowSortWayButtonMenuItem x:Name="llayedTimeItem" Grid.Row="2" SortWay="游戏时间" Click="PlayedTimeItem_Click"/>
                             </Grid>
                         </Popup>
-                        <local:MainWindowControlBarButton x:Name="controlBarButton_Search" MainWindowControlBarButtonIcon="Search" Grid.Column="4"/>
-                        <TextBox Name="controlBarTextBox_Input" Grid.Column="3" Background="Transparent" 
-                                 Foreground="{StaticResource iconColor}" FontSize="20" 
-                                 BorderThickness="0" CaretBrush="{StaticResource iconColor}"/>
+                        <local:MainWindowControlBarButton x:Name="searchGameButton" MainWindowControlBarButtonIcon="Search" Grid.Column="4" Visibility="Visible"/>
+                        <local:MainWindowControlBarButton x:Name="cancelSearchButton" MainWindowControlBarButtonIcon="Times" Grid.Column="4" Visibility="Hidden" Click="CancelSearchButton_Click"/>
+                        <TextBox Name="searchGameTextBox" Grid.Column="3" Background="Transparent" VerticalContentAlignment="Center"
+                                 Foreground="{StaticResource iconColor}" FontSize="16" TextAlignment="Left"
+                                 BorderThickness="0" CaretBrush="{StaticResource iconColor}" TextChanged="SearchGameTextBox_TextChanged"/>
                     </Grid>
                 </Border>
-                <ScrollViewer x:Name="gameListScrollViewer" Template="{StaticResource MainWindowScroll}" Grid.Row="2" Background="{StaticResource backgroundColor_Dark}">
+
+                <ScrollViewer x:Name="gameListScrollViewer" Template="{StaticResource MainWindowScroll}" Grid.Row="2" Visibility="Visible"
+                              Background="{StaticResource backgroundColor_Dark}">
                     <StackPanel Name="gameListStackPanel"/>
                 </ScrollViewer>
+
             </Grid>
 
-            <Grid Name="mainRightGrid_Picture" Grid.Column="1" Panel.ZIndex="0" Background="Transparent">
+            <Canvas Name="noGameTipsCanvas" Grid.Column="1" Background="{StaticResource backgroundColor_Light}" Visibility="Hidden">
+                <TextBlock Name="mainTextBlock1" Foreground="{StaticResource iconColor}" FontSize="28" Text="欢迎使用VNLauncher！" Canvas.Left="30" Canvas.Top="120"/>
+                <TextBlock Name="mainTextBlock2" Foreground="{StaticResource iconColor}" FontSize="28" Text="您还没有添加任何游戏，点击左侧+号添加" Canvas.Left="30" Canvas.Top="220"/>
+            </Canvas>
+            <Grid Name="mainRightGrid_Picture" Grid.Column="1" Panel.ZIndex="1" Background="Transparent">
                 <Grid.RowDefinitions>
                     <RowDefinition Name="coverPictureRow" Height="6*"/>
                     <RowDefinition Height="4*"/>
                 </Grid.RowDefinitions>
-                <Image Name="coverPicture" Stretch="UniformToFill" />
+                <Image Name="coverImage" Stretch="UniformToFill" />
             </Grid>
-            <Grid Name="mainRightGird_GameInfo" Grid.Column="1" Panel.ZIndex="1">
+            <Grid Name="mainRightGird_GameInfo" Grid.Column="1" Panel.ZIndex="2" >
                 <Grid.RowDefinitions>
                     <RowDefinition Height="7*"/>
                     <RowDefinition Name="gameControlBarRow" Height="70"/>
@@ -123,10 +131,10 @@
                     <local:BigButton x:Name="gameStartButton" Grid.Column="0" Margin="10,10,10,10" BigButtonText="开始游戏" Click="GameStartButton_Click"/>
                     <local:MainWindowGameInfo x:Name="gameTotalTimeInfo" Margin="20,10,10,10"  Grid.Column="1"  MainWindowGameInfoIcon="ClockOutline" MainWindowGameInfoItem="游戏时长" MainWindowGameInfoValue="0.0h"/>
                     <local:MainWindowGameInfo x:Name="gameLastStartTimeInfo" Margin="20,10,10,10"  Grid.Column="2"  MainWindowGameInfoIcon="Calendar" MainWindowGameInfoItem="最近启动时间"/>
-                    <local:ItemButton x:Name="openFileButton" ItemButtonIcon="File" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="4"/>
-                    <local:ItemButton x:Name="removeGameButton" ItemButtonIcon="Trash" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="5"/>
+                    <local:ItemButton x:Name="openFileButton" ItemButtonIcon="File" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="4" Click="OpenFileButton_Click"/>
+                    <local:ItemButton x:Name="removeGameButton" ItemButtonIcon="Trash" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="5" Click="RemoveGameButton_Click"/>
                 </Grid>
-                <ScrollViewer x:Name="gameHistoryScrollViewer"  Grid.Row="2" Template="{StaticResource MainWindowScroll}" Background="{StaticResource backgroundColor_Light}">
+                <ScrollViewer x:Name="gameHistoryScrollViewer" Grid.Row="2" Template="{StaticResource MainWindowScroll}" Background="{StaticResource backgroundColor_Light}">
                     <Grid x:Name="gameHistoryGrid" Background="{StaticResource backgroundColor_Light}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="15"/>
@@ -146,7 +154,7 @@
 
                             </Grid.RowDefinitions>
                             <TextBlock x:Name="tipsMomentTextBlock" Text="动态" Grid.Row="1" Foreground="{StaticResource iconColor}" FontSize="14"/>
-                            <local:MainWindowOpenAlbumButton x:Name="button_OpenAlbum" Grid.Row="3"/>
+                            <local:MainWindowOpenAlbumButton x:Name="openAlbumButton" Grid.Row="3" Click="OpenAlbumButton_Click"/>
                             <StackPanel x:Name="captureDisplayPanel" Grid.Row="5" Width="auto"/>
                         </Grid>
 
@@ -157,7 +165,7 @@
                                 <RowDefinition Name="coverBlockRow" Height="200"/>
                             </Grid.RowDefinitions>
                             <TextBlock x:Name="tipsCoverTextBlock" Text="封面/截图" Grid.Row="1" Foreground="{StaticResource iconColor}" FontSize="14"/>
-                            <local:MainWindowCoverBlock x:Name="coverBlock"  Grid.Row="3"/>
+                            <local:MainWindowCoverBlock x:Name="coverBlock" Grid.Row="3" SeeCapturesButtonClick="CoverBlockSeeCapturesButton_Click" ChangeCoverButtonClick="CoverBlockChangeCoverButton_Click"/>
                         </Grid>
                     </Grid>
                 </ScrollViewer>

@@ -70,14 +70,18 @@ namespace VNLauncher.Controls
         }
         public void StartRunning(String runningInfo)
         {
+            ApplyTemplate();
             isRunning = true;
             mainBorder.Background = resource.GetColor("bigButtonColor_Running");
+            IsEnabled = false;
             functionTextBlock.Text = runningInfo;
         }
         public void StopRunning(String originInfo)
         {
+            ApplyTemplate();
             isRunning = false;
             mainBorder.Background = resource.GetColor("signColor");
+            IsEnabled = true;
             functionTextBlock.Text = originInfo;
         }
     }

@@ -13,6 +13,8 @@ namespace VNLauncher.Controls
         private List<String> imageNames;
         private FileManager fileManager;
         private String gameName;
+        private StackPanel stackPanel1;
+        private StackPanel stackPanel2;
         static MainWindowDailyCaputreDisplay()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(MainWindowDailyCaputreDisplay), new FrameworkPropertyMetadata(typeof(MainWindowDailyCaputreDisplay)));
@@ -20,6 +22,7 @@ namespace VNLauncher.Controls
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
+            ApplyTemplate();
             if (imageNames.Count == 0)
             {
                 return;
@@ -73,17 +76,17 @@ namespace VNLauncher.Controls
                 }
             }
 
-            StackPanel panel1 = (Template.FindName("displayCapturePanel_Left", this) as StackPanel)!;
-            StackPanel panel2 = (Template.FindName("displayCapturePanel_Right", this) as StackPanel)!;
+            stackPanel1 = (Template.FindName("displayCapturePanel_Left", this) as StackPanel)!;
+            stackPanel2 = (Template.FindName("displayCapturePanel_Right", this) as StackPanel)!;
             for (Int32 i = 0; i < imageNames.Count; i++)
             {
                 if (i % 2 == 0)
                 {
-                    panel1.Children.Add(CreateImageByName(imageNames[i]));
+                    stackPanel1.Children.Add(CreateImageByName(imageNames[i]));
                 }
                 else
                 {
-                    panel2.Children.Add(CreateImageByName(imageNames[i]));
+                    stackPanel2.Children.Add(CreateImageByName(imageNames[i]));
                 }
             }
         }
@@ -97,11 +100,12 @@ namespace VNLauncher.Controls
         private Image CreateImageByName(String name)
         {
             String path = Path.Combine(fileManager.GetGameCapturesPath(gameName)!, name);
-            BitmapImage bitmap = new BitmapImage(new Uri(path));
+            BitmapImage bitmap = ImageHandler.GetImage(path);
             Image image = new Image();
             image.Source = bitmap;
             image.Margin = new Thickness(20, 0, 0, 20);
             return image;
         }
+
     }
 }

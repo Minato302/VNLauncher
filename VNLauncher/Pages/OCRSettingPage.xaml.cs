@@ -24,7 +24,7 @@ namespace VNLauncher.Pages
                      secretKeyTextBox.IsEnabled = false;
                  });
             fileManager= new FileManager();
-            localOCRQuestionButton.SetTips("本地OCR有V3和V4两个模型，V3正确率约在97%左右，V4可以达到99.4%左右。V3模型只需要CPU就可以运行，V4建议使用GPU。使用GPU时，需要安装CUDA。");
+            localOCRQuestionButton.SetTips("本地OCR有V3和V4两个模型，V3正确率约在97%左右，V4可以达到99.4%左右。V3模型只需要CPU就可以运行，V4建议使用GPU。使用GPU时，需要N卡。");
         }
 
         private void Page_Loaded(Object sender, System.Windows.RoutedEventArgs e)

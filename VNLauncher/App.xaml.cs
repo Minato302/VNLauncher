@@ -3,6 +3,7 @@
 using System.Configuration;
 using System.Data;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Windows;
 using VNLauncher.FunctionalClasses;
 
@@ -21,11 +22,17 @@ namespace VNLauncher
                 Directory.CreateDirectory(fileManager.UserDataFolderPath);
                 Directory.CreateDirectory(fileManager.GamesFolderPath);
                 DirectoryInfo dirInfo = new DirectoryInfo(fileManager.UserDataFolderPath);
-                dirInfo.Attributes |= FileAttributes.Hidden;
                 InitialInfo initialInfo = new InitialInfo();
                 initialInfo.WriteInitialInfo(fileManager.UserDataJsonPath);
+                File.Create(fileManager.GamesOrderPath);
 
             }
+        }
+        protected override void OnExit(ExitEventArgs e)
+        {
+            base.OnExit(e);
+
+
         }
     }
 

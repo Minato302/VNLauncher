@@ -1,21 +1,9 @@
 ﻿#pragma warning disable IDE0049
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using VNLauncher.FunctionalClasses;
-using System.IO;
 
 namespace VNLauncher.Pages
 {
@@ -35,6 +23,9 @@ namespace VNLauncher.Pages
                 apiKeyTextBox.IsEnabled = false;
                 secretKeyTextBox.IsEnabled = false;
             });
+            baiduTranslateQuestionButton.SetTips("百度翻译质量相对于大模型翻译质量较差，如果硬件不允许跑本地模型时建议使用在线模型。如果一定要使用，请访问链接1创建应用和APIKey。");
+            baiduTranslateQuestionButton.ReplaceTextWithHyperlink("链接1", "https://console.bce.baidu.com/ai/#/ai/machinetranslation/overview/index", "这里");
+
         }
         private void Page_Loaded(Object sender, RoutedEventArgs e)
         {

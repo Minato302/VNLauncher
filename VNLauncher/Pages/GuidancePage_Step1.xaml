@@ -14,7 +14,7 @@
         <TextBlock x:Name="mainTipsTextBlock" Width="380"
                    Text=""
                    Foreground="{StaticResource iconColor}" FontSize="14" Canvas.Top="50" Canvas.Left="20" TextWrapping="Wrap"/>
-        <local:BigButton x:Name="nextStepButton" BigButtonText="下一步"  Height="50" Width="90" Canvas.Left="280" Canvas.Top="140" Click="NextStepButton_Click"/>
+        <local:BigButton x:Name="nextStepButton" BigButtonText="下一步"  Height="50" Width="90" Canvas.Left="280" Canvas.Top="140" Click="NextStepButton_Click" Focusable="False"/>
         <TextBlock Name="errorTipsTextBlock" Width="130" Text="请先选择游戏窗口后再进行下一步！"  Foreground="{StaticResource iconColor}" FontSize="11" Canvas.Left="260"
                    Canvas.Top="200" Visibility="Hidden" TextWrapping="Wrap"/>
         <TextBlock Name="windowSelectTipsTextBlock" Text="窗口名称" Foreground="{StaticResource iconColor}" FontSize="14" Canvas.Top="140" Canvas.Left="30" />
