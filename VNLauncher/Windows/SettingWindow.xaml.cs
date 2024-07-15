@@ -79,6 +79,7 @@ namespace VNLauncher.Windows
             {
                 button.RelieveSelected();
             }
+            settingInfoFrame.Navigate(new Pages.AboutPage());
             aboutButton.BeingSelected();
         }
 

@@ -8,7 +8,6 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/VNLauncher;component/Themes/FrontColor.xaml"/>
                 <ResourceDictionary Source="/VNLauncher;component/Themes/MainWindowScrollStyle.xaml"/>
-                <ResourceDictionary Source="/VNLauncher;component/Themes/MarqueeSliderStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <Style TargetType="Control">
                 <Setter Property="Focusable" Value="False"/>

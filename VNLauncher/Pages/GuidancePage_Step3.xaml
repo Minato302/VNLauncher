@@ -13,7 +13,7 @@
         <TextBlock x:Name="stepTipsTextBlock" Text="Step 3/3" Foreground="{StaticResource iconColor}" FontSize="20" Canvas.Top="10" Canvas.Left="20"/>
         <TextBlock Width="380" x:Name="mainTipsTextBlock" 
                    Text="   已获得游戏封面，现在进行识别区域的初始化。请使用键盘的←↑→↓键调节游戏窗口上方的红色方框，使其刚好框住字幕区域（不包括人名）。调节方法为：点击下面的按钮选择调节左上或是右下，按方向键进行调节。调节完毕后请关闭游戏结束初始化设置。注意：您在之后正式进入游戏后仍有机会进行调节。" 
-                   Foreground="{StaticResource iconColor}" FontSize="14" Canvas.Top="50" Canvas.Left="20" TextWrapping="Wrap"/>
+                   Foreground="{StaticResource iconColor}" FontSize="12" Canvas.Top="50" Canvas.Left="20" TextWrapping="Wrap"/>
         <local:BigButton x:Name="endButton" BigButtonText="结束"  Height="50" Width="90" Canvas.Left="280" Canvas.Top="160" Click="EndButton_Click" Focusable="False"/>
         <TextBlock x:Name="adjustTipsTextBlock" Text="当前调节："   Foreground="{StaticResource iconColor}" FontSize="14" Canvas.Top="170" Canvas.Left="20"/>
         <local:GuidancePageAdjustSideButton x:Name="adjustSideButton" Canvas.Top="166" Canvas.Left="95" Width="50" Height="25" Focusable="False"/>

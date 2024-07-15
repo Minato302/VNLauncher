@@ -1,4 +1,4 @@
-﻿#pragma warning disable IDE0049
+﻿ #pragma warning disable IDE0049
 #pragma warning disable CS8618
 
 using FontAwesome.WPF;

@@ -12,9 +12,9 @@
         <TextBlock x:Name="stepTipsTextBlock" Text="Step 2/3" Foreground="{StaticResource iconColor}" FontSize="20" Canvas.Top="10" Canvas.Left="20"/>
         <TextBlock Width="380" x:Name="mainTipsTextBlock" 
                    Text="   已捕获游戏窗口，现在需要获得游戏封面。请保证游戏窗口可以完整看到（本窗口可覆盖在游戏窗口上方），并在游戏窗口运行到封面时按下键盘回车键进行封面的截取。"
-                   Foreground="{StaticResource iconColor}" FontSize="14" Canvas.Top="40" Canvas.Left="20" TextWrapping="Wrap"/>
+                   Foreground="{StaticResource iconColor}" FontSize="12" Canvas.Top="40" Canvas.Left="20" TextWrapping="Wrap"/>
         <TextBlock x:Name="screenShotModeTextBlock" Canvas.Top="128" Canvas.Left="253" Foreground="{StaticResource iconColor}" FontSize="14" Text="截屏模式："/>
-        <TextBlock x:Name="changeScreenShotModeTextBlock" Canvas.Top="100" Canvas.Left="20" Text="    若截出黑屏或尺寸错误，可在下方更改截屏模式后重试。"  Foreground="{StaticResource iconColor}" FontSize="14"/>
+        <TextBlock x:Name="changeScreenShotModeTextBlock" Canvas.Top="90" Canvas.Left="20" Text="    若截出黑屏或尺寸错误，可在下方更改截屏模式后重试。"  Foreground="{StaticResource iconColor}" FontSize="12"/>
         <local:ChangeModeButton x:Name="screenShotModeButton" Canvas.Left="320" Canvas.Top="127" Width="75" Height="21" ChangeModeButtonMode1Icon="WindowRestore" ChangeModeButtonMode1String="窗口截取"
                                 ChangeModeButtonMode2Icon="Scissors" ChangeModeButtonMode2String="全屏切割"/>
         <Border Width="220" Height="120" Canvas.Top="125" Canvas.Left="20" BorderThickness="1" BorderBrush="{StaticResource iconColor}">

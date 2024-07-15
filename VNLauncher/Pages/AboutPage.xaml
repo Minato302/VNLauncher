@@ -1,0 +1,20 @@
+﻿<Page x:Class="VNLauncher.Pages.AboutPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:VNLauncher.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="570" d:DesignWidth="720" Focusable="False">
+    <Canvas Name="mainCanvas">
+        <TextBlock Foreground="{StaticResource iconColor}" Text="关于VNLauncher" FontSize="24" Canvas.Left="40" Canvas.Top="30" />
+        <TextBlock Foreground="{StaticResource iconColor}" FontSize="16" Canvas.Left="40" Canvas.Top="60" Width="680" TextWrapping="Wrap" xml:space="preserve">
+     使用VNLauncher，管理、翻译您的视觉小说游戏。支持查看游戏时长，在游戏中截屏，记录精彩时刻和CG。本软件支持翻译各类字幕位置固定的日文Galgame，在使用前，请确保已完成翻译源的设置。
+     本软件目前支持三种翻译方式：百度翻译、在线大模型翻译和本地模型翻译。具体使用方法可以查看作者B站首页视频。
+     本软件由みなと个人开发，完全开源免费，禁止任何形式的商用。
+     作者B站账号：<Hyperlink Foreground="{StaticResource iconColor_White}">https://space.bilibili.com/23411401</Hyperlink>
+     GitHub账号：<Hyperlink></Hyperlink>
+     邮箱：<Hyperlink Foreground="{StaticResource iconColor_White}">Yoshino0302#@outlook.com</Hyperlink>
+        </TextBlock>
+    </Canvas>
+</Page>

@@ -59,10 +59,10 @@
                             <local:MarqueeRadioButton x:Name="jpnChsRadioButton" MarqueeRadioButtonText="日文+中文" Canvas.Left="30" Canvas.Top="40"/>
                             <local:MarqueeRadioButton x:Name ="chsOnlyRadioButton" MarqueeRadioButtonText="仅中文" Canvas.Left="160" Canvas.Top="40"/>
                             <TextBlock Text="背景透明度" Canvas.Top="70" Canvas.Left="13" FontSize="16" Foreground="{StaticResource marqueeButtonColor_Text}"/>
-                            <Slider  Name="backgroundTransparencySlider"  Style="{StaticResource MarqueeSliderStyle}" Width="180" Minimum="0" Maximum="255" Canvas.Left="33" Canvas.Top="100" ValueChanged="BackgroundTransparencySlider_ValueChanged"/>
+                            <local:MarqueeSlider  x:Name="backgroundTransparencySlider" Width="180" Minimum="0" Maximum="255" Canvas.Left="33" Canvas.Top="100" ValueChanged="BackgroundTransparencySlider_ValueChanged"/>
                             <TextBlock Text="文字设置" Canvas.Top="140" Canvas.Left="13" FontSize="16" Foreground="{StaticResource marqueeButtonColor_Text}"/>
-                            <Slider Name="textTransparencySlider" Style="{StaticResource MarqueeSliderStyle}" Width="180" Minimum="0" Maximum="255" Canvas.Left="83" Canvas.Top="180" ValueChanged="TextTransparencySlider_ValueChanged"/>
-                            <Slider Name="fontSizeSlider" Style="{StaticResource MarqueeSliderStyle}" Width="180" Minimum="15" Maximum="25" Canvas.Left="83" Canvas.Top="230" ValueChanged="FontSizeSlider_ValueChanged"/>
+                            <local:MarqueeSlider x:Name="textTransparencySlider" Width="180" Minimum="0" Maximum="255" Canvas.Left="83" Canvas.Top="180" ValueChanged="TextTransparencySlider_ValueChanged"/>
+                            <local:MarqueeSlider x:Name="fontSizeSlider"  Width="180" Minimum="15" Maximum="25" Canvas.Left="83" Canvas.Top="230" ValueChanged="FontSizeSlider_ValueChanged"/>
                             <TextBlock Text="文字透明度" Canvas.Top="180" Canvas.Left="5" FontSize="13" Foreground="{StaticResource marqueeButtonColor_Text}"/>
                             <TextBlock Text="文字大小" Canvas.Top="230" Canvas.Left="15" FontSize="13" Foreground="{StaticResource marqueeButtonColor_Text}"/>
                         </Canvas>
@@ -100,8 +100,8 @@
                         <Canvas Background="Transparent" Name="waitModePopupMainCanvas">
                             <local:MarqueeRadioButton x:Name="autoWaitRadioButton" MarqueeRadioButtonText="智能识别" Canvas.Top="10" Canvas.Left="10"/>
                             <local:MarqueeRadioButton x:Name="waitFixTimeRadioButton"  MarqueeRadioButtonText="等待固定时间" Canvas.Top="50" Canvas.Left="10"/>
-                            <Slider Style="{StaticResource MarqueeSliderStyle}" x:Name="waitTimeSlider" Width="160" Canvas.Left="10" Canvas.Top="76" Minimum="15" Maximum="30" Value="15" ValueChanged="WaitTimeSlider_ValueChanged"/>
-                            <TextBlock x:Name="waitTimeTextBlock" Text="1.5s" Canvas.Top="76" Canvas.Left="173" FontSize="12" Foreground="{StaticResource marqueeButtonColor_Text}"/>
+                            <local:MarqueeSlider x:Name="waitTimeSlider" Width="160" Canvas.Left="10" Canvas.Top="76" Minimum="15" Maximum="30" Value="15" ValueChanged="WaitTimeSlider_ValueChanged"/>
+                            <TextBlock x:Name="waitTimeTextBlock" Text="1.5s" Canvas.Top="76" Canvas.Left="178" FontSize="12" Foreground="{StaticResource marqueeButtonColor_Text}"/>
                         </Canvas>
                     </Border>
                 </Popup>
