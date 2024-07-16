@@ -12,6 +12,11 @@ namespace VNLauncher.FunctionalClasses
 {
     public class ImageHandler
     {
+        private static Double GetDpiFactor()
+        {
+            System.Drawing.Graphics g = System.Drawing.Graphics.FromHwnd(IntPtr.Zero);
+            return g.DpiX / 96.0;
+        }
         private static Mat Binarize(Mat img)
         {
             Mat grayImg = new Mat();
@@ -143,6 +148,7 @@ namespace VNLauncher.FunctionalClasses
         {
             Int32 imageWidth = originalImage.Width;
             Int32 imageHeight = originalImage.Height;
+
             if (imageWidth == 1 && imageHeight == 1)
             {
                 return new System.Drawing.Bitmap(1, 1);
@@ -163,6 +169,22 @@ namespace VNLauncher.FunctionalClasses
             System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(croppedImage);
             g.DrawImage(originalImage, new System.Drawing.Rectangle(0, 0, captionWidth, captionHeight), captionRect, System.Drawing.GraphicsUnit.Pixel);
             return croppedImage;
+        }
+        public static System.Drawing.Bitmap CropToBox(System.Drawing.Bitmap bitmap, System.Drawing.Point topLeft, System.Drawing.Point bottomRight)
+        {
+            topLeft.X = Convert.ToInt32(topLeft.X * GetDpiFactor());
+            topLeft.Y = Convert.ToInt32(topLeft.Y * GetDpiFactor());
+            bottomRight.X = Convert.ToInt32(bottomRight.X * GetDpiFactor());
+            bottomRight.Y = Convert.ToInt32(bottomRight.Y * GetDpiFactor());
+
+            Int32 width = bottomRight.X - topLeft.X;
+            Int32 height = bottomRight.Y - topLeft.Y;
+            System.Drawing.Bitmap croppedBitmap = new System.Drawing.Bitmap(width, height);
+            System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(croppedBitmap);
+            System.Drawing.Rectangle sourceRectangle = new System.Drawing.Rectangle(topLeft.X, topLeft.Y, width, height);
+            System.Drawing.Rectangle destRectangle = new System.Drawing.Rectangle(0, 0, width, height);
+            g.DrawImage(bitmap, destRectangle, sourceRectangle, System.Drawing.GraphicsUnit.Pixel);
+            return croppedBitmap;
         }
         public static System.Drawing.Bitmap ResizeToFullImage(System.Drawing.Bitmap originalImage)
         {
@@ -203,26 +225,26 @@ namespace VNLauncher.FunctionalClasses
         public static extern Boolean DeleteObject(IntPtr hObject);
         private static System.Drawing.Rectangle GetContentRectangle(System.Drawing.Bitmap image)
         {
-            int minX = image.Width, minY = image.Height, maxX = 0, maxY = 0;
+            Int32 minX = image.Width, minY = image.Height, maxX = 0, maxY = 0;
 
             BitmapData bitmapData = image.LockBits(new System.Drawing.Rectangle(0, 0, image.Width, image.Height),
                                                    ImageLockMode.ReadOnly, image.PixelFormat);
-            int bytesPerPixel = System.Drawing.Image.GetPixelFormatSize(image.PixelFormat) / 8;
-            int byteCount = bitmapData.Stride * image.Height;
-            byte[] pixels = new byte[byteCount];
+            Int32 bytesPerPixel = System.Drawing.Image.GetPixelFormatSize(image.PixelFormat) / 8;
+            Int32 byteCount = bitmapData.Stride * image.Height;
+            Byte[] pixels = new Byte[byteCount];
             IntPtr ptrFirstPixel = bitmapData.Scan0;
 
             System.Runtime.InteropServices.Marshal.Copy(ptrFirstPixel, pixels, 0, pixels.Length);
 
-            for (int y = 0; y < image.Height; y++)
+            for (Int32 y = 0; y < image.Height; y++)
             {
-                int yOffset = y * bitmapData.Stride;
-                for (int x = 0; x < image.Width; x++)
+                Int32 yOffset = y * bitmapData.Stride;
+                for (Int32 x = 0; x < image.Width; x++)
                 {
-                    int xOffset = x * bytesPerPixel;
-                    byte alpha = pixels[yOffset + xOffset + 3]; // Assuming 32bpp (ARGB)
+                    Int32 xOffset = x * bytesPerPixel;
+                    Byte alpha = pixels[yOffset + xOffset + 3];
 
-                    if (alpha != 0) // Non-transparent pixel
+                    if (alpha != 0)
                     {
                         if (x < minX) minX = x;
                         if (x > maxX) maxX = x;

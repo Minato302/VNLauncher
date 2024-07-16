@@ -30,7 +30,8 @@ namespace VNLauncher.Pages
                 ["captureSideUpMove"] = captureSideUpMoveItem.KeyName,
                 ["captureSideDownMove"] = captureSideDownMoveItem.KeyName,
                 ["captureSideLeftMove"] = captureSideLeftMoveItem.KeyName,
-                ["captureSideRightMove"] = captureSideRightMoveItem.KeyName
+                ["captureSideRightMove"] = captureSideRightMoveItem.KeyName,
+                ["boxSelectAndTranslate"] = boxSelectAndTranslateItem.KeyName
             };
             String jsonContent = File.ReadAllText(fileManager.UserDataJsonPath);
             dynamic responseData = Newtonsoft.Json.JsonConvert.DeserializeObject(jsonContent)!;
@@ -58,6 +59,8 @@ namespace VNLauncher.Pages
             captureSideLeftMoveItem.SetKey(captureSideLeftMove);
             String captureSideRightMove = responseData.keyMapping.captureSideRightMove;
             captureSideRightMoveItem.SetKey(captureSideRightMove);
+            String boxSelectAndTranslate = responseData.keyMapping.boxSelectAndTranslate;
+            boxSelectAndTranslateItem.SetKey(boxSelectAndTranslate);
         }
     }
 }

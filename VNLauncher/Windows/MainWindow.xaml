@@ -103,7 +103,8 @@
 
             <Canvas Name="noGameTipsCanvas" Grid.Column="1" Background="{StaticResource backgroundColor_Light}" Visibility="Hidden">
                 <TextBlock Name="mainTextBlock1" Foreground="{StaticResource iconColor}" FontSize="28" Text="欢迎使用VNLauncher！" Canvas.Left="30" Canvas.Top="120"/>
-                <TextBlock Name="mainTextBlock2" Foreground="{StaticResource iconColor}" FontSize="28" Text="您还没有添加任何游戏，点击左侧+号添加" Canvas.Left="30" Canvas.Top="220"/>
+                <TextBlock Name="mainTextBlock2" Foreground="{StaticResource iconColor}" FontSize="28" Text="您还没有添加任何游戏，点击左侧+号添加。" Canvas.Left="30" Canvas.Top="220"/>
+                <TextBlock Name="mainTextBlock3" Foreground="{StaticResource iconColor}" FontSize="28" Text="如果第一次打开，请先前往设置界面设置OCR与翻译源。" Canvas.Left="30" Canvas.Top="320"/>
             </Canvas>
             <Grid Name="mainRightGrid_Picture" Grid.Column="1" Panel.ZIndex="1" Background="Transparent">
                 <Grid.RowDefinitions>

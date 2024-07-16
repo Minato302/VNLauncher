@@ -29,9 +29,6 @@ namespace VNLauncher.Windows
                 return new CaptionLocation(leftRate, rightRate, upRate, downRate, captionHorizontalRate, captionVerticalRate);
             }
         }
-
-
-
         public TransparentWindow(IntPtr hWnd, CaptionLocation? captionLocation = null)
         {
             InitializeComponent();
@@ -69,7 +66,7 @@ namespace VNLauncher.Windows
             }
             else
             {
-                CaptionLocation location = (CaptionLocation)captionLocation;
+                CaptionLocation location = captionLocation;
                 leftRate = location.LeftRate;
                 rightRate = location.RightRate;
                 upRate = location.UpRate;

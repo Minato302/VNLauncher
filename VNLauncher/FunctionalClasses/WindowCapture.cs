@@ -35,7 +35,7 @@ namespace VNLauncher.FunctionalClasses
             Graphics g = Graphics.FromHwnd(IntPtr.Zero);
             return g.DpiX / 96.0;
         }
-        private static Bitmap CaptureScreen()
+        public static Bitmap CaptureScreen()
         {
 
             Int32 width = Convert.ToInt32(GetDpiFactor() * SystemParameters.PrimaryScreenWidth);

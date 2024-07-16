@@ -31,7 +31,7 @@ namespace VNLauncher.Windows
 
         private UInt64 scanActionID;
         private MarqueeHidder hidder;
-
+        private Boolean isBoxSelecting;
 
         public MarqueeWindow(IntPtr gameWindowHwnd, Game game, MainWindow mainWindow)
         {
@@ -45,6 +45,7 @@ namespace VNLauncher.Windows
             windowMonitoringTimer.Elapsed += OnTimedEvent;
             windowMonitoringTimer.AutoReset = true;
             windowMonitoringTimer.Enabled = true;
+            isBoxSelecting = false;
 
             tWindowTimer = new System.Timers.Timer(2000);
             tWindowTimer.Elapsed += (sender, e) =>
@@ -82,7 +83,8 @@ namespace VNLauncher.Windows
                 ((String)settingResponseData.keyMapping.captureSideDownMove,CaptureSideDownMove),
                 ((String)settingResponseData.keyMapping.captureSideLeftMove,CaptureSideLeftMove),
                 ((String)settingResponseData.keyMapping.captureSideRightMove,CaptureSideRightMove),
-                ("鼠标左键",WaitAndScanAndTranslate)
+                ((String)settingResponseData.keyMapping.boxSelectAndTranslate,BoxSelectAndTranslate),
+                ("鼠标左键",WaitAndScanAndTranslate),
             });
         }
         private void TranslateModePopupInit()
@@ -267,7 +269,7 @@ namespace VNLauncher.Windows
 
         private async void WaitAndScanAndTranslate()
         {
-            if (translateButton.IsTranslating)
+            if (translateButton.IsTranslating && !isBoxSelecting)
             {
                 OCR.OCRResult result = null;
 
@@ -294,7 +296,7 @@ namespace VNLauncher.Windows
                         oriJpSentence = TextModifier.Modify(result.ResultText);
                         marqueeTextBlock.Text = oriJpSentence;
                         stateInfo.ChangeState(MarqueeStateInfo.State.Translating);
-                        Translate(oriJpSentence);
+                        SerialTranslate(oriJpSentence);
                     }
                     else
                     {
@@ -466,7 +468,7 @@ namespace VNLauncher.Windows
                     stateInfo.ChangeState(Controls.MarqueeStateInfo.State.Translating);
                     marqueeTextBlock.Text = result.ResultText;
                     translator.RemoveLast();
-                    Translate(result.ResultText);
+                    SerialTranslate(result.ResultText);
                 });
             }
 
@@ -524,13 +526,21 @@ namespace VNLauncher.Windows
             }
             return capture;
         }
+        private async void SerialTranslate(String jpContent)
+        {
+            String cnContent = await translator.SerialTranslate(jpContent);
+            marqueeTextBlock.Text += '\n';
+            marqueeTextBlock.Text += cnContent;
+            stateInfo.ChangeState(MarqueeStateInfo.State.Over);
+        }
         private async void Translate(String jpContent)
         {
             String cnContent = await translator.Translate(jpContent);
             marqueeTextBlock.Text += '\n';
             marqueeTextBlock.Text += cnContent;
-            stateInfo.ChangeState(Controls.MarqueeStateInfo.State.Over);
+            stateInfo.ChangeState(MarqueeStateInfo.State.Over);
         }
+
         private void TranslateSwitch()
         {
             translateButton.Turn();
@@ -541,7 +551,7 @@ namespace VNLauncher.Windows
                 selectTranslateModeButton.IsEnabled = false;
                 windowOperatorButton.IsEnabled = false;
                 waitModeButton.IsEnabled = false;
-                stateInfo.ChangeState(Controls.MarqueeStateInfo.State.Over);
+                stateInfo.ChangeState(MarqueeStateInfo.State.Over);
             }
             else
             {
@@ -550,13 +560,13 @@ namespace VNLauncher.Windows
                 selectTranslateModeButton.IsEnabled = true;
                 windowOperatorButton.IsEnabled = true;
                 waitModeButton.IsEnabled = true;
-                stateInfo.ChangeState(Controls.MarqueeStateInfo.State.Closed);
+                stateInfo.ChangeState(MarqueeStateInfo.State.Closed);
             }
         }
 
         public void CaptureSideLeftMove()
         {
-            if (adjustSideButton.Side == Controls.MarqueeAdjustSideButton.AdjustSide.LeftUp)
+            if (adjustSideButton.Side == MarqueeAdjustSideButton.AdjustSide.LeftUp)
             {
                 game.Loaction.LeftSideLeftMove();
                 tWindow.LeftSideLeftMove();
@@ -579,7 +589,7 @@ namespace VNLauncher.Windows
         }
         public void CaptureSideRightMove()
         {
-            if (adjustSideButton.Side == Controls.MarqueeAdjustSideButton.AdjustSide.LeftUp)
+            if (adjustSideButton.Side == MarqueeAdjustSideButton.AdjustSide.LeftUp)
             {
                 game.Loaction.LeftSideRightMove();
                 tWindow.LeftSideRightMove();
@@ -602,7 +612,7 @@ namespace VNLauncher.Windows
         }
         public void CaptureSideUpMove()
         {
-            if (adjustSideButton.Side == Controls.MarqueeAdjustSideButton.AdjustSide.LeftUp)
+            if (adjustSideButton.Side == MarqueeAdjustSideButton.AdjustSide.LeftUp)
             {
                 game.Loaction.UpSideUpMove();
                 tWindow.UpSideUpMove();
@@ -625,7 +635,7 @@ namespace VNLauncher.Windows
         }
         public void CaptureSideDownMove()
         {
-            if (adjustSideButton.Side == Controls.MarqueeAdjustSideButton.AdjustSide.LeftUp)
+            if (adjustSideButton.Side == MarqueeAdjustSideButton.AdjustSide.LeftUp)
             {
                 game.Loaction.UpSideDownMove();
                 tWindow.UpSideDownMove();
@@ -751,7 +761,33 @@ namespace VNLauncher.Windows
         {
             marqueeTextBlock.FontSize = e.NewValue;
         }
+        private void BoxSelectAndTranslate()
+        {
+            isBoxSelecting = true;
+            hidder.Hide();
+            SemitransparentWindow stWindow = new SemitransparentWindow(this);
+            stWindow.Show();
 
+        }
+        public async void BoxTranslate(System.Drawing.Point leftUp, System.Drawing.Point rightDown)
+        {
+            Bitmap bitmap = WindowCapture.CaptureScreen();
+            Bitmap crop = ImageHandler.CropToBox(bitmap, leftUp, rightDown);
+            OCR.OCRResult result = await scanner.Scan(crop);
+            hidder.Restore();
+            if(result.HasContent)
+            {
+                marqueeTextBlock.Text = result.ResultText;
+                stateInfo.ChangeState(MarqueeStateInfo.State.Translating);
+                Translate(result.ResultText);
+                stateInfo.ChangeState(MarqueeStateInfo.State.Over);
+            }
+            else
+            {
+                marqueeTextBlock.Text = "未识别到内容";
+            }
+            isBoxSelecting = false;
+        }
     }
     public class MarqueeHidder
     {

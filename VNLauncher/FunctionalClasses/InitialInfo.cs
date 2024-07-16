@@ -19,7 +19,8 @@ namespace VNLauncher.FunctionalClasses
                 ["captureSideUpMove"] = "键盘按键↑",
                 ["captureSideDownMove"] = "键盘按键↓",
                 ["captureSideLeftMove"] = "键盘按键←",
-                ["captureSideRightMove"] = "键盘按键→"
+                ["captureSideRightMove"] = "键盘按键→",
+                ["boxSelectAndTranslate"] = "键盘按键Y"
             };
 
             JObject localOCR = new JObject

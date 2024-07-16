@@ -17,6 +17,7 @@
         <local:KeyMappingItem x:Name="captureSideDownMoveItem" KeyMappingItemFunctionText="框选区域向下移动：" Canvas.Top="240" Canvas.Left="370" Focusable="False"/>
         <local:KeyMappingItem x:Name="captureSideLeftMoveItem" KeyMappingItemFunctionText="框选区域向左移动：" Canvas.Top="300" Canvas.Left="70" Focusable="False"/>
         <local:KeyMappingItem x:Name="captureSideRightMoveItem" KeyMappingItemFunctionText="框选区域向右移动：" Canvas.Top="300" Canvas.Left="370" Focusable="False"/>
-        <local:BigButton x:Name="saveButton" Canvas.Left="480" Canvas.Top="390" Width="80" Height="50" BigButtonText="保存" Focusable="False" Click="SaveButton_Click"/>
+        <local:KeyMappingItem x:Name="boxSelectAndTranslateItem" KeyMappingItemFunctionText="手动选择区域翻译：" Canvas.Top="360" Canvas.Left="70" Focusable="False"/>
+        <local:BigButton x:Name="saveButton" Canvas.Left="480" Canvas.Top="400" Width="80" Height="50" BigButtonText="保存" Focusable="False" Click="SaveButton_Click"/>
     </Canvas>
 </Page>

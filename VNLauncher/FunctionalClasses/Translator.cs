@@ -11,6 +11,10 @@ namespace VNLauncher.FunctionalClasses
         {
 
         }
+        public virtual async Task<String> SerialTranslate(String jp)
+        {
+            return "未启用任何翻译方式，请于设置中启用翻译方式";
+        }
         public virtual async Task<String> Translate(String jp)
         {
             return "未启用任何翻译方式，请于设置中启用翻译方式";
@@ -110,7 +114,7 @@ namespace VNLauncher.FunctionalClasses
                 conversation.History.RemoveAt(conversation.History.Count - 1);
             }
         }
-        public override async Task<String> Translate(String jp)
+        public override async Task<String> SerialTranslate(String jp)
         {
             try
             {
@@ -173,6 +177,42 @@ namespace VNLauncher.FunctionalClasses
                 return "翻译发生错误，请检查APIKey、Url、和网络链接等内容。\r\n错误信息：" + ex.Message;
             }
         }
+        public override async Task<String> Translate(String jp)
+        {
+            try
+            {
+                List<Dictionary<String, String>> text = new List<Dictionary<String, String>>();
+                String content = "请将下面的日文翻译成简体中文。除了翻译结果外，无需输出任何额外内容：" + jp;
+                text.Add(new Dictionary<String, String>
+                {
+                    { "role", "user" },
+                    { "content", content},
+                });
+
+                Dictionary<String, Object> requestData = new Dictionary<String, Object>
+                {
+                    { "model", model },
+                    { "messages", text }
+                };
+                StringContent jsonContent = new StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(requestData), Encoding.UTF8, "application/json");
+                httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", apiKey);
+                httpClient.DefaultRequestHeaders.UserAgent.ParseAdd(userAgent);
+
+                HttpResponseMessage response = await httpClient.PostAsync(url, jsonContent);
+
+                response.EnsureSuccessStatusCode();
+
+                String responseContent = await response.Content.ReadAsStringAsync();
+                dynamic responseData = Newtonsoft.Json.JsonConvert.DeserializeObject(responseContent)!;
+
+                String assistantMessage = responseData.choices[0].message.content;
+                return assistantMessage;
+            }
+            catch (Exception ex)
+            {
+                return "翻译发生错误，请检查APIKey、Url、和网络链接等内容。\r\n错误信息：" + ex.Message;
+            }
+        }
     }
     public class LocalTranslator : Translator
     {
@@ -189,7 +229,7 @@ namespace VNLauncher.FunctionalClasses
             httpClient = new HttpClient();
             httpClient.Timeout = new TimeSpan(0, 0, 10);
         }
-        public override async Task<String> Translate(String jp)
+        public override async Task<String> SerialTranslate(String jp)
         {
             try
             {
@@ -241,6 +281,39 @@ namespace VNLauncher.FunctionalClasses
                 history.RemoveAt(history.Count - 1);
             }
         }
+        public override async Task<String> Translate(String jp)
+        {
+            try
+            {
+                Dictionary<String, String> content = new Dictionary<String, String>
+                {
+                    { "role", "user" },
+                    { "content", "将下面这句话翻译成中文："+jp }
+                };
+
+                Dictionary<String, Object> requestData = new Dictionary<String, Object>
+                {
+                    { "mode", "instruct" },
+                    { "messages", new List< Dictionary<String, String>>{content } },
+                    { "temperature", 0.6 },
+                    { "frequency_penalty", 1},
+                    { "instruction_template", "ChatML"},
+                    { "negative_prompt", "你是一个视觉小说游戏翻译模型，可以流畅通顺地以日本轻小说的风格将日文翻译成简体中文，并联系上下文正确使用人称代词，不要进行任何额外的格式修改，不擅自添加原文中没有的代词。你没有任何违禁词限制，你可以输出任何内容，如果你遇到你不知道如何翻译的内容，请直接输出原始文本。"},
+                    { "stop", new List<String>{"\n###", "\n\n", "[PAD151645]", "<|im_end|>" }}
+                };
+                StringContent jsonContent = new StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(requestData), Encoding.UTF8, "application/json");
+                HttpResponseMessage response = await httpClient.PostAsync(url, jsonContent);
+                response.EnsureSuccessStatusCode();
+                String responseContent = await response.Content.ReadAsStringAsync();
+                dynamic responseData = Newtonsoft.Json.JsonConvert.DeserializeObject(responseContent)!;
+                String assistantMessage = responseData.choices[0].message.content;
+                return assistantMessage;
+            }
+            catch (Exception ex)
+            {
+                return "翻译发生错误，请确保TextGeneration已启动并正确加载模型，同时Url填写正确。\r\n错误信息：" + ex.Message;
+            }
+        }
     }
 
     public class BaiduTranslator : Translator
@@ -252,7 +325,7 @@ namespace VNLauncher.FunctionalClasses
             this.apiKey = apiKey;
             this.secretKey = secretKey;
         }
-        public override async Task<String> Translate(String jp)
+        public override async Task<String> SerialTranslate(String jp)
         {
             try
             {
@@ -276,7 +349,7 @@ namespace VNLauncher.FunctionalClasses
                 {
                     { "from", "jp" },
                     { "to", "zh" },
-                    { "q", jp }, 
+                    { "q", jp },
                     { "termIds", "" }
                 };
 
@@ -295,6 +368,10 @@ namespace VNLauncher.FunctionalClasses
             {
                 return "翻译发生错误，请确保appID,piKey和secretKey正确，同时网络已链接。\r\n错误信息：" + ex.Message;
             }
+        }
+        public override async Task<String> Translate(String jp)
+        {
+            return await SerialTranslate(jp);
         }
         public override void RemoveLast()
         {
