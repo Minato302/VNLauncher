@@ -79,7 +79,12 @@ namespace VNLauncher.Windows
                 String year = Path.GetFileName(captureNames[index])[0..4];
                 String month = Path.GetFileName(captureNames[index])[4..6];
                 String day = Path.GetFileName(captureNames[index])[6..8];
-                timeTextBlock.Text = year + "年" + month + "月" + day + "日";
+                String hour = Path.GetFileName(captureNames[index])[8..10];
+                String minute = Path.GetFileName(captureNames[index])[10..12];
+
+
+
+                timeTextBlock.Text = year + "年" + month + "月" + day + "日" + " " + hour + ":" + minute;
             }
         }
 
