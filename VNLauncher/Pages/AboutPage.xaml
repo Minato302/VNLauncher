@@ -8,13 +8,23 @@
       d:DesignHeight="570" d:DesignWidth="720" Focusable="False">
     <Canvas Name="mainCanvas">
         <TextBlock Foreground="{StaticResource iconColor}" Text="关于VNLauncher" FontSize="24" Canvas.Left="40" Canvas.Top="30" />
-        <TextBlock Foreground="{StaticResource iconColor}" FontSize="16" Canvas.Left="40" Canvas.Top="60" Width="680" TextWrapping="Wrap" xml:space="preserve">
+        <TextBlock Foreground="{StaticResource iconColor}" FontSize="16" Canvas.Left="20" Canvas.Top="60" Width="670" TextWrapping="Wrap" xml:space="preserve">
      使用VNLauncher，管理、翻译您的视觉小说游戏。支持查看游戏时长，在游戏中截屏，记录精彩时刻和CG。本软件支持翻译各类字幕位置固定的日文Galgame，在使用前，请确保已完成翻译源的设置。
      本软件目前支持三种翻译方式：百度翻译、在线大模型翻译和本地模型翻译。具体使用方法可以查看作者B站首页视频。
-     本软件由みなと个人开发，完全开源免费，禁止任何形式的商用。
-     作者B站账号：<Hyperlink Foreground="{StaticResource iconColor_White}">https://space.bilibili.com/23411401</Hyperlink>
-     GitHub账号：<Hyperlink></Hyperlink>
-     邮箱：<Hyperlink Foreground="{StaticResource iconColor_White}">Yoshino0302#@outlook.com</Hyperlink>
+     本软件由みなと个人开发，完全开源免费。本项目基于 GNU General Public License v3.0 发布。您可以在<Span Foreground="White" FontWeight="Heavy">非商业目的</Span>以及遵守GPL许可证的情况下自由地使用、修改和分发本软件。
+     目前为测试版，可能存在部分Bug，可以通过下面的方式联系作者。  
+     作者B站账号：<Hyperlink Name="bilibiliLink" Foreground="{StaticResource iconColor_White}" Click="BilibiliLink_Click">https://space.bilibili.com/23411401</Hyperlink>
+     GitHub账号：<Hyperlink Name="githubLink" Foreground="{StaticResource iconColor_White}" Click="GithubLink_Click">https://github.com/Minato302</Hyperlink>
+     邮箱：<Hyperlink Name="mailLink" Foreground="{StaticResource iconColor_White}">Yoshino0302@outlook.com</Hyperlink>
+            
+            
+            
+            
+            
+            
+            
+            
+                                                                                                    当前版本：V0.9测试版
         </TextBlock>
     </Canvas>
 </Page>

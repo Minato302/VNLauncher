@@ -39,8 +39,8 @@ namespace VNLauncher.Pages
             });
             localTranslateQuestionButton.SetTips("本地翻译需要使用TextGeneration和Sakura翻译模型，TextGeneration的安装方法可以看链接1，Sakura模型的安装方法可以看链接2。您可以根据自己的硬件" +
                 "情况选择合适的模型。若使用本地翻译，则在使用VNTranslator打开游戏之前，需要保证TextGeneration是打开的，并且已经成功加载了翻译模型。");
-            localTranslateQuestionButton.ReplaceTextWithHyperlink("链接1", "https://www.bilibili.com/video/BV1Te411U7me/?spm_id_from=333.999.0.0&vd_source=4ba7d05c4113ac9c7f783198a7d99aa0", "这个视频");
-            localTranslateQuestionButton.ReplaceTextWithHyperlink("链接2", "https://www.bilibili.com/video/BV18J4m1Y7Sa/?spm_id_from=333.999.0.0&vd_source=4ba7d05c4113ac9c7f783198a7d99aa0", "这个视频");
+            localTranslateQuestionButton.ReplaceTextWithHyperlink("链接1", "https://www.bilibili.com/video/BV1Te411U7me/", "这个视频");
+            localTranslateQuestionButton.ReplaceTextWithHyperlink("链接2", "https://www.bilibili.com/video/BV18J4m1Y7Sa/", "这个视频");
             localTranslatePromptQuestionButton.SetTips("由于Sakura模型是以对话形式翻译的，因此自动存储了上下文。这里是每次翻译时的提示词，需要翻译的内容会被添加在后面。");
             localTranslateUrlQuestionButton.SetTips("打开“start_windows.bat”后，等待TextGeneration启动完毕后，可以在“OpenAI-compatible API URL:”后看到url，默认为http://127.0.0.1:5000。");
         }

@@ -10,7 +10,6 @@ namespace VNLauncher.Controls
     public class MainWindowCoverBlock : Control
     {
 
-
         static MainWindowCoverBlock()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(MainWindowCoverBlock), new FrameworkPropertyMetadata(typeof(MainWindowCoverBlock)));
@@ -29,14 +28,26 @@ namespace VNLauncher.Controls
 
         public event RoutedEventHandler SeeCapturesButtonClick
         {
-            add { AddHandler(SeeCapturesButtonClickEvent, value); }
-            remove { RemoveHandler(SeeCapturesButtonClickEvent, value); }
+            add 
+            {
+                AddHandler(SeeCapturesButtonClickEvent, value); 
+            }
+            remove 
+            {
+                RemoveHandler(SeeCapturesButtonClickEvent, value); 
+            }
         }
 
         public event RoutedEventHandler ChangeCoverButtonClick
         {
-            add { AddHandler(ChangeCoverButtonClickEvent, value); }
-            remove { RemoveHandler(ChangeCoverButtonClickEvent, value); }
+            add 
+            {
+                AddHandler(ChangeCoverButtonClickEvent, value);
+            }
+            remove
+            {
+                RemoveHandler(ChangeCoverButtonClickEvent, value); 
+            }
         }
 
         private TextBlock imageCountTextBlock;

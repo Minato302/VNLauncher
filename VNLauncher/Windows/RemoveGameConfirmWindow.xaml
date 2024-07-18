@@ -1,12 +1,12 @@
-﻿<Window x:Class="VNLauncher.Windows.ConfirmWindow"
+﻿<Window x:Class="VNLauncher.Windows.RemoveGameConfirmWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:VNLauncher.Controls"
+        xmlns:local="clr-namespace:VNLauncher.Controls" Icon="/VNLauncher;component/Resources/windowIcon.ico"
         ResizeMode="NoResize"
         mc:Ignorable="d" Title="确认" Height="220" Width="350" Background="{StaticResource backgroundColor_Dark}" WindowStartupLocation="CenterScreen" WindowStyle="None">
-    <Canvas>
+    <Canvas Name="mainCanvas">
         <TextBlock Name="mainTextBlock" Foreground="{StaticResource iconColor}" Canvas.Top="20" Canvas.Left="20" Width="330"
                    Text="    您确定要移除该游戏吗？移除后，游戏仍存在于您的硬盘中，但不再可以通过VNLuncher启动或翻译。"
                    FontSize="20" TextWrapping="Wrap"/>

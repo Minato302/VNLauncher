@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:VNLauncher.Controls"
-        mc:Ignorable="d"  ResizeMode="NoResize" 
+        mc:Ignorable="d"  ResizeMode="NoResize" Icon="/VNLauncher;component/Resources/windowIcon.ico"
         Title="提示" Height="220" Width="350" Background="{StaticResource backgroundColor_Dark}" WindowStartupLocation="CenterOwner" WindowStyle="None">
     <Grid x:Name="mainGrid" Visibility="Visible">
         <Frame x:Name="mainFrame" NavigationUIVisibility="Hidden"/>

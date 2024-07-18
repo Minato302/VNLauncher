@@ -218,8 +218,11 @@ namespace VNLauncher.Windows
 
         private void SettingButton_Click(Object sender, RoutedEventArgs e)
         {
-            SettingWindow settingWindow = new SettingWindow();
-            settingWindow.Show();
+            if (!SettingWindow.IsShowing)
+            {
+                SettingWindow settingWindow = new SettingWindow();
+                settingWindow.Show();
+            }
         }
         private void Window_KeyDown(Object sender, KeyEventArgs e)
         {
@@ -233,12 +236,8 @@ namespace VNLauncher.Windows
         {
             if (MainWindowGameButton.SelectedGameButton != null)
             {
-                String folderPath = System.IO.Path.GetDirectoryName(MainWindowGameButton.SelectedGameButton.Game.ExePath)!;
-                Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
-                openFileDialog.InitialDirectory = folderPath;
-                openFileDialog.Title = "游戏资源";
-                openFileDialog.Filter = "所有文件 (*.*)|*.*";
-                openFileDialog.ShowDialog();
+                String folderPath = Path.GetDirectoryName(MainWindowGameButton.SelectedGameButton.Game.ExePath)!;
+                Process.Start("explorer.exe", folderPath);
             }
         }
         public void SetStartButton(Boolean toRunning)
@@ -348,7 +347,7 @@ namespace VNLauncher.Windows
 
         private void RemoveGameButton_Click(Object sender, RoutedEventArgs e)
         {
-            ConfirmWindow confirmWindow = new ConfirmWindow(this);
+            RemoveGameConfirmWindow confirmWindow = new RemoveGameConfirmWindow(this);
             confirmWindow.ShowDialog();
         }
 
@@ -403,8 +402,10 @@ namespace VNLauncher.Windows
         private void OpenAlbumButton_Click(Object sender, RoutedEventArgs e)
         {
             Game selectedGame = MainWindowGameButton.SelectedGameButton!.Game;
-            String albumPath = fileManager.GetGameCapturesPath(selectedGame.Name)!;
-            Process.Start("explorer.exe", albumPath);
+            AlbumWindow albumWindow = new AlbumWindow(selectedGame);
+            albumWindow.ShowDialog();
+            UpdateGameInfo(selectedGame);
+
         }
 
         private void SearchGameTextBox_TextChanged(Object sender, TextChangedEventArgs e)

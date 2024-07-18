@@ -3,9 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:VNLauncher.Controls"
+        xmlns:local="clr-namespace:VNLauncher.Controls" Title="字幕" Icon="/VNLauncher;component/Resources/windowIcon.ico"
         mc:Ignorable="d"  AllowsTransparency="True" MinHeight="160" MinWidth="700" MaxHeight="210" MaxWidth="900" Background="Transparent" Topmost="True"
-        Title="字幕" Height="180" Width="800" WindowStyle="None" Top="700" Left="460" ResizeMode="CanResizeWithGrip" Unloaded="Window_Unloaded">
+         Height="180" Width="800" WindowStyle="None" Top="700" Left="460" ResizeMode="CanResizeWithGrip" Unloaded="Window_Unloaded">
     <Border CornerRadius="10" Background="{StaticResource marqueeBackgroundColor}" Name="mainBorder"  MouseRightButtonDown="MainBorder_MouseRightButtonDown">
         <Grid Name="mainGrid">
             <Grid.RowDefinitions>
@@ -87,10 +87,10 @@
                 <Popup x:Name="windowOperatorPopup"  Opacity="0.8"  Placement="Top" PlacementTarget="{Binding ElementName=selectTranslateModeButton}" AllowsTransparency="True">
                     <Border x:Name="windowOperatorPopupMainBorder" Width="220" Height="100" Background="{StaticResource marqueeBackgroundColor}"   Opacity="0.9" CornerRadius="10">
                         <Canvas Background="Transparent" Name="windowOperatorPopupMainCanvas">
-                            <local:MarqueeButton x:Name="removeUIButton" Canvas.Top="20" Canvas.Left="20" MarqueeButtonText="取消窗口UI" Click="RemoveUIButton_Click"/>
-                            <local:MarqueeButton x:Name="restoreUIButton" Canvas.Top="20" Canvas.Left="120" MarqueeButtonText="恢复窗口UI" Click="RestoreUIButton_Click"/>
-                            <local:MarqueeButton x:Name="maximizeAndFullscreenButton" Canvas.Top="60" Canvas.Left="20" MarqueeButtonText="窗口最大化" Click="MaximizeAndFullscreenButton_Click"/>
-                            <local:MarqueeButton x:Name="restoreToNormalWindow" Canvas.Top="60" Canvas.Left="120" MarqueeButtonText="窗口恢复" Click="RestoreToNormalWindow_Click"/>
+                            <local:MarqueeButton x:Name="removeUIButton" Canvas.Top="20" Canvas.Left="20" MarqueeButtonText="取消窗口UI" Click="RemoveUIButton_Click" Focusable="False"/>
+                            <local:MarqueeButton x:Name="restoreUIButton" Canvas.Top="20" Canvas.Left="120" MarqueeButtonText="恢复窗口UI" Click="RestoreUIButton_Click" Focusable="False"/>
+                            <local:MarqueeButton x:Name="maximizeAndFullscreenButton" Canvas.Top="60" Canvas.Left="20" MarqueeButtonText="窗口最大化" Click="MaximizeAndFullscreenButton_Click" Focusable="False"/>
+                            <local:MarqueeButton x:Name="restoreToNormalWindow" Canvas.Top="60" Canvas.Left="120" MarqueeButtonText="窗口恢复" Click="RestoreToNormalWindow_Click" Focusable="False"/>
                         </Canvas>
                     </Border>
                 </Popup>
@@ -105,8 +105,8 @@
                         </Canvas>
                     </Border>
                 </Popup>
-                <local:MarqueeAdjustSideButton x:Name="adjustSideButton" Grid.Column="9"/>
-                <local:MarqueeTranslateButton x:Name="translateButton" Grid.Column="11" Click="TranslateButton_Click"/>
+                <local:MarqueeAdjustSideButton x:Name="adjustSideButton" Grid.Column="9" Focusable="False"/>
+                <local:MarqueeTranslateButton x:Name="translateButton" Grid.Column="11" Click="TranslateButton_Click" Focusable="False"/>
                 <local:MarqueeStateInfo x:Name="stateInfo" Grid.Column="13" Focusable="False"/>
             </Grid>
         </Grid>

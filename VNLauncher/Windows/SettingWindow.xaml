@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:VNLauncher.Controls"
         mc:Ignorable="d" 
-        Title="设置" Height="600" Width="900" Focusable="False" Loaded="Window_Loaded"
+        Title="设置" Height="600" Width="900" Focusable="False" Loaded="Window_Loaded" Icon="/VNLauncher;component/Resources/windowIcon.ico"
         WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True">
     <Grid Name="mainGrid" Focusable="False" Background="Transparent">
         <Grid.ColumnDefinitions>

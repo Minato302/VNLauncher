@@ -402,7 +402,7 @@
                             <ColumnDefinition Name="starColumn" Width="auto"/>
                         </Grid.ColumnDefinitions>
                         <TextBox Name="mainTextBox" BorderThickness="1" BorderBrush="{StaticResource iconColor}" Background="Transparent" TextWrapping="{TemplateBinding SettingPageTextBoxTextWrapping}" AcceptsReturn="True"
-                                 CaretBrush="{StaticResource iconColor}" Foreground="{StaticResource iconColor}" FontSize="14"/>
+                                 CaretBrush="{StaticResource iconColor}" Foreground="{StaticResource iconColor}" FontSize="14" />
                         <TextBlock Name="starTextBlock" Margin="3,0,0,0" Text="*" Grid.Column="1" Visibility="Hidden" Foreground="{StaticResource iconColor}" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Grid>
                 </ControlTemplate>
@@ -482,7 +482,7 @@
     <ControlTemplate x:Key="sliderThumb" TargetType="{x:Type Thumb}">
         <Grid HorizontalAlignment="Center" UseLayoutRounding="True" VerticalAlignment="Center">
             <Border x:Name="grip" BorderThickness="0" 
-                    Background="{StaticResource marqueeSliderColor_ButtonBackgrount}" Width="12" Height="12" CornerRadius="6" SnapsToDevicePixels="True" UseLayoutRounding="True" VerticalAlignment="Center"/>
+                    Background="{StaticResource marqueeSliderColor_ButtonBackground}" Width="12" Height="12" CornerRadius="6" SnapsToDevicePixels="True" UseLayoutRounding="True" VerticalAlignment="Center"/>
         </Grid>
     </ControlTemplate>
 
@@ -528,4 +528,31 @@
     <!-- ↑ 字幕滑动控件样式 ↑ -->
 
 
+
+    <Style TargetType="{x:Type local:AlbumWindowButton}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:AlbumWindowButton}">
+                    <Border Name="mainBorder" Width="200" Height="400" Background="Transparent">
+                        <Canvas Name="mainCanvas">
+                            <local:AlbumWindowButtonCore x:Name="coreButton" AlbumWindowButtonCoreIcon="{TemplateBinding AlbumWindowButtonIcon}" Visibility="Hidden" Canvas.Top="180"/>
+                        </Canvas>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type local:AlbumWindowButtonCore}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:AlbumWindowButtonCore}">
+                    <Border Name="mainBorder" Width="40" Height="40" CornerRadius="20" Background="{StaticResource albumWindowButtonColor_Background}">
+                        <fa:FontAwesome Name="icon" Icon="{TemplateBinding AlbumWindowButtonCoreIcon}" Foreground="{StaticResource iconColor}" 
+                                        FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

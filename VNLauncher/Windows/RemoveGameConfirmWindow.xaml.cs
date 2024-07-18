@@ -16,10 +16,10 @@ using System.Windows.Shapes;
 
 namespace VNLauncher.Windows
 {
-    public partial class ConfirmWindow : Window
+    public partial class RemoveGameConfirmWindow : Window
     {
         private MainWindow mainWindow;
-        public ConfirmWindow(MainWindow mainWindow)
+        public RemoveGameConfirmWindow(MainWindow mainWindow)
         {
             InitializeComponent();
             this.mainWindow = mainWindow;

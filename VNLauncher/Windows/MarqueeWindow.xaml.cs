@@ -294,7 +294,14 @@ namespace VNLauncher.Windows
                     if (result.HasContent)
                     {
                         oriJpSentence = TextModifier.Modify(result.ResultText);
-                        marqueeTextBlock.Text = oriJpSentence;
+                        if (chsOnlyRadioButton.IsChecked)
+                        {
+                            marqueeTextBlock.Text = "";
+                        }
+                        else
+                        {
+                            marqueeTextBlock.Text = oriJpSentence;
+                        }
                         stateInfo.ChangeState(MarqueeStateInfo.State.Translating);
                         SerialTranslate(oriJpSentence);
                     }
@@ -466,10 +473,22 @@ namespace VNLauncher.Windows
                 Application.Current.Dispatcher.Invoke(() =>
                 {
                     stateInfo.ChangeState(Controls.MarqueeStateInfo.State.Translating);
-                    marqueeTextBlock.Text = result.ResultText;
+                    if (chsOnlyRadioButton.IsChecked)
+                    {
+                        marqueeTextBlock.Text = "";
+                    }
+                    else
+                    {
+                        marqueeTextBlock.Text = result.ResultText;
+                    }
                     translator.RemoveLast();
                     SerialTranslate(result.ResultText);
                 });
+            }
+            else
+            {
+                stateInfo.ChangeState(Controls.MarqueeStateInfo.State.Over);
+                marqueeTextBlock.Text = "未识别到内容";
             }
 
         }
@@ -529,14 +548,20 @@ namespace VNLauncher.Windows
         private async void SerialTranslate(String jpContent)
         {
             String cnContent = await translator.SerialTranslate(jpContent);
-            marqueeTextBlock.Text += '\n';
+            if (jpnChsRadioButton.IsChecked)
+            {
+                marqueeTextBlock.Text += '\n';
+            }
             marqueeTextBlock.Text += cnContent;
             stateInfo.ChangeState(MarqueeStateInfo.State.Over);
         }
         private async void Translate(String jpContent)
         {
             String cnContent = await translator.Translate(jpContent);
-            marqueeTextBlock.Text += '\n';
+            if (jpnChsRadioButton.IsChecked)
+            {
+                marqueeTextBlock.Text += '\n';
+            }
             marqueeTextBlock.Text += cnContent;
             stateInfo.ChangeState(MarqueeStateInfo.State.Over);
         }
@@ -775,9 +800,16 @@ namespace VNLauncher.Windows
             Bitmap crop = ImageHandler.CropToBox(bitmap, leftUp, rightDown);
             OCR.OCRResult result = await scanner.Scan(crop);
             hidder.Restore();
-            if(result.HasContent)
+            if (result.HasContent)
             {
-                marqueeTextBlock.Text = result.ResultText;
+                if (chsOnlyRadioButton.IsChecked)
+                {
+                    marqueeTextBlock.Text = "";
+                }
+                else 
+                {
+                    marqueeTextBlock.Text = result.ResultText;
+                }
                 stateInfo.ChangeState(MarqueeStateInfo.State.Translating);
                 Translate(result.ResultText);
                 stateInfo.ChangeState(MarqueeStateInfo.State.Over);

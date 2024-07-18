@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:VNLauncher.Controls"    
-        xmlns:fa="http://schemas.fontawesome.io/icons/"
+        xmlns:fa="http://schemas.fontawesome.io/icons/" Icon="/VNLauncher;component/Resources/windowIcon.ico"
         ResizeMode="CanResizeWithGrip" Closing="Window_Closing"
         Title="VNLauncher" Height="800" Width="1200" MinHeight="600" MinWidth="1050"
         WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True" 
@@ -129,11 +129,11 @@
                         <ColumnDefinition Name="removeGameColumn" Width="40"/>
                         <ColumnDefinition Width="20"/>
                     </Grid.ColumnDefinitions>
-                    <local:BigButton x:Name="gameStartButton" Grid.Column="0" Margin="10,10,10,10" BigButtonText="开始游戏" Click="GameStartButton_Click"/>
+                    <local:BigButton x:Name="gameStartButton" Grid.Column="0" Margin="10,10,10,10" BigButtonText="开始游戏" Click="GameStartButton_Click" Focusable="False"/>
                     <local:MainWindowGameInfo x:Name="gameTotalTimeInfo" Margin="20,10,10,10"  Grid.Column="1"  MainWindowGameInfoIcon="ClockOutline" MainWindowGameInfoItem="游戏时长" MainWindowGameInfoValue="0.0h"/>
                     <local:MainWindowGameInfo x:Name="gameLastStartTimeInfo" Margin="20,10,10,10"  Grid.Column="2"  MainWindowGameInfoIcon="Calendar" MainWindowGameInfoItem="最近启动时间"/>
-                    <local:ItemButton x:Name="openFileButton" ItemButtonIcon="File" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="4" Click="OpenFileButton_Click"/>
-                    <local:ItemButton x:Name="removeGameButton" ItemButtonIcon="Trash" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="5" Click="RemoveGameButton_Click"/>
+                    <local:ItemButton x:Name="openFileButton" ItemButtonIcon="File" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="4" Click="OpenFileButton_Click" Focusable="False"/>
+                    <local:ItemButton x:Name="removeGameButton" ItemButtonIcon="Trash" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="5" Click="RemoveGameButton_Click" Focusable="False"/>
                 </Grid>
                 <ScrollViewer x:Name="gameHistoryScrollViewer" Grid.Row="2" Template="{StaticResource MainWindowScroll}" Background="{StaticResource backgroundColor_Light}">
                     <Grid x:Name="gameHistoryGrid" Background="{StaticResource backgroundColor_Light}">

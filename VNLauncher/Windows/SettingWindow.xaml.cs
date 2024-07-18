@@ -12,6 +12,8 @@ namespace VNLauncher.Windows
         {
             InitializeComponent();
         }
+        private static Boolean isShowing;
+        public static Boolean IsShowing => isShowing;
         private void MinimizeButton_Click(Object sender, RoutedEventArgs e)
         {
             WindowState = WindowState.Minimized;
@@ -19,6 +21,7 @@ namespace VNLauncher.Windows
 
         private void CloseButton_Click(Object sender, RoutedEventArgs e)
         {
+            isShowing = false;
             Close();
         }
 
@@ -90,6 +93,7 @@ namespace VNLauncher.Windows
 
         private void Window_Loaded(Object sender, RoutedEventArgs e)
         {
+            isShowing = true;
             keymappingButton.BeingSelected();
             settingInfoFrame.Navigate(new Pages.KeymappingPage());
         }

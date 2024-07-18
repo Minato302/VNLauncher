@@ -3,6 +3,7 @@
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using VNLauncher.Controls;
 
 namespace VNLauncher.Pages
 {
@@ -35,11 +37,7 @@ namespace VNLauncher.Pages
         private void OpenGameFileButton_Click(Object sender, RoutedEventArgs e)
         {
             String folderPath = System.IO.Path.GetDirectoryName(baseWindow.Game.ExePath)!;
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.InitialDirectory = folderPath;
-            openFileDialog.Title = "游戏资源";
-            openFileDialog.Filter = "所有文件 (*.*)|*.*";
-            openFileDialog.ShowDialog();
+            Process.Start("explorer.exe", folderPath);
         }
     }
 }

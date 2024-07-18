@@ -48,6 +48,10 @@ namespace VNLauncher.Controls
             {
                 starTextBlock.Visibility = Visibility.Visible;
             };
+            if(SettingPageTextBoxTextWrapping == TextWrapping.NoWrap)
+            {
+                mainTextBox.VerticalContentAlignment = VerticalAlignment.Center;
+            }
         }
         public void SaveFailed()
         {

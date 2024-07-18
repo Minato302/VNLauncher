@@ -57,7 +57,9 @@
 
     <SolidColorBrush x:Key="marqueePopupBackgroundColor" Color="#88BBBB88"/>
 
-    <SolidColorBrush x:Key="marqueeSliderColor_ButtonBackgrount" Color="#FF333333"/>
+    <SolidColorBrush x:Key="marqueeSliderColor_ButtonBackground" Color="#FF333333"/>
     <SolidColorBrush x:Key="marqueeSliderColor_Bar" Color="#FFCCCCCC"/>
-    
+
+    <SolidColorBrush x:Key="albumWindowButtonColor_Background" Color="#AA353535"/>
+
 </ResourceDictionary>

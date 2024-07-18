@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:VNLauncher.Windows"
         mc:Ignorable="d"
-        Title="TransparentWindow" AllowsTransparency="True" Background="Transparent" WindowStyle="None" Topmost="True">
+        AllowsTransparency="True" Background="Transparent" WindowStyle="None" Topmost="True">
     <Canvas x:Name="mainCavas">
         <Canvas x:Name="gameWindowCavas">
             <Grid x:Name="gameWindowGrid">

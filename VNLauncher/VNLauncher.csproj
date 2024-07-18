@@ -2,10 +2,11 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net6.0-windows10.0.17763.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>appIcon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,10 +19,12 @@
     <None Remove="Resources\ScreenshotSound.mp3" />
     <None Remove="Resources\ScreenshotSound.wav" />
     <None Remove="Resources\transparent.png" />
+    <None Remove="Resources\windowIcon.ico" />
     <None Remove="Themes\logo.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="appIcon.ico" />
     <Content Include="Resources\ScreenshotSound.mp3">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -42,6 +45,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\windowIcon.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\logo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>

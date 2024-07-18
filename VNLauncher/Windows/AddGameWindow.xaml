@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:VNLauncher.Controls"
         xmlns:fa="http://schemas.fontawesome.io/icons/"
-        mc:Ignorable="d" Left="30" Top="30"
+        mc:Ignorable="d" Left="30" Top="30" Icon="/VNLauncher;component/Resources/windowIcon.ico"
         Title="添加游戏" Height="250" Width="450" ResizeMode="NoResize" WindowStyle="None" WindowStartupLocation="CenterOwner" AllowsTransparency="True" Background="Transparent">
     <Canvas Name="mainCanvas" Background="{StaticResource backgroundColor_Dark}" MouseLeftButtonDown="MainCanvas_MouseLeftButtonDown" MouseRightButtonDown="MainCanvas_MouseRightButtonDown">
         <local:TitleBarButton x:Name="closeButton" TitleBarButtonIcon="Close" Click="CloseButton_Click" Width="30" Height="20" Canvas.Right="0" Canvas.Top="0"/>
