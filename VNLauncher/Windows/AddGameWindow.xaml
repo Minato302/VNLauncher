@@ -6,8 +6,11 @@
         xmlns:local="clr-namespace:VNLauncher.Controls"
         xmlns:fa="http://schemas.fontawesome.io/icons/"
         mc:Ignorable="d" Left="30" Top="30" Icon="/VNLauncher;component/Resources/windowIcon.ico"
-        Title="添加游戏" Height="250" Width="450" ResizeMode="NoResize" WindowStyle="None" WindowStartupLocation="CenterOwner" AllowsTransparency="True" Background="Transparent">
-    <Canvas Name="mainCanvas" Background="{StaticResource backgroundColor_Dark}" MouseLeftButtonDown="MainCanvas_MouseLeftButtonDown" MouseRightButtonDown="MainCanvas_MouseRightButtonDown">
+        Title="添加游戏" Height="250" Width="450" ResizeMode="NoResize" WindowStyle="None" WindowStartupLocation="CenterOwner" AllowsTransparency="True" Background="{StaticResource backgroundColor_Dark}">
+    <Canvas Name="mainCanvas" Background="Transparent" PreviewMouseLeftButtonDown="MainCanvas_MouseLeftButtonDown" PreviewMouseRightButtonDown="MainCanvas_MouseRightButtonDown">
+        <Grid Width="360" Height="250" Background="Transparent" PreviewMouseDown="MouseDragMove"/>
+        <Grid Width="90" Height="100" Canvas.Left="360" Background="Transparent" PreviewMouseDown="MouseDragMove"/>
+        <Grid Width="80" Height="120" Canvas.Left="370" Canvas.Top="130" Background="Transparent" PreviewMouseDown="MouseDragMove"/>
         <local:TitleBarButton x:Name="closeButton" TitleBarButtonIcon="Close" Click="CloseButton_Click" Width="30" Height="20" Canvas.Right="0" Canvas.Top="0"/>
         <TextBlock x:Name="choosePathTipsTextBlock" Background="Transparent" Text="游戏路径：" Canvas.Left="20" Canvas.Top="40" FontSize="15" FontFamily="Microsoft YaHei"
                    Foreground="{StaticResource iconColor}"/>
@@ -30,6 +33,5 @@
         <Border Width="14" Height="14" Canvas.Top="102" Canvas.Left="430">
             <local:QuestionButton x:Name="startWayQuestionButton"/>
         </Border>
-    
     </Canvas>
 </Window>

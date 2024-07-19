@@ -709,25 +709,46 @@ namespace VNLauncher.Windows
 
         private void MarqueeStyleButton_Click(Object sender, RoutedEventArgs e)
         {
-            marqueeStylePopup.IsOpen = true;
-            selectTranslateModePopup.IsOpen = false;
-            windowOperatorPopup.IsOpen = false;
-            waitModePopup.IsOpen = false;
+            if (marqueeStylePopup.IsOpen)
+            {
+                marqueeStylePopup.IsOpen = false;
+            }
+            else
+            {
+                marqueeStylePopup.IsOpen = true;
+                selectTranslateModePopup.IsOpen = false;
+                windowOperatorPopup.IsOpen = false;
+                waitModePopup.IsOpen = false;
+            }
         }
 
         private void SelectTranslateModeButton_Click(Object sender, RoutedEventArgs e)
         {
-            selectTranslateModePopup.IsOpen = true;
-            marqueeStylePopup.IsOpen = false;
-            windowOperatorPopup.IsOpen = false;
-            waitModePopup.IsOpen = false;
+            if (selectTranslateModePopup.IsOpen)
+            {
+                selectTranslateModePopup.IsOpen = false;
+            }
+            else
+            {
+                selectTranslateModePopup.IsOpen = true;
+                marqueeStylePopup.IsOpen = false;
+                windowOperatorPopup.IsOpen = false;
+                waitModePopup.IsOpen = false;
+            }
         }
         private void WindowOperatorButton_Click(Object sender, RoutedEventArgs e)
         {
-            windowOperatorPopup.IsOpen = true;
-            marqueeStylePopup.IsOpen = false;
-            selectTranslateModePopup.IsOpen = false;
-            waitModePopup.IsOpen = false;
+            if (windowOperatorPopup.IsOpen)
+            {
+                windowOperatorPopup.IsOpen = false;
+            }
+            else
+            {
+                windowOperatorPopup.IsOpen = true;
+                marqueeStylePopup.IsOpen = false;
+                selectTranslateModePopup.IsOpen = false;
+                waitModePopup.IsOpen = false;
+            }
         }
 
         private void MainBorder_MouseRightButtonDown(Object sender, MouseButtonEventArgs e)
@@ -739,10 +760,17 @@ namespace VNLauncher.Windows
         }
         private void WaitModeButton_Click(Object sender, RoutedEventArgs e)
         {
-            waitModePopup.IsOpen = true;
-            marqueeStylePopup.IsOpen = false;
-            selectTranslateModePopup.IsOpen = false;
-            windowOperatorPopup.IsOpen = false;
+            if (waitModePopup.IsOpen)
+            {
+                waitModePopup.IsOpen = false;
+            }
+            else
+            {
+                waitModePopup.IsOpen = true;
+                marqueeStylePopup.IsOpen = false;
+                selectTranslateModePopup.IsOpen = false;
+                windowOperatorPopup.IsOpen = false;
+            }
         }
         private void RemoveUIButton_Click(Object sender, RoutedEventArgs e)
         {

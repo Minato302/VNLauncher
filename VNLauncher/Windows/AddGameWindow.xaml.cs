@@ -122,5 +122,10 @@ namespace VNLauncher.Windows
         {
             startWayQuestionButton.ClosePopup();
         }
+        private void MouseDragMove(Object sender, MouseButtonEventArgs e)
+        {
+            DragMove();
+        }
+
     }
 }
