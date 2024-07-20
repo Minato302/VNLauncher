@@ -50,6 +50,15 @@ namespace VNLauncher.FunctionalClasses
                 {
                     sb[i] = '二';
                 }
+                if (text[i] == '口' && (IsKatakana(text[i - 1]) || IsKatakana(text[i + 1])))
+                {
+                    sb[i] = 'ロ';
+                }
+                if (text[i] == 'ロ' && (!IsKatakana(text[i - 1]) && !IsKatakana(text[i + 1])))
+                {
+                    sb[i] = '口';
+                }
+
             }
             if (text.Contains("一一"))
             {

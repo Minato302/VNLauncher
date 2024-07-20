@@ -55,15 +55,15 @@ namespace VNLauncher.FunctionalClasses
                 ["contextFirst"] = true,
                 ["prompt1"] = "阅读下面一段日文对话：\r\n",
                 ["prompt2"] = "\r\n翻译其中最后一句：\r\n",
-                ["prompt3"] = "\r\n为简体中文。注意，给你的日文句子结果来自OCR光学字符识别，因此可能会有形近字错误。\r\n"
+                ["prompt3"] = "\r\n为简体中文。注意，给你的日文句子结果来自OCR光学字符识别，因此可能会有形近字错误。除了最后一句翻译结果外，请不要输出其他内容。\r\n"
             };
 
             JObject onlineModelTranslate = new JObject
             {
                 ["enabled"] = false,
-                ["url"] = "https://api.chatanywhere.com.cn/v1/chat/completions",
+                ["url"] = "https://api.deepseek.com/chat/completions",
                 ["apiKey"] = "",
-                ["model"] = "gpt-3.5-turbo",
+                ["model"] = "deepseek-chat",
                 ["context"] = 10,
                 ["prompt"] = gptPrompt
             };

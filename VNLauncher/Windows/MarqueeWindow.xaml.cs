@@ -448,7 +448,7 @@ namespace VNLauncher.Windows
         }
         private async void Retranslate()
         {
-
+            scanActionID++;
             Bitmap capture = GetGameShot(game.Loaction);
 
             if (!game.IsWindowShot)

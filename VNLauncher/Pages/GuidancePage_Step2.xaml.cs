@@ -22,6 +22,8 @@ namespace VNLauncher.Pages
             this.parameter = parameter;
             cover = new Bitmap(1, 1);
             hook = new GlobalHook(new List<(String, Action)> { ("键盘按键回车", GetCover) });
+            WindowsHandler.MaximizeAndFullscreen(parameter.GameInfo.GameWindow);
+
             getCover = false;
         }
 
