@@ -61,7 +61,7 @@ namespace VNLauncher.Controls
         }
         public void SetInfo(String info)
         {
-            valueTextBlock.Text = info;
+            MainWindowGameInfoValue = info;
         }
         public override void OnApplyTemplate()
         {

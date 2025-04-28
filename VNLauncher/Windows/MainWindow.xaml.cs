@@ -291,14 +291,14 @@ namespace VNLauncher.Windows
             }
             if (game.PlayTimeMinute >= 120)
             {
-                gameTotalTimeInfo.SetInfo((game.PlayTimeMinute / 60.0).ToString("0.0") + "小时");
+                gameTotalTimeInfo.MainWindowGameInfoValue = (game.PlayTimeMinute / 60.0).ToString("0.0") + "小时";
             }
             else
             {
-                gameTotalTimeInfo.SetInfo(game.PlayTimeMinute.ToString() + "分钟");
+                gameTotalTimeInfo.MainWindowGameInfoValue = game.PlayTimeMinute.ToString() + "分钟";
             }
 
-            gameLastStartTimeInfo.SetInfo(game.LastStartTime.ToString("d"));
+            gameLastStartTimeInfo.MainWindowGameInfoValue = game.LastStartTime.ToString("d");
         }
 
         public void AddGame(String gameName)
